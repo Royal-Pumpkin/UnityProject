@@ -10,7 +10,7 @@ public class EventManger : MonoBehaviour {
     //임시로 등록 나중에 resource불러오는걸로 변경?
     public GameObject prefabEnemy1;
     public GameObject prefabEnemy2;
-    public Transform trSpawner;
+    
 
     
 
@@ -121,20 +121,43 @@ public class EventManger : MonoBehaviour {
             case eEnemyName.NULL:
                 return false;
             case eEnemyName.ONE:
-                GameObject tempGameobj;
-                tempGameobj = Instantiate(prefabEnemy1, trSpawner);
-                EnemyStatSet(_EnemyName, tempGameobj.GetComponent<Enemy>());
-                _listEnemy.Add(tempGameobj);
+
+                _listEnemy[GameManager.stGameManager.nListFieldidx].GetComponent<Enemy>().mStat.hp = 10;
+                
+                _listEnemy[GameManager.stGameManager.nListFieldidx].transform.name = "one";
+                _listEnemy[GameManager.stGameManager.nListFieldidx].SetActive(true);
+                _listEnemy[GameManager.stGameManager.nListFieldidx].transform.position = GameManager.stGameManager.trSpawner.position;
+                GameManager.stGameManager.nListFieldidx++;
+
+
+                //EnemyStatSet(_EnemyName, tempGameobj.GetComponent<Enemy>());
+                //_listEnemy.Add(tempGameobj);
                 break;
             case eEnemyName.TWO:
-                tempGameobj = Instantiate(prefabEnemy2, trSpawner);
-                EnemyStatSet(_EnemyName, tempGameobj.GetComponent<Enemy>());
-                _listEnemy.Add(tempGameobj);
+
+                _listEnemy[GameManager.stGameManager.nListFieldidx].GetComponent<Enemy>().mStat.hp = 20;
+                Material[] tempmaterial = _listEnemy[GameManager.stGameManager.nListFieldidx].GetComponent<MeshRenderer>().materials;
+                tempmaterial[0] = Resources.Load<Material>("Materials/"+"One"/*나중에 stat에 Matarial path 넣어서 교체*/);
+                _listEnemy[GameManager.stGameManager.nListFieldidx].GetComponent<MeshRenderer>().materials = tempmaterial;
+
+                //_listEnemy[GameManager.stGameManager.nListFieldidx].GetComponent<Material>().
+                _listEnemy[GameManager.stGameManager.nListFieldidx].transform.name = "two";
+                _listEnemy[GameManager.stGameManager.nListFieldidx].SetActive(true);
+                _listEnemy[GameManager.stGameManager.nListFieldidx].transform.position = GameManager.stGameManager.trSpawner.position;
+                GameManager.stGameManager.nListFieldidx++;
+
+                //tempGameobj = Instantiate(prefabEnemy2, trSpawner);
+                //EnemyStatSet(_EnemyName, tempGameobj.GetComponent<Enemy>());
+                //_listEnemy.Add(tempGameobj);
                 break;
             default:
                 return false;
         }
 
+        if(GameManager.stGameManager.nListFieldidx == 100)
+        {
+            GameManager.stGameManager.nListFieldidx = 0;
+        }
         
         return true;
     }

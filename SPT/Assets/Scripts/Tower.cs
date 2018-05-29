@@ -204,7 +204,7 @@ public class Tower : MonoBehaviour
                 return false;
             }
 
-            if (hitobj.transform.tag == "Enemy")
+            if (hitobj.transform.gameObject.CompareTag("Enemy"))
             {
                 Enemy HitEnemy = hitobj.transform.GetComponent<Enemy>();
                 Shoot(HitEnemy);

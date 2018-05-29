@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
 
     //관리 오브젝트 리스트
     List<GameObject> listFieldEnemy = new List<GameObject>();
+    public int nListFieldidx = 0;
     List<Tower> listTower = new List<Tower>();
 
 
@@ -31,7 +32,10 @@ public class GameManager : MonoBehaviour
     public Tower mControlTower;
     public Transform mGoal;
     public FixedJoystick mStick;
+    public Transform trSpawner;
 
+    //테스트용
+    public GameObject preone;
 
     private void Awake()
     {
@@ -46,6 +50,16 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         mGameState = eGameState.PLAY;
+
+        for (int i=0;i<100;i++)
+        {
+            GameObject tempobj = Instantiate(preone, trSpawner);
+            listFieldEnemy.Add(tempobj);
+            
+            tempobj.SetActive(false);
+        }
+
+
         StartCoroutine("SpawnCorutine");
 
         vecDefaultPos = Camera.main.transform.position;
@@ -63,7 +77,7 @@ public class GameManager : MonoBehaviour
         //몬스터 너무 많아지는 거 방지용 나중에 다른걸로 교체
         if(listFieldEnemy.Count >= 100)
         {
-            mGameState = eGameState.NULL;
+            //mGameState = eGameState.NULL;
         }
 
         for(int i=0;i<listTower.Count;i++)
@@ -77,7 +91,7 @@ public class GameManager : MonoBehaviour
         //GUI.Box(new Rect(0, 0, 200, 40), "PlayerState:" + mPlayerState);
         //for (int i = 0; i < listFieldEnemy.Count; i++)
         //{
-        //    GUI.Box(new Rect(0, 40 * (i + 1), 200, 40), "" +listFieldEnemy[i].gameObject.name+"/"+ listFieldEnemy[i].GetComponent<Enemy>().mStat.mEnemyName+"/"+listFieldEnemy[i].transform.position);
+        //    GUI.Box(new Rect(0, 40 * (i + 1), 200, 40), "" + listFieldEnemy[i].gameObject.name + "/" + listFieldEnemy[i].GetComponent<Enemy>().mStat.mEnemyName + "/" + listFieldEnemy[i].GetComponent<Enemy>().mStat.hp);
         //}
     }
 
@@ -123,7 +137,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator SpawnCorutine()
     {
-        while(mGameState == eGameState.PLAY)
+        while (mGameState == eGameState.PLAY && nListFieldidx <99)
         {
             int i = (int)Random.Range(1f, 3f);
             if (i == 1)
@@ -134,6 +148,5 @@ public class GameManager : MonoBehaviour
             yield return new WaitForSeconds(0.3f);
         }
     }
-
 
 }
