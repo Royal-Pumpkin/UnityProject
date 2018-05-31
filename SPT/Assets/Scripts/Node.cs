@@ -24,7 +24,7 @@ public class Node : MonoBehaviour {
     {
         if (turret != null || GameManager.stGameManager.GetPlayerState() != GameManager.ePlayerState.NOMAL)
         {
-            Debug.Log("Can not build here");
+            //Debug.Log("Can not build here");
             return;
         }
         GameObject turreyToBuild = BuildManager.instance.GetTurretTobuild();

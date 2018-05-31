@@ -116,17 +116,21 @@ public class EventManger : MonoBehaviour {
 
     public bool EnemyCreate(eEnemyName _EnemyName,List<GameObject> _listEnemy)
     {
+        GameObject MakeEnemy = _listEnemy[GameManager.stGameManager.nListFieldidx];
+        Enemy MakeEnemyScript = MakeEnemy.GetComponent<Enemy>();
+        MeshRenderer EnemyMeshRenderer = MakeEnemy.GetComponent<MeshRenderer>();
+        Material[] tempmaterial = EnemyMeshRenderer.materials;
+
         switch (_EnemyName)
         {
             case eEnemyName.NULL:
                 return false;
             case eEnemyName.ONE:
 
-                _listEnemy[GameManager.stGameManager.nListFieldidx].GetComponent<Enemy>().mStat.hp = 10;
-                
-                _listEnemy[GameManager.stGameManager.nListFieldidx].transform.name = "one";
-                _listEnemy[GameManager.stGameManager.nListFieldidx].SetActive(true);
-                _listEnemy[GameManager.stGameManager.nListFieldidx].transform.position = GameManager.stGameManager.trSpawner.position;
+                MakeEnemyScript.mStat.hp = 10;
+                MakeEnemy.transform.name = "one";
+                MakeEnemy.SetActive(true);
+                MakeEnemy.transform.position = GameManager.stGameManager.trSpawner.position;
                 GameManager.stGameManager.nListFieldidx++;
 
 
@@ -135,15 +139,15 @@ public class EventManger : MonoBehaviour {
                 break;
             case eEnemyName.TWO:
 
-                _listEnemy[GameManager.stGameManager.nListFieldidx].GetComponent<Enemy>().mStat.hp = 20;
-                Material[] tempmaterial = _listEnemy[GameManager.stGameManager.nListFieldidx].GetComponent<MeshRenderer>().materials;
-                tempmaterial[0] = Resources.Load<Material>("Materials/"+"One"/*나중에 stat에 Matarial path 넣어서 교체*/);
-                _listEnemy[GameManager.stGameManager.nListFieldidx].GetComponent<MeshRenderer>().materials = tempmaterial;
+                
 
-                //_listEnemy[GameManager.stGameManager.nListFieldidx].GetComponent<Material>().
-                _listEnemy[GameManager.stGameManager.nListFieldidx].transform.name = "two";
-                _listEnemy[GameManager.stGameManager.nListFieldidx].SetActive(true);
-                _listEnemy[GameManager.stGameManager.nListFieldidx].transform.position = GameManager.stGameManager.trSpawner.position;
+
+                MakeEnemyScript.mStat.hp = 20;
+                tempmaterial[0] = Resources.Load<Material>("Materials/One"/*나중에 stat에 Matarial path 넣어서 교체*/);
+                EnemyMeshRenderer.materials = tempmaterial;
+                MakeEnemy.transform.name = "two";
+                MakeEnemy.SetActive(true);
+                MakeEnemy.transform.position = GameManager.stGameManager.trSpawner.position;
                 GameManager.stGameManager.nListFieldidx++;
 
                 //tempGameobj = Instantiate(prefabEnemy2, trSpawner);
@@ -154,10 +158,7 @@ public class EventManger : MonoBehaviour {
                 return false;
         }
 
-        if(GameManager.stGameManager.nListFieldidx == 100)
-        {
-            GameManager.stGameManager.nListFieldidx = 0;
-        }
+       
         
         return true;
     }

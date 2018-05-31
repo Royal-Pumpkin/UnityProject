@@ -14,12 +14,5 @@ public class GUIControlMode : MonoBehaviour {
         NomalModeBtn.onClick.AddListener(() => GameManager.stGameManager.mEventManager.Event(EventManger.eEventName.TOWEROUT));
     }
 
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
 }

@@ -19,7 +19,7 @@ public class Tower : MonoBehaviour
 
     //나중에 각각 타워의 스텟이 나오면 바꿔줄것
     int nAtk = 10;
-    float fSerchDistance = 60f;
+    float fSerchDistance = 20f;
     float fFireCoolDown = 0f;
     float fFireRate = 0.5f;
 
@@ -31,11 +31,6 @@ public class Tower : MonoBehaviour
     float CurAngleX;
     float CurAngleY;
     float CurAngleZ;
-
-    private void Update()
-    {
-        
-    }
 
     //타워기본행동
     public void DefaultTowerAct()
@@ -159,7 +154,7 @@ public class Tower : MonoBehaviour
                     if (FindEnemy.CheckDead())
                     {
                         
-                        _ListEnemy.Remove(FindEnemyobj);
+                        
                         FindEnemyobj.SetActive(false);
                         FindEnemyobj = null;
                         mTowerState = eTowerState.IDLE;
@@ -189,12 +184,14 @@ public class Tower : MonoBehaviour
             //    out hitobj,
             //    Camera.main.transform.rotation,
             //    Mathf.Infinity);
+            Camera curCamera = Camera.main;
+
 
 
             //Physics.Raycast(ray, out hitobj, fSerchDistance);
-            Physics.BoxCast(Camera.main.ViewportToWorldPoint(new Vector2(0.5f, 0.5f)), new Vector3(1, 1, 1), Camera.main.transform.forward, out hitobj,Camera.main.transform.rotation, fSerchDistance);
+            Physics.BoxCast(curCamera.ViewportToWorldPoint(new Vector2(0.5f, 0.5f)), new Vector3(1, 1, 1), curCamera.transform.forward, out hitobj, curCamera.transform.rotation, fSerchDistance);
             //Debug.DrawRay(ray.origin, ray.direction * fSerchDistance, Color.red, 5f);
-            //Debug.DrawRay(Camera.main.ViewportToWorldPoint(new Vector2(0.5f, 0.5f)), Camera.main.transform.forward*fSerchDistance, Color.red, 5f);
+            Debug.DrawRay(curCamera.ViewportToWorldPoint(new Vector2(0.5f, 0.5f)), curCamera.transform.forward*fSerchDistance, Color.red, 5f);
             //Debug.DrawRay(Camera.main.ViewportToWorldPoint(new Vector2(0.5f, 0.5f)), transform.forward*fSerchDistance, Color.red, 5f);
             //Debug.Log("Towerhit" + hitobj.transform.name);
 
@@ -210,8 +207,8 @@ public class Tower : MonoBehaviour
                 Shoot(HitEnemy);
                 if (HitEnemy.CheckDead())
                 {
-                    Destroy(HitEnemy.gameObject);
-                    _ListEnemy.Remove(HitEnemy.gameObject);
+                    HitEnemy.gameObject.SetActive(false);
+                    
                 }
                 return true;
             }

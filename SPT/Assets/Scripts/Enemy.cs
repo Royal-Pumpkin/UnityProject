@@ -27,10 +27,7 @@ public class Enemy : MonoBehaviour {
         nvAgent.destination = goal.position;
     }
 
-    private void Update()
-    {
-       
-    }
+
 
     public bool CheckDead()
     {
