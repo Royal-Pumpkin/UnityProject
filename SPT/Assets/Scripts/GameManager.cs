@@ -61,39 +61,26 @@ public class GameManager : MonoBehaviour
 
 
         StartCoroutine("SpawnCorutine");
+        StartCoroutine("InGameCorutine");
 
         vecDefaultPos = Camera.main.transform.position;
         quaDefaultPos = Camera.main.transform.rotation;
         mGUIManager.mGUIControlMode.FuncctionSet();
     }
 
-    private void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            mEventManager.Event(EventManger.eEventName.TOWERPICK);
-        }
+    //private void Update()
+    //{
+        
+    //}
 
-        //몬스터 너무 많아지는 거 방지용 나중에 다른걸로 교체
-        if(listFieldEnemy.Count >= 100)
-        {
-            //mGameState = eGameState.NULL;
-        }
-
-        for(int i=0;i<listTower.Count;i++)
-        {
-            listTower[i].DefaultTowerAct();
-        }
-    }
-
-    private void OnGUI()
-    {
-        //GUI.Box(new Rect(0, 0, 200, 40), "PlayerState:" + mPlayerState);
-        //for (int i = 0; i < listFieldEnemy.Count; i++)
-        //{
-        //    GUI.Box(new Rect(0, 40 * (i + 1), 200, 40), "" + listFieldEnemy[i].gameObject.name + "/" + listFieldEnemy[i].GetComponent<Enemy>().mStat.mEnemyName + "/" + listFieldEnemy[i].GetComponent<Enemy>().mStat.hp);
-        //}
-    }
+    //private void OnGUI()
+    //{
+    //    //GUI.Box(new Rect(0, 0, 200, 40), "PlayerState:" + mPlayerState);
+    //    //for (int i = 0; i < listFieldEnemy.Count; i++)
+    //    //{
+    //    //    GUI.Box(new Rect(0, 40 * (i + 1), 200, 40), "" + listFieldEnemy[i].gameObject.name + "/" + listFieldEnemy[i].GetComponent<Enemy>().mStat.mEnemyName + "/" + listFieldEnemy[i].GetComponent<Enemy>().mStat.hp);
+    //    //}
+    //}
 
     public void SetPlayerState(ePlayerState _PlayerState)
     {
@@ -146,6 +133,24 @@ public class GameManager : MonoBehaviour
                 AddEnemy(EventManger.eEnemyName.TWO);
 
             yield return new WaitForSeconds(1f);
+        }
+    }
+
+    IEnumerator InGameCorutine()
+    {
+        while (true)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                mEventManager.Event(EventManger.eEventName.TOWERPICK);
+            }
+
+            for (int i = 0; i < listTower.Count; i++)
+            {
+                listTower[i].DefaultTowerAct();
+            }
+
+            yield return new WaitForFixedUpdate();
         }
     }
 

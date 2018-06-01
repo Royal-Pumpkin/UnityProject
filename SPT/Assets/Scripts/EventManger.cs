@@ -143,8 +143,8 @@ public class EventManger : MonoBehaviour {
 
 
                 MakeEnemyScript.mStat.hp = 20;
-                tempmaterial[0] = Resources.Load<Material>("Materials/One"/*나중에 stat에 Matarial path 넣어서 교체*/);
-                EnemyMeshRenderer.materials = tempmaterial;
+                //tempmaterial[0] = Resources.Load<Material>("Materials/One"/*나중에 stat에 Matarial path 넣어서 교체*/);
+                //EnemyMeshRenderer.materials = tempmaterial;
                 MakeEnemy.transform.name = "two";
                 MakeEnemy.SetActive(true);
                 MakeEnemy.transform.position = GameManager.stGameManager.trSpawner.position;
