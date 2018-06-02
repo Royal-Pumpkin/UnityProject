@@ -18,12 +18,12 @@ public class Tower : MonoBehaviour
     FixedJoystick teststick;
 
     //나중에 각각 타워의 스텟이 나오면 바꿔줄것
-    int nAtk = 10;
-    float fSerchDistance = 20f;
-    float fFireCoolDown = 0f;
-    float fFireRate = 0.5f;
+    public int nAtk = 10;
+    public float fSerchDistance = 20f;
+    public float fFireCoolDown = 0f;
+    public float fFireRate = 0.5f;
 
-    float fCameraSpeed = 5f;
+    public float fCameraSpeed = 5f;
 
     public GameObject FindEnemyobj = null;
     Enemy FindEnemy = null;
@@ -106,9 +106,9 @@ public class Tower : MonoBehaviour
         return Mathf.Clamp(angle, min, max);
     }
 
-    void Shoot(Enemy _enemy)
+    void Shoot(Enemy _enemy,int _atk)
     {
-        _enemy.mStat.hp -= nAtk;
+        _enemy.mStat.hp -= _atk;
     }
 
     void FindShootEnemy(List<GameObject> _ListEnemy)
@@ -149,12 +149,10 @@ public class Tower : MonoBehaviour
                 Head.transform.LookAt(FindEnemyobj.transform);
                 if (fFireCoolDown <= 0f)
                 {
-                    Shoot(FindEnemy);
+                    Shoot(FindEnemy,nAtk);
 
                     if (FindEnemy.CheckDead())
                     {
-                        
-                        
                         FindEnemyobj.SetActive(false);
                         FindEnemyobj = null;
                         mTowerState = eTowerState.IDLE;
@@ -204,11 +202,39 @@ public class Tower : MonoBehaviour
             if (hitobj.transform.gameObject.CompareTag("Enemy"))
             {
                 Enemy HitEnemy = hitobj.transform.GetComponent<Enemy>();
-                Shoot(HitEnemy);
+
+                Shoot(HitEnemy,nAtk);
+
                 if (HitEnemy.CheckDead())
                 {
                     HitEnemy.gameObject.SetActive(false);
                     
+                }
+                return true;
+            }
+            else if(hitobj.transform.gameObject.CompareTag("Boss"))
+            {
+                //보스 때리는 코드 생각 작동만 생각했을 때 아래처럼
+                Boss HitBoss = hitobj.transform.parent.transform.GetComponent<Boss>();
+                //Debug.Log("" + HitBoss.mStat.hp + "/" + hitobj.transform.name);
+                if(hitobj.transform == HitBoss.Head)
+                {
+                    Shoot(HitBoss, nAtk*2);
+                }
+                else if(hitobj.transform == HitBoss.Body)
+                {
+                    Shoot(HitBoss, nAtk);
+                }
+                else if(hitobj.transform == HitBoss.Leg)
+                {
+                    Shoot(HitBoss, nAtk);
+                    HitBoss.nvAgent.speed -= 2;
+                }
+                
+
+                if (HitBoss.CheckDead())
+                {
+                    HitBoss.gameObject.SetActive(false);
                 }
                 return true;
             }

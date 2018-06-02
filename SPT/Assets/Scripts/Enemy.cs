@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public class Enemy : MonoBehaviour {
 
     public Transform goal;
-    NavMeshAgent nvAgent;
+    public NavMeshAgent nvAgent;
 
     public struct strStat
     {
@@ -14,7 +14,7 @@ public class Enemy : MonoBehaviour {
         public int hp;
         strStat(int _hp)
         {
-            hp = 10;
+            hp = 30;
             mEnemyName = EventManger.eEnemyName.NULL;
         }
     }
@@ -25,6 +25,7 @@ public class Enemy : MonoBehaviour {
         goal = GameManager.stGameManager.mGoal;
         nvAgent = GetComponent<NavMeshAgent>();
         nvAgent.destination = goal.position;
+        mStat.hp = 30;
     }
 
 
