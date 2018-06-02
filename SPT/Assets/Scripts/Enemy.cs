@@ -7,6 +7,7 @@ public class Enemy : MonoBehaviour {
 
     public Transform goal;
     public NavMeshAgent nvAgent;
+    public int MonsterIdx;
 
     public struct strStat
     {

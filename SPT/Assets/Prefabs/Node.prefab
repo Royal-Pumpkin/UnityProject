@@ -110,4 +110,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hoverColor: {r: 0, g: 0, b: 0, a: 0}
   posiotionOffset: {x: 0, y: 1.5, z: 0}
+  colNodeCollider: {fileID: 65029265879608752}
   turret: {fileID: 0}

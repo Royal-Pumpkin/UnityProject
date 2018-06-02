@@ -242,6 +242,11 @@ Prefab:
       propertyPath: m_Name
       value: Node (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 65029265879608752, guid: dc28ef974fbaafb478efff335d267b98,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: dc28ef974fbaafb478efff335d267b98, type: 2}
   m_IsPrefabParent: 0
@@ -433,6 +438,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   goal: {fileID: 0}
   nvAgent: {fileID: 247621847}
+  MonsterIdx: 0
   Head: {fileID: 660766170}
   Body: {fileID: 2083096599}
   Leg: {fileID: 604259851}

@@ -7,7 +7,10 @@ public class Tower : MonoBehaviour
 {
     //타워 작동상태
     enum eTowerState {NULL=-1,IDLE,ATTACK,TOWERCONTROL}
+    public enum eTowerType {NULL=-1,A,B,C }
+
     eTowerState mTowerState;
+    eTowerType mTowerType;
 
     //타워 구성요소
     public Transform Tr_InTowerCamera;
@@ -115,24 +118,48 @@ public class Tower : MonoBehaviour
     {
         if (_ListEnemy.Count > 0)
         {
-
             if (mTowerState == eTowerState.IDLE)
             {
 
-                float fShortestDistance = Mathf.Infinity;
+                //기획자가 원하는 대로 하기 위해서 overlapsphere를 사용했는데
+                //getcomponent도 많이 사용했고 필요없는 collider도 함께 검색되어 메모리 사용이
+                //많을 것으로 예상된다 어느것이 더 메모리를 덜 사용하는지는 추후에 테스트
+                Collider[] colls = Physics.OverlapSphere(transform.position, fSerchDistance);
+                int nComparenum = GameManager.stGameManager.nListFieldidx;
 
-                for (int i = 0; i < _ListEnemy.Count; i++)
+                if(colls.Length == 0)
                 {
-                    float fDistanceToEnemy = Vector3.Distance(this.transform.position, _ListEnemy[i].transform.position);
-                    if (fDistanceToEnemy < fShortestDistance)
+                    mTowerState = eTowerState.IDLE;
+                    return;
+                }
+
+                for(int i=0;i<colls.Length;i++)
+                {
+                    if (colls[i].GetComponent<Enemy>())
                     {
-                        fShortestDistance = fDistanceToEnemy;
-                        FindEnemyobj = _ListEnemy[i];
-                        FindEnemy = FindEnemyobj.GetComponent<Enemy>();
+                        if (colls[i].transform.GetComponent<Enemy>().MonsterIdx <= nComparenum)
+                        {
+                            FindEnemyobj = colls[i].gameObject;
+                            FindEnemy = colls[i].transform.GetComponent<Enemy>();
+                            nComparenum = FindEnemy.MonsterIdx;
+                        }
                     }
                 }
 
-                if (FindEnemyobj != null && fShortestDistance <= fSerchDistance)
+                //float fShortestDistance = Mathf.Infinity;
+
+                //for (int i = 0; i < _ListEnemy.Count; i++)
+                //{
+                //    float fDistanceToEnemy = Vector3.Distance(this.transform.position, _ListEnemy[i].transform.position);
+                //    if (fDistanceToEnemy < fShortestDistance)
+                //    {
+                //        fShortestDistance = fDistanceToEnemy;
+                //        FindEnemyobj = _ListEnemy[i];
+                //        FindEnemy = FindEnemyobj.GetComponent<Enemy>();
+                //    }
+                //}
+
+                if (FindEnemyobj != null)
                 {
                     mTowerState = eTowerState.ATTACK;
                 }

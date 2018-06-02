@@ -60,7 +60,7 @@ public class GameManager : MonoBehaviour
         }
 
 
-        //StartCoroutine("SpawnCorutine");
+        StartCoroutine("SpawnCorutine");
         StartCoroutine("InGameCorutine");
 
         vecDefaultPos = Camera.main.transform.position;

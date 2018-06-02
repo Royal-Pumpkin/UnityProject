@@ -5,6 +5,7 @@ using UnityEngine;
 public class Node : MonoBehaviour {
     public Color hoverColor;
     public Vector3 posiotionOffset;
+    public Collider colNodeCollider;
 
     public GameObject turret;
 
@@ -30,6 +31,7 @@ public class Node : MonoBehaviour {
         GameObject turreyToBuild = BuildManager.instance.GetTurretTobuild();
         turret = (GameObject)Instantiate(turreyToBuild, transform.position + posiotionOffset, transform.rotation);
         GameManager.stGameManager.AddTowerList(turret.GetComponent<Tower>());
+        colNodeCollider.enabled = false;
     }
 
     private void OnMouseEnter()

@@ -5,7 +5,9 @@ using UnityEngine;
 public class EventManger : MonoBehaviour {
 
 	public enum eEventName{NULL=-1,TOWERPICK,TOWEROUT,ENEMYSPWAN}
-    public enum eEnemyName {NULL=-1,ONE,TWO }
+    public enum eEnemyName {NULL=-1,ONE,TWO}
+    
+
 
     //임시로 등록 나중에 resource불러오는걸로 변경?
     public GameObject prefabEnemy1;
@@ -101,10 +103,12 @@ public class EventManger : MonoBehaviour {
                 break;
             case eEnemyName.ONE:
                 _CreateEnemy.mStat.mEnemyName = eEnemyName.ONE;
+                _CreateEnemy.transform.name = "one";
                 _CreateEnemy.mStat.hp = 10;
                 break;
             case eEnemyName.TWO:
                 _CreateEnemy.mStat.mEnemyName = eEnemyName.TWO;
+                _CreateEnemy.transform.name = "two";
                 _CreateEnemy.mStat.hp = 20;
                 break;
             default:
@@ -120,36 +124,27 @@ public class EventManger : MonoBehaviour {
         Enemy MakeEnemyScript = MakeEnemy.GetComponent<Enemy>();
         MeshRenderer EnemyMeshRenderer = MakeEnemy.GetComponent<MeshRenderer>();
         Material[] tempmaterial = EnemyMeshRenderer.materials;
+        int Idx = GameManager.stGameManager.nListFieldidx;
 
         switch (_EnemyName)
         {
             case eEnemyName.NULL:
                 return false;
             case eEnemyName.ONE:
-
-                MakeEnemyScript.mStat.hp = 10;
-                MakeEnemy.transform.name = "one";
+                EnemyStatSet(_EnemyName, MakeEnemyScript);
                 MakeEnemy.SetActive(true);
                 MakeEnemy.transform.position = GameManager.stGameManager.trSpawner.position;
-                GameManager.stGameManager.nListFieldidx++;
-
-
+                
                 //EnemyStatSet(_EnemyName, tempGameobj.GetComponent<Enemy>());
                 //_listEnemy.Add(tempGameobj);
                 break;
             case eEnemyName.TWO:
-
-                
-
-
-                MakeEnemyScript.mStat.hp = 20;
                 //tempmaterial[0] = Resources.Load<Material>("Materials/One"/*나중에 stat에 Matarial path 넣어서 교체*/);
                 //EnemyMeshRenderer.materials = tempmaterial;
-                MakeEnemy.transform.name = "two";
+                EnemyStatSet(_EnemyName, MakeEnemyScript);
                 MakeEnemy.SetActive(true);
                 MakeEnemy.transform.position = GameManager.stGameManager.trSpawner.position;
-                GameManager.stGameManager.nListFieldidx++;
-
+                
                 //tempGameobj = Instantiate(prefabEnemy2, trSpawner);
                 //EnemyStatSet(_EnemyName, tempGameobj.GetComponent<Enemy>());
                 //_listEnemy.Add(tempGameobj);
@@ -158,8 +153,9 @@ public class EventManger : MonoBehaviour {
                 return false;
         }
 
-       
-        
+        MakeEnemyScript.MonsterIdx = Idx;
+        GameManager.stGameManager.nListFieldidx++;
+
         return true;
     }
 }
