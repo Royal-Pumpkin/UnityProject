@@ -5,9 +5,12 @@ using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour {
 
+    public enum eDebuffName {NULL=-1,SLOW }
+
     public Transform goal;
     public NavMeshAgent nvAgent;
     public int MonsterIdx;
+    bool[] mDebuff = new bool[1];
 
     public struct strStat
     {
@@ -29,7 +32,25 @@ public class Enemy : MonoBehaviour {
         mStat.hp = 30;
     }
 
+    public bool DeBuffSet(eDebuffName _debuff)
+    {
+        switch (_debuff)
+        {
+            case eDebuffName.NULL:
+                return false;
+            case eDebuffName.SLOW:
+                if (mDebuff[(int)eDebuffName.SLOW] == false)
+                {
+                    mDebuff[(int)eDebuffName.SLOW] = true;
+                    StartCoroutine("SlowDebuff");
+                }
 
+                break;
+            default:
+                break;
+        }
+        return true;
+    }
 
     public bool CheckDead()
     {
@@ -39,5 +60,13 @@ public class Enemy : MonoBehaviour {
         }
         else
             return false;
+    }
+
+    IEnumerator SlowDebuff()
+    {
+        nvAgent.speed -= 2f;
+        yield return new WaitForSeconds(3f);
+        mDebuff[(int)eDebuffName.SLOW] = false;
+        nvAgent.speed += 2f;
     }
 }

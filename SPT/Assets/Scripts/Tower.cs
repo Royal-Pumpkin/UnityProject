@@ -10,7 +10,7 @@ public class Tower : MonoBehaviour
     public enum eTowerType {NULL=-1,A,B,C }
 
     eTowerState mTowerState;
-    eTowerType mTowerType;
+    public eTowerType mTowerType;
 
     //타워 구성요소
     public Transform Tr_InTowerCamera;
@@ -25,6 +25,8 @@ public class Tower : MonoBehaviour
     public float fSerchDistance = 20f;
     public float fFireCoolDown = 0f;
     public float fFireRate = 0.5f;
+    public int nPrice;
+    public float fAtkArea = 5f;
 
     public float fCameraSpeed = 5f;
 
@@ -109,10 +111,91 @@ public class Tower : MonoBehaviour
         return Mathf.Clamp(angle, min, max);
     }
 
-    void Shoot(Enemy _enemy,int _atk)
+    void SingleShot(Enemy _enemy,int _atk)
     {
         _enemy.mStat.hp -= _atk;
     }
+
+    void MultiShot(Enemy _targetEnemy,int _atk,float _atkarea)
+    {
+        Transform _tartgetTr = _targetEnemy.transform;
+
+        Collider[] colls = Physics.OverlapSphere(_tartgetTr.position, _atkarea);
+        Enemy[] enemys = new Enemy[colls.Length];
+        int enemysarridx=0;
+        
+
+        for(int i=0;i<colls.Length;i++)
+        {
+            if(colls[i].GetComponent<Enemy>())
+            {
+                enemys[enemysarridx] = colls[i].GetComponent<Enemy>();
+                enemysarridx++;
+            }
+        }
+
+        for(int i=0;i<enemysarridx;i++)
+        {
+            enemys[i].mStat.hp -= _atk;
+        }
+
+        if(_targetEnemy.CheckDead())
+        {
+            FindEnemyobj = null;
+            mTowerState = eTowerState.IDLE;
+        }
+
+        for(int i=0;i<enemysarridx;i++)
+        {
+            if (enemys[i].CheckDead())
+            {
+                enemys[i].gameObject.SetActive(false);
+            }
+        }
+        
+    }
+
+    void SlowShot(Enemy _targetEnemy, int _atk, float _sercharea)
+    {
+        Transform _tartgetTr = _targetEnemy.transform;
+
+        Collider[] colls = Physics.OverlapSphere(transform.position, _sercharea);
+        Enemy[] enemys = new Enemy[colls.Length];
+        int enemysarridx = 0;
+
+        for (int i = 0; i < colls.Length; i++)
+        {
+            if (colls[i].GetComponent<Enemy>())
+            {
+                enemys[enemysarridx] = colls[i].GetComponent<Enemy>();
+                enemysarridx++;
+            }
+        }
+
+        for (int i = 0; i < enemysarridx; i++)
+        {
+            enemys[i].mStat.hp -= _atk;
+            enemys[i].DeBuffSet(Enemy.eDebuffName.SLOW);
+        }
+
+        if (_targetEnemy.CheckDead())
+        {
+            FindEnemyobj = null;
+            mTowerState = eTowerState.IDLE;
+        }
+
+        for (int i = 0; i < enemysarridx; i++)
+        {
+            if (enemys[i].CheckDead())
+            {
+                enemys[i].gameObject.SetActive(false);
+            }
+        }
+
+
+    }
+
+
 
     void FindShootEnemy(List<GameObject> _ListEnemy)
     {
@@ -133,7 +216,10 @@ public class Tower : MonoBehaviour
                     return;
                 }
 
-                for(int i=0;i<colls.Length;i++)
+                
+
+
+                for (int i = 0; i < colls.Length; i++)
                 {
                     if (colls[i].GetComponent<Enemy>())
                     {
@@ -145,6 +231,7 @@ public class Tower : MonoBehaviour
                         }
                     }
                 }
+
 
                 //float fShortestDistance = Mathf.Infinity;
 
@@ -165,6 +252,11 @@ public class Tower : MonoBehaviour
                 }
             }
 
+
+            //switch문 넣어서 tower종류마다 공격방식을 달리하기
+
+            
+
             if (mTowerState == eTowerState.ATTACK)
             {
                 if (FindEnemyobj == null || FindEnemyobj.activeSelf == false)
@@ -176,14 +268,35 @@ public class Tower : MonoBehaviour
                 Head.transform.LookAt(FindEnemyobj.transform);
                 if (fFireCoolDown <= 0f)
                 {
-                    Shoot(FindEnemy,nAtk);
-
-                    if (FindEnemy.CheckDead())
+                    switch (mTowerType)
                     {
-                        FindEnemyobj.SetActive(false);
-                        FindEnemyobj = null;
-                        mTowerState = eTowerState.IDLE;
+                        case eTowerType.NULL:
+                            return;
+                        case eTowerType.A:
+                            SingleShot(FindEnemy, nAtk);
+
+                            if (FindEnemy.CheckDead())
+                            {
+                                FindEnemyobj.SetActive(false);
+                                FindEnemyobj = null;
+                                mTowerState = eTowerState.IDLE;
+                            }
+                            break;
+                        case eTowerType.B:
+                            MultiShot(FindEnemy, nAtk, fAtkArea);
+
+
+                            break;
+                        case eTowerType.C:
+                            SlowShot(FindEnemy, nAtk, fSerchDistance);
+
+                            break;
+                        default:
+                            return;
                     }
+
+
+                   
                     fFireCoolDown = 1f / fFireRate;
                 }
 
@@ -226,11 +339,14 @@ public class Tower : MonoBehaviour
                 return false;
             }
 
+
+            //여기도 타워마다 능력을 달리해줘야함
+            
             if (hitobj.transform.gameObject.CompareTag("Enemy"))
             {
                 Enemy HitEnemy = hitobj.transform.GetComponent<Enemy>();
 
-                Shoot(HitEnemy,nAtk);
+                SingleShot(HitEnemy,nAtk);
 
                 if (HitEnemy.CheckDead())
                 {
@@ -246,15 +362,15 @@ public class Tower : MonoBehaviour
                 //Debug.Log("" + HitBoss.mStat.hp + "/" + hitobj.transform.name);
                 if(hitobj.transform == HitBoss.Head)
                 {
-                    Shoot(HitBoss, nAtk*2);
+                    SingleShot(HitBoss, nAtk*2);
                 }
                 else if(hitobj.transform == HitBoss.Body)
                 {
-                    Shoot(HitBoss, nAtk);
+                    SingleShot(HitBoss, nAtk);
                 }
                 else if(hitobj.transform == HitBoss.Leg)
                 {
-                    Shoot(HitBoss, nAtk);
+                    SingleShot(HitBoss, nAtk);
                     HitBoss.nvAgent.speed -= 2;
                 }
                 
@@ -274,6 +390,9 @@ public class Tower : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, fSerchDistance);
+        if (FindEnemyobj)
+            Gizmos.DrawWireSphere(FindEnemyobj.transform.position, fAtkArea);
+
     }
 
 
