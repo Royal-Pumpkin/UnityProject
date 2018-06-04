@@ -7,10 +7,10 @@ public class Tower : MonoBehaviour
 {
     //타워 작동상태
     enum eTowerState {NULL=-1,IDLE,ATTACK,TOWERCONTROL}
-    public enum eTowerType {NULL=-1,A,B,C }
+    
 
     eTowerState mTowerState;
-    public eTowerType mTowerType;
+    public BuildManager.eTowerType mTowerType;
 
     //타워 구성요소
     public Transform Tr_InTowerCamera;
@@ -270,9 +270,9 @@ public class Tower : MonoBehaviour
                 {
                     switch (mTowerType)
                     {
-                        case eTowerType.NULL:
+                        case BuildManager.eTowerType.NULL:
                             return;
-                        case eTowerType.A:
+                        case BuildManager.eTowerType.A:
                             SingleShot(FindEnemy, nAtk);
 
                             if (FindEnemy.CheckDead())
@@ -282,12 +282,12 @@ public class Tower : MonoBehaviour
                                 mTowerState = eTowerState.IDLE;
                             }
                             break;
-                        case eTowerType.B:
+                        case BuildManager.eTowerType.B:
                             MultiShot(FindEnemy, nAtk, fAtkArea);
 
 
                             break;
-                        case eTowerType.C:
+                        case BuildManager.eTowerType.C:
                             SlowShot(FindEnemy, nAtk, fSerchDistance);
 
                             break;

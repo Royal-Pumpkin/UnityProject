@@ -312,12 +312,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b48e43ec16a24d4e8b20973a6127a5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mTowerType: 2
   Tr_InTowerCamera: {fileID: 4260232217765054}
   Head: {fileID: 4609950982239942}
   mCollider: {fileID: 65645579496376122}
-  nAtk: 10
-  fSerchDistance: 30
+  nAtk: 5
+  fSerchDistance: 20
   fFireCoolDown: 0
-  fFireRate: 5
+  fFireRate: 0.83
+  nPrice: 0
+  fAtkArea: 5
   fCameraSpeed: 5
   FindEnemyobj: {fileID: 0}
