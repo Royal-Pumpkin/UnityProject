@@ -4,18 +4,9 @@ using UnityEngine;
 
 public class BuildManager : MonoBehaviour {
 
-    public static BuildManager instance;
     public enum eTowerType { NULL = -1, A, B, C }
 
-    private void Awake()
-    {
-        if (instance != null)
-        {
-            Debug.LogError("no BM");
-            return;
-        }
-        instance = this;
-    }
+
 
     public GameObject standardTurretPrefab;
 
@@ -31,27 +22,60 @@ public class BuildManager : MonoBehaviour {
         return turretToBuild;
     }
 
-    public bool BuildTower(eTowerType _Type)
+    public GameObject MakeTower()
     {
+        //지금은 그냥 기본타워만 생성 후에 미리 여러개의 타워를 설치 혹은 빈공간만 만들어놓고 생성해서 쓰도록함
+        GameObject tempobj = Instantiate(standardTurretPrefab,GameManager.stGameManager.mGoal);
+        return tempobj;
+    }
+
+    public bool BuildTower(eTowerType _Type,Transform _nodeTr,Vector3 _offset)
+    {
+        GameObject turretToBuild = GameManager.stGameManager.GetFieldTowerList()[GameManager.stGameManager.nListTowerIdx].gameObject;
+        Tower turretScript = turretToBuild.GetComponent<Tower>();
+
         switch (_Type)
         {
+            
             case eTowerType.NULL:
                 return false;
             case eTowerType.A:
-                //GameObject turreyToBuild = GetTurretTobuild();
-                //turret = (GameObject)Instantiate(turreyToBuild, transform.position + posiotionOffset, transform.rotation);
-                //GameManager.stGameManager.AddTowerList(turret.GetComponent<Tower>());
-                //colNodeCollider.enabled = false;
+                
+
+                turretToBuild.transform.position = _nodeTr.position + _offset;
+                turretToBuild.transform.rotation = _nodeTr.rotation;
+                GameManager.stGameManager.AddFieldTowerList(turretToBuild.GetComponent<Tower>());
+                turretScript.mTowerType = eTowerType.A;
+                
+                GameManager.stGameManager.nListTowerIdx++;
 
                 break;
             case eTowerType.B:
+                //GameObject turretToBuild = GameManager.stGameManager.GetFieldTowerList()[GameManager.stGameManager.nListTowerIdx].gameObject;
+                //Tower turretScript = turretToBuild.GetComponent<Tower>();
+
+                turretToBuild.transform.position = _nodeTr.position + _offset;
+                turretToBuild.transform.rotation = _nodeTr.rotation;
+                GameManager.stGameManager.AddFieldTowerList(turretToBuild.GetComponent<Tower>());
+                turretScript.mTowerType = eTowerType.B;
+                GameManager.stGameManager.nListTowerIdx++;
                 break;
             case eTowerType.C:
+                //GameObject turretToBuild = GameManager.stGameManager.GetFieldTowerList()[GameManager.stGameManager.nListTowerIdx].gameObject;
+                //Tower turretScript = turretToBuild.GetComponent<Tower>();
+
+                turretToBuild.transform.position = _nodeTr.position + _offset;
+                turretToBuild.transform.rotation = _nodeTr.rotation;
+                GameManager.stGameManager.AddFieldTowerList(turretToBuild.GetComponent<Tower>());
+                turretScript.mTowerType = eTowerType.C;
+                GameManager.stGameManager.nListTowerIdx++;
                 break;
             default:
                 return false;
         }
 
+        turretToBuild.SetActive(true);
+        GameManager.stGameManager.SetPlayerState(GameManager.ePlayerState.NOMAL);
         return true;
     }
 }

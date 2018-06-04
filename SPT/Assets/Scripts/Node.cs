@@ -31,7 +31,7 @@ public class Node : MonoBehaviour {
 
         GameManager.stGameManager.SetPlayerState(GameManager.ePlayerState.BUILD);
         GUIBuildMode BuildMode = GameManager.stGameManager.mGUIManager.mGUINomalMode.mGUIBuildMode;
-        BuildMode.SetPanelOn();
+        BuildMode.SetPanelOn(transform, posiotionOffset);
         BuildMode.Panel.transform.position = Input.mousePosition;
         
 
