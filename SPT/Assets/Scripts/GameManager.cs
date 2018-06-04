@@ -56,19 +56,17 @@ public class GameManager : MonoBehaviour
             listFieldEnemy.Add(tempobj);
             
             tempobj.SetActive(false);
-        }        
-    }
+        }
 
-    public void StageStart()
-    {
+
         StartCoroutine("SpawnCorutine");
         StartCoroutine("InGameCorutine");
 
         vecDefaultPos = Camera.main.transform.position;
         quaDefaultPos = Camera.main.transform.rotation;
         mGUIManager.mGUIControlMode.FuncctionSet();
-        mGUIManager.SetGUIScene(GUIManager.eGUISceneName.PLAYSCENE);
     }
+
     //private void Update()
     //{
         
