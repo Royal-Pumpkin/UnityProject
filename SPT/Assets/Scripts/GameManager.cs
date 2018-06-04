@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
     eGameState mGameState = eGameState.NULL;
 
     //현재 게임 플레이상태
-    public enum ePlayerState {NULL=-1,NOMAL,BUILD,TOWER}
+    public enum ePlayerState {NULL=-1,NOMAL,TOWER}
 
     ePlayerState mPlayerState = ePlayerState.NOMAL;
 
@@ -32,9 +32,6 @@ public class GameManager : MonoBehaviour
     public Transform mGoal;
     public FixedJoystick mStick;
     public Transform trSpawner;
-
-    //플레이어 정보 나중에 받아서 변경예정
-    List<BuildManager.eTowerType> mlistPlayerTower = new List<BuildManager.eTowerType>();
 
     //테스트용
     public GameObject preone;
@@ -52,13 +49,6 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         mGameState = eGameState.PLAY;
-
-        mlistPlayerTower.Add(BuildManager.eTowerType.A);
-        mlistPlayerTower.Add(BuildManager.eTowerType.B);
-        mlistPlayerTower.Add(BuildManager.eTowerType.C);
-        mGUIManager.mGUINomalMode.mGUIBuildMode.GUIPlayerTower = mlistPlayerTower;
-
-        mGUIManager.mGUINomalMode.mGUIBuildMode.InstansiateList();
 
         for (int i=0;i<100;i++)
         {
@@ -93,7 +83,6 @@ public class GameManager : MonoBehaviour
     //    //}
     //}
 
-    //각 리스트 , 상태 접근 함수
     public void SetPlayerState(ePlayerState _PlayerState)
     {
         mPlayerState = _PlayerState;
@@ -104,14 +93,14 @@ public class GameManager : MonoBehaviour
         return mPlayerState;
     }
 
-    public void SetGameState(eGameState _GameState)
-    {
-        mGameState = _GameState;
-    }
+    
 
-    public eGameState GetGameState()
+    
+
+    public void CameraReset()
     {
-        return mGameState;
+        Camera.main.transform.position = vecDefaultPos;
+        Camera.main.transform.rotation = quaDefaultPos;
     }
 
     public List<GameObject> GetEnemyList()
@@ -134,22 +123,6 @@ public class GameManager : MonoBehaviour
         listTower.Add(_tower);
     }
 
-    public List<BuildManager.eTowerType> GetPlayerTowerList()
-    {
-        return mlistPlayerTower;
-    }
-
-
-
-    //카메라 원 위치로 이동
-    public void CameraReset()
-    {
-        Camera.main.transform.position = vecDefaultPos;
-        Camera.main.transform.rotation = quaDefaultPos;
-    }
-
-    
-    //코루틴 함수들
     IEnumerator SpawnCorutine()
     {
         while (mGameState == eGameState.PLAY && nListFieldidx <99)
@@ -166,8 +139,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator InGameCorutine()
     {
-        float curnum = 0;
-        while (GameManager.stGameManager.GetGameState() == GameManager.eGameState.PLAY)
+        while (true)
         {
             if (Input.GetMouseButtonDown(0))
             {
@@ -178,17 +150,6 @@ public class GameManager : MonoBehaviour
             {
                 listTower[i].DefaultTowerAct();
             }
-
-            
-
-            float persentnum = ((float)GameManager.stGameManager.nListFieldidx / (float)GameManager.stGameManager.GetEnemyList().Count);
-
-
-
-            if (curnum <= persentnum)
-                curnum += Time.fixedDeltaTime / (float)GameManager.stGameManager.GetEnemyList().Count;
-
-            mGUIManager.mGUINomalMode.WaveBar.fillAmount = curnum;
 
             yield return new WaitForFixedUpdate();
         }

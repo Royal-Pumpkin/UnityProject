@@ -25,17 +25,13 @@ public class Node : MonoBehaviour {
     {
         if (turret != null || GameManager.stGameManager.GetPlayerState() != GameManager.ePlayerState.NOMAL)
         {
-            
+            //Debug.Log("Can not build here");
             return;
         }
-
-        GameManager.stGameManager.SetPlayerState(GameManager.ePlayerState.BUILD);
-        GUIBuildMode BuildMode = GameManager.stGameManager.mGUIManager.mGUINomalMode.mGUIBuildMode;
-        BuildMode.SetPanelOn();
-        BuildMode.Panel.transform.position = Input.mousePosition;
-        
-
-        
+        GameObject turreyToBuild = BuildManager.instance.GetTurretTobuild();
+        turret = (GameObject)Instantiate(turreyToBuild, transform.position + posiotionOffset, transform.rotation);
+        GameManager.stGameManager.AddTowerList(turret.GetComponent<Tower>());
+        colNodeCollider.enabled = false;
     }
 
     private void OnMouseEnter()

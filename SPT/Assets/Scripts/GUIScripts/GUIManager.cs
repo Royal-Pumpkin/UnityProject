@@ -8,7 +8,6 @@ public class GUIManager : MonoBehaviour {
     public enum eGUISceneName {NULL=-1,PLAYSCENE,CONTROLSCENE,MAIN, ARMORY,STAGE }
     eGUISceneName mGUISceneState;
     public GUIControlMode mGUIControlMode;
-    public GUINomalMode mGUINomalMode;
 
 	// Use this for initialization
 	void Start () {

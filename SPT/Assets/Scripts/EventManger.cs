@@ -153,8 +153,6 @@ public class EventManger : MonoBehaviour {
                 return false;
         }
 
-       
-
         MakeEnemyScript.MonsterIdx = Idx;
         GameManager.stGameManager.nListFieldidx++;
 
