@@ -8,12 +8,11 @@ public class GameManager : MonoBehaviour
     static public GameManager stGameManager;
     public EventManger mEventManager;
     public GUIManager mGUIManager;
-
+    public Player player;
     //관리 오브젝트 리스트
     List<GameObject> listFieldEnemy = new List<GameObject>();
     public int nListFieldidx = 0;
     List<Tower> listTower = new List<Tower>();
-
 
     //현재 게임상태
     public enum eGameState { NULL=-1,PLAY,PAUSE,GAMEOVER}
@@ -67,17 +66,19 @@ public class GameManager : MonoBehaviour
             listFieldEnemy.Add(tempobj);
             
             tempobj.SetActive(false);
-        }
+        }        
+    }
 
-
+    public void StageStart()
+    {
         StartCoroutine("SpawnCorutine");
         StartCoroutine("InGameCorutine");
 
         vecDefaultPos = Camera.main.transform.position;
         quaDefaultPos = Camera.main.transform.rotation;
         mGUIManager.mGUIControlMode.FuncctionSet();
+        mGUIManager.SetGUIScene(GUIManager.eGUISceneName.PLAYSCENE);
     }
-
     //private void Update()
     //{
         
@@ -191,6 +192,12 @@ public class GameManager : MonoBehaviour
 
             yield return new WaitForFixedUpdate();
         }
+    }
+
+    public void ChangeGold(int value)
+    {
+        int gold = player.ChangeGold(value);
+
     }
 
 }
