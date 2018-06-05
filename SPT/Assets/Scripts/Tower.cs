@@ -37,6 +37,9 @@ public class Tower : MonoBehaviour
     float CurAngleY;
     float CurAngleZ;
 
+    //테스트용
+    Vector3 testTr;
+
     //타워기본행동
     public void DefaultTowerAct()
     {
@@ -116,15 +119,18 @@ public class Tower : MonoBehaviour
         _enemy.mStat.hp -= _atk;
     }
 
-    void MultiShot(Enemy _targetEnemy,int _atk,float _atkarea)
+    void MultiShot(Transform _targetEnemy,Vector3 _targetPostion,int _atk,float _atkarea)
     {
-        Transform _tartgetTr = _targetEnemy.transform;
+        
+        
+        
 
-        Collider[] colls = Physics.OverlapSphere(_tartgetTr.position, _atkarea);
+
+        Collider[] colls = Physics.OverlapSphere(_targetPostion, _atkarea);
         Enemy[] enemys = new Enemy[colls.Length];
         int enemysarridx=0;
         
-
+        //캐싱해서 쓸 수 있도록
         for(int i=0;i<colls.Length;i++)
         {
             if(colls[i].GetComponent<Enemy>())
@@ -139,11 +145,21 @@ public class Tower : MonoBehaviour
             enemys[i].mStat.hp -= _atk;
         }
 
-        if(_targetEnemy.CheckDead())
+        //이것도 캐싱해서 쓸 수 있도록
+        if (_targetEnemy.GetComponent<Enemy>())
         {
-            FindEnemyobj = null;
-            mTowerState = eTowerState.IDLE;
+            Enemy tempEnemy = _targetEnemy.GetComponent<Enemy>();
+            if (tempEnemy.CheckDead())
+            {
+                if (mTowerState != eTowerState.TOWERCONTROL)
+                {
+                    FindEnemyobj = null;
+                    mTowerState = eTowerState.IDLE;
+                }
+            }
         }
+
+
 
         for(int i=0;i<enemysarridx;i++)
         {
@@ -283,7 +299,7 @@ public class Tower : MonoBehaviour
                             }
                             break;
                         case BuildManager.eTowerType.B:
-                            MultiShot(FindEnemy, nAtk, fAtkArea);
+                            MultiShot(FindEnemyobj.transform,FindEnemyobj.transform.position, nAtk, fAtkArea);
 
 
                             break;
@@ -341,46 +357,66 @@ public class Tower : MonoBehaviour
 
 
             //여기도 타워마다 능력을 달리해줘야함
+
+
+            switch (mTowerType)
+            {
+                case BuildManager.eTowerType.NULL:
+                    break;
+                case BuildManager.eTowerType.A:
+                    if (hitobj.transform.gameObject.CompareTag("Enemy"))
+                    {
+                        Enemy HitEnemy = hitobj.transform.GetComponent<Enemy>();
+
+                        SingleShot(HitEnemy, nAtk);
+
+                        if (HitEnemy.CheckDead())
+                        {
+                            HitEnemy.gameObject.SetActive(false);
+
+                        }
+                        return true;
+                    }
+                    else if (hitobj.transform.gameObject.CompareTag("Boss"))
+                    {
+                        //보스 때리는 코드 생각 작동만 생각했을 때 아래처럼
+                        Boss HitBoss = hitobj.transform.parent.transform.GetComponent<Boss>();
+                        //Debug.Log("" + HitBoss.mStat.hp + "/" + hitobj.transform.name);
+                        if (hitobj.transform == HitBoss.Head)
+                        {
+                            SingleShot(HitBoss, nAtk * 2);
+                        }
+                        else if (hitobj.transform == HitBoss.Body)
+                        {
+                            SingleShot(HitBoss, nAtk);
+                        }
+                        else if (hitobj.transform == HitBoss.Leg)
+                        {
+                            SingleShot(HitBoss, nAtk);
+                            HitBoss.nvAgent.speed -= 2;
+                        }
+
+
+                        if (HitBoss.CheckDead())
+                        {
+                            HitBoss.gameObject.SetActive(false);
+                        }
+                        return true;
+                    }
+                    break;
+                case BuildManager.eTowerType.B:
+                    testTr = hitobj.point;
+                    MultiShot(hitobj.transform,hitobj.point, nAtk, fAtkArea);
+
+
+                    break;
+                case BuildManager.eTowerType.C:
+                    break;
+                default:
+                    break;
+            }
+
             
-            if (hitobj.transform.gameObject.CompareTag("Enemy"))
-            {
-                Enemy HitEnemy = hitobj.transform.GetComponent<Enemy>();
-
-                SingleShot(HitEnemy,nAtk);
-
-                if (HitEnemy.CheckDead())
-                {
-                    HitEnemy.gameObject.SetActive(false);
-                    
-                }
-                return true;
-            }
-            else if(hitobj.transform.gameObject.CompareTag("Boss"))
-            {
-                //보스 때리는 코드 생각 작동만 생각했을 때 아래처럼
-                Boss HitBoss = hitobj.transform.parent.transform.GetComponent<Boss>();
-                //Debug.Log("" + HitBoss.mStat.hp + "/" + hitobj.transform.name);
-                if(hitobj.transform == HitBoss.Head)
-                {
-                    SingleShot(HitBoss, nAtk*2);
-                }
-                else if(hitobj.transform == HitBoss.Body)
-                {
-                    SingleShot(HitBoss, nAtk);
-                }
-                else if(hitobj.transform == HitBoss.Leg)
-                {
-                    SingleShot(HitBoss, nAtk);
-                    HitBoss.nvAgent.speed -= 2;
-                }
-                
-
-                if (HitBoss.CheckDead())
-                {
-                    HitBoss.gameObject.SetActive(false);
-                }
-                return true;
-            }
         }
 
         return false;
@@ -392,7 +428,8 @@ public class Tower : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, fSerchDistance);
         if (FindEnemyobj)
             Gizmos.DrawWireSphere(FindEnemyobj.transform.position, fAtkArea);
-
+        
+            Gizmos.DrawWireSphere(testTr, fAtkArea);
     }
 
 
