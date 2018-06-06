@@ -316,11 +316,12 @@ MonoBehaviour:
   Tr_InTowerCamera: {fileID: 4260232217765054}
   Head: {fileID: 4609950982239942}
   mCollider: {fileID: 65645579496376122}
-  nAtk: 5
+  nAtk: 30
   fSerchDistance: 20
   fFireCoolDown: 0
   fFireRate: 0.83
   nPrice: 0
-  fAtkArea: 5
+  fAtkArea: 30
+  fSlow: 2
   fCameraSpeed: 5
   FindEnemyobj: {fileID: 0}
