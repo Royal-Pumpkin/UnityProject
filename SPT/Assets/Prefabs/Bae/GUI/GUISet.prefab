@@ -362,6 +362,7 @@ MonoBehaviour:
   setName: 
   toggle: {fileID: 114283300140177660}
   slider: {fileID: 114856887903615182}
+  sliderValue: {fileID: 114549472973132642}
 --- !u!114 &114725748874397956
 MonoBehaviour:
   m_ObjectHideFlags: 1
