@@ -27,6 +27,8 @@ public class Tower : MonoBehaviour
     public float fFireRate = 0.5f;
     public int nPrice;
     public float fAtkArea = 5f;
+    public float fSlow = 2f;
+    
 
     public float fCameraSpeed = 5f;
 
@@ -36,6 +38,9 @@ public class Tower : MonoBehaviour
     float CurAngleX;
     float CurAngleY;
     float CurAngleZ;
+
+    //테스트용
+    Vector3 testTr;
 
     //타워기본행동
     public void DefaultTowerAct()
@@ -113,19 +118,28 @@ public class Tower : MonoBehaviour
 
     void SingleShot(Enemy _enemy,int _atk)
     {
-        _enemy.mStat.hp -= _atk;
+        float tempDownDam = 0;
+        tempDownDam = 1 - (_enemy.mStat.def / (_enemy.mStat.def + 20));
+        _enemy.mStat.hp -= _atk * (int)tempDownDam;
     }
 
-    void MultiShot(Enemy _targetEnemy,int _atk,float _atkarea)
+    void MultiShot(Transform _targetEnemy,Vector3 _targetPostion,int _atk,float _atkarea)
     {
-        Transform _tartgetTr = _targetEnemy.transform;
 
-        Collider[] colls = Physics.OverlapSphere(_tartgetTr.position, _atkarea);
+        Collider[] colls = Physics.OverlapSphere(_targetPostion, _atkarea);
         Enemy[] enemys = new Enemy[colls.Length];
         int enemysarridx=0;
-        
 
-        for(int i=0;i<colls.Length;i++)
+        //캐싱해서 쓸 수 있도록
+        for (int i = 0; i < colls.Length; i++)
+        {
+            if (colls[i].CompareTag("Bomb"))
+            {
+                Bombboom(colls[i].transform);
+            }
+        }
+
+        for (int i=0;i<colls.Length;i++)
         {
             if(colls[i].GetComponent<Enemy>())
             {
@@ -139,11 +153,21 @@ public class Tower : MonoBehaviour
             enemys[i].mStat.hp -= _atk;
         }
 
-        if(_targetEnemy.CheckDead())
+        //이것도 캐싱해서 쓸 수 있도록
+        if (_targetEnemy.GetComponent<Enemy>())
         {
-            FindEnemyobj = null;
-            mTowerState = eTowerState.IDLE;
+            Enemy tempEnemy = _targetEnemy.GetComponent<Enemy>();
+            if (tempEnemy.CheckDead())
+            {
+                if (mTowerState != eTowerState.TOWERCONTROL)
+                {
+                    FindEnemyobj = null;
+                    mTowerState = eTowerState.IDLE;
+                }
+            }
         }
+
+
 
         for(int i=0;i<enemysarridx;i++)
         {
@@ -175,7 +199,7 @@ public class Tower : MonoBehaviour
         for (int i = 0; i < enemysarridx; i++)
         {
             enemys[i].mStat.hp -= _atk;
-            enemys[i].DeBuffSet(Enemy.eDebuffName.SLOW);
+            enemys[i].DeBuffSet(Enemy.eDebuffName.SLOW,fSlow);
         }
 
         if (_targetEnemy.CheckDead())
@@ -199,38 +223,49 @@ public class Tower : MonoBehaviour
 
     void FindShootEnemy(List<GameObject> _ListEnemy)
     {
+        if(this.gameObject.activeSelf == false)
+        {
+            return;
+        }
+        
+
+
         if (_ListEnemy.Count > 0)
         {
+            //기획자가 원하는 대로 하기 위해서 overlapsphere를 사용했는데
+            //getcomponent도 많이 사용했고 필요없는 collider도 함께 검색되어 메모리 사용이
+            //많을 것으로 예상된다 어느것이 더 메모리를 덜 사용하는지는 추후에 테스트
+            Collider[] colls = Physics.OverlapSphere(transform.position, fSerchDistance);
+            int nComparenum = GameManager.stGameManager.nListFieldidx;
+
+            if (colls.Length == 0)
+            {
+                mTowerState = eTowerState.IDLE;
+                return;
+            }
+
+
+            //사거리 밖으로 나갔을 떄 IDLE상태로 돌려줘야함
+
+            for (int i = 0; i < colls.Length; i++)
+            {
+                Enemy tempEnemy = colls[i].GetComponent<Enemy>();
+                if (colls[i].CompareTag("Enemy"))
+                {
+                    if (tempEnemy.MonsterIdx <= nComparenum)
+                    {
+                        FindEnemyobj = colls[i].gameObject;
+                        FindEnemy = tempEnemy;
+                        nComparenum = FindEnemy.MonsterIdx;
+                    }
+                }
+            }
+
+
             if (mTowerState == eTowerState.IDLE)
             {
 
-                //기획자가 원하는 대로 하기 위해서 overlapsphere를 사용했는데
-                //getcomponent도 많이 사용했고 필요없는 collider도 함께 검색되어 메모리 사용이
-                //많을 것으로 예상된다 어느것이 더 메모리를 덜 사용하는지는 추후에 테스트
-                Collider[] colls = Physics.OverlapSphere(transform.position, fSerchDistance);
-                int nComparenum = GameManager.stGameManager.nListFieldidx;
-
-                if(colls.Length == 0)
-                {
-                    mTowerState = eTowerState.IDLE;
-                    return;
-                }
-
                 
-
-
-                for (int i = 0; i < colls.Length; i++)
-                {
-                    if (colls[i].GetComponent<Enemy>())
-                    {
-                        if (colls[i].transform.GetComponent<Enemy>().MonsterIdx <= nComparenum)
-                        {
-                            FindEnemyobj = colls[i].gameObject;
-                            FindEnemy = colls[i].transform.GetComponent<Enemy>();
-                            nComparenum = FindEnemy.MonsterIdx;
-                        }
-                    }
-                }
 
 
                 //float fShortestDistance = Mathf.Infinity;
@@ -266,6 +301,19 @@ public class Tower : MonoBehaviour
                 }
 
                 Head.transform.LookAt(FindEnemyobj.transform);
+
+                //switch (FindEnemy.mEnemyType)
+                //{
+                //    case Enemy.eEnemyType.NULL:
+                //        break;
+                //    case Enemy.eEnemyType.GOBLIN:
+                //        FindEnemy = FindEnemy.GetComponent<Goblin>();
+                //        break;
+                //    default:
+                //        break;
+                //}
+
+
                 if (fFireCoolDown <= 0f)
                 {
                     switch (mTowerType)
@@ -273,6 +321,9 @@ public class Tower : MonoBehaviour
                         case BuildManager.eTowerType.NULL:
                             return;
                         case BuildManager.eTowerType.A:
+
+                            
+
                             SingleShot(FindEnemy, nAtk);
 
                             if (FindEnemy.CheckDead())
@@ -283,11 +334,13 @@ public class Tower : MonoBehaviour
                             }
                             break;
                         case BuildManager.eTowerType.B:
-                            MultiShot(FindEnemy, nAtk, fAtkArea);
+                            //위에 검색하는기능이 아래 함수에 검색이랑 겹침
+                            MultiShot(FindEnemyobj.transform,FindEnemyobj.transform.position, nAtk, fAtkArea);
 
 
                             break;
                         case BuildManager.eTowerType.C:
+                            //위에 검색하는기능이 아래 함수에 검색이랑 겹침
                             SlowShot(FindEnemy, nAtk, fSerchDistance);
 
                             break;
@@ -341,49 +394,120 @@ public class Tower : MonoBehaviour
 
 
             //여기도 타워마다 능력을 달리해줘야함
-            
-            if (hitobj.transform.gameObject.CompareTag("Enemy"))
+
+
+            switch (mTowerType)
             {
-                Enemy HitEnemy = hitobj.transform.GetComponent<Enemy>();
+                case BuildManager.eTowerType.NULL:
+                    break;
+                case BuildManager.eTowerType.A:
+                    if (hitobj.transform.gameObject.CompareTag("Enemy"))
+                    {
+                        Enemy HitEnemy = hitobj.transform.GetComponent<Enemy>();
+                        switch (HitEnemy.mEnemyType)
+                        {
+                            case Enemy.eEnemyType.NULL:
+                                break;
+                            case Enemy.eEnemyType.GOBLIN:
+                                HitEnemy = hitobj.transform.GetComponent<Goblin>();
+                                break;
+                            default:
+                                break;
+                        }
 
-                SingleShot(HitEnemy,nAtk);
+                        SingleShot(HitEnemy, nAtk);
 
-                if (HitEnemy.CheckDead())
-                {
-                    HitEnemy.gameObject.SetActive(false);
+                        if (HitEnemy.CheckDead())
+                        {
+                            HitEnemy.gameObject.SetActive(false);
+
+                        }
+                        return true;
+                    }
+                    else if (hitobj.transform.CompareTag("Boss"))
+                    {
+                        //보스 때리는 코드 생각 작동만 생각했을 때 아래처럼
+                        Boss HitBoss = hitobj.transform.parent.transform.GetComponent<Boss>();
+                        //Debug.Log("" + HitBoss.mStat.hp + "/" + hitobj.transform.name);
+                        if (hitobj.transform == HitBoss.Head)
+                        {
+                            SingleShot(HitBoss, nAtk * 2);
+                        }
+                        else if (hitobj.transform == HitBoss.Body)
+                        {
+                            SingleShot(HitBoss, nAtk);
+                        }
+                        else if (hitobj.transform == HitBoss.Leg)
+                        {
+                            SingleShot(HitBoss, nAtk);
+                            HitBoss.DeBuffSet(Enemy.eDebuffName.SLOW, fSlow);
+                        }
+
+                        if (HitBoss.CheckDead())
+                        {
+                            HitBoss.gameObject.SetActive(false);
+                        }
+                        return true;
+                    }
+                    else if(hitobj.transform.CompareTag("Bomb"))
+                    {
+                        Debug.Log("dd");
+                        Bombboom(hitobj.transform);
+                    }
                     
-                }
-                return true;
-            }
-            else if(hitobj.transform.gameObject.CompareTag("Boss"))
-            {
-                //보스 때리는 코드 생각 작동만 생각했을 때 아래처럼
-                Boss HitBoss = hitobj.transform.parent.transform.GetComponent<Boss>();
-                //Debug.Log("" + HitBoss.mStat.hp + "/" + hitobj.transform.name);
-                if(hitobj.transform == HitBoss.Head)
-                {
-                    SingleShot(HitBoss, nAtk*2);
-                }
-                else if(hitobj.transform == HitBoss.Body)
-                {
-                    SingleShot(HitBoss, nAtk);
-                }
-                else if(hitobj.transform == HitBoss.Leg)
-                {
-                    SingleShot(HitBoss, nAtk);
-                    HitBoss.nvAgent.speed -= 2;
-                }
-                
 
-                if (HitBoss.CheckDead())
-                {
-                    HitBoss.gameObject.SetActive(false);
-                }
-                return true;
+                    break;
+                case BuildManager.eTowerType.B:
+                    testTr = hitobj.point;
+                    MultiShot(hitobj.transform,hitobj.point, nAtk, fAtkArea);
+
+
+                    break;
+                case BuildManager.eTowerType.C:
+                    break;
+                default:
+                    break;
             }
+
+            
         }
 
         return false;
+    }
+
+    void Bombboom(Transform _boomTr)
+    {
+        Collider[] colls = Physics.OverlapSphere(_boomTr.position, 20f);
+
+        if(colls.Length == 0)
+        {
+            return;
+        }
+
+
+        Enemy[] tempEnemy = new Enemy[colls.Length];
+        int enemysarridx = 0;
+
+        for (int i=0;i < colls.Length;i++)
+        {
+            if (colls[i].CompareTag("Enemy"))
+            {
+                tempEnemy[enemysarridx] = colls[i].GetComponent<Enemy>();
+                enemysarridx++;
+            }
+        }
+
+        for(int i=0;i<enemysarridx;i++)
+        {
+            SingleShot(tempEnemy[i], 30);
+            if (tempEnemy[i].CheckDead())
+            {
+                tempEnemy[i].gameObject.SetActive(false);
+            }
+        }
+        _boomTr.gameObject.SetActive(false);
+        _boomTr = null;
+
     }
 
     void OnDrawGizmosSelected()
@@ -392,7 +516,8 @@ public class Tower : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, fSerchDistance);
         if (FindEnemyobj)
             Gizmos.DrawWireSphere(FindEnemyobj.transform.position, fAtkArea);
-
+        
+            Gizmos.DrawWireSphere(testTr, fAtkArea);
     }
 
 

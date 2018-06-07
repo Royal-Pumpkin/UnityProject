@@ -8,11 +8,14 @@ public class GameManager : MonoBehaviour
     static public GameManager stGameManager;
     public EventManger mEventManager;
     public GUIManager mGUIManager;
+    public BuildManager mBuildManager;
 
     //관리 오브젝트 리스트
     List<GameObject> listFieldEnemy = new List<GameObject>();
     public int nListFieldidx = 0;
+    //필드에있는 타워리스트
     List<Tower> listTower = new List<Tower>();
+    public int nListTowerIdx = 0;
 
 
     //현재 게임상태
@@ -33,9 +36,10 @@ public class GameManager : MonoBehaviour
     public Transform mGoal;
     public FixedJoystick mStick;
     public Transform trSpawner;
+    
 
     //플레이어 정보 나중에 받아서 변경예정
-    List<BuildManager.eTowerType> mlistPlayerTower = new List<BuildManager.eTowerType>();
+    List<BuildManager.eTowerType> mlistPlayerUseableTower = new List<BuildManager.eTowerType>();
 
     //테스트용
     public GameObject preone;
@@ -54,13 +58,21 @@ public class GameManager : MonoBehaviour
     {
         mGameState = eGameState.PLAY;
 
-        mlistPlayerTower.Add(BuildManager.eTowerType.A);
-        mlistPlayerTower.Add(BuildManager.eTowerType.B);
-        mlistPlayerTower.Add(BuildManager.eTowerType.C);
-        mGUIManager.mGUINomalMode.mGUIBuildMode.GUIPlayerTower = mlistPlayerTower;
+        mlistPlayerUseableTower.Add(BuildManager.eTowerType.A);
+        mlistPlayerUseableTower.Add(BuildManager.eTowerType.B);
+        mlistPlayerUseableTower.Add(BuildManager.eTowerType.C);
+        mGUIManager.mGUINomalMode.mGUIBuildMode.GUIPlayerTower = mlistPlayerUseableTower;
 
         mGUIManager.mGUINomalMode.mGUIBuildMode.InstansiateList();
 
+        //타워 생성 임시
+        for(int i=0;i<8;i++)
+        {
+            listTower.Add(mBuildManager.MakeTower().GetComponent<Tower>());
+            listTower[i].gameObject.SetActive(false);
+        }
+
+        //몬스터 생성 임시
         for (int i=0;i<100;i++)
         {
             GameObject tempobj = Instantiate(preone, trSpawner);
@@ -123,20 +135,23 @@ public class GameManager : MonoBehaviour
         mEventManager.EnemyCreate(_EnemyName, listFieldEnemy);
     }
 
-    public List<Tower> GetTowerList()
+
+
+    public List<BuildManager.eTowerType> GetPlayerUseableTowerList()
+    {
+        return mlistPlayerUseableTower;
+    }
+
+    public List<Tower> GetFieldTowerList()
     {
         return listTower;
     }
 
-    public void AddTowerList(Tower _tower)
+    public void AddFieldTowerList(Tower _tower)
     {
         listTower.Add(_tower);
     }
 
-    public List<BuildManager.eTowerType> GetPlayerTowerList()
-    {
-        return mlistPlayerTower;
-    }
 
 
 

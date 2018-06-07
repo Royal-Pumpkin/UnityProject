@@ -6,19 +6,25 @@ using UnityEngine.AI;
 public class Enemy : MonoBehaviour {
 
     public enum eDebuffName {NULL=-1,SLOW }
+    public enum eEnemyType {NULL=-1,GOBLIN}
 
+    public eEnemyType mEnemyType;
     public Transform goal;
     public NavMeshAgent nvAgent;
     public int MonsterIdx;
     bool[] mDebuff = new bool[1];
 
+
+
     public struct strStat
     {
         public EventManger.eEnemyName mEnemyName;
         public int hp;
+        public int def;
         strStat(int _hp)
         {
             hp = 30;
+            def = 5;
             mEnemyName = EventManger.eEnemyName.NULL;
         }
     }
@@ -32,7 +38,7 @@ public class Enemy : MonoBehaviour {
         mStat.hp = 30;
     }
 
-    public bool DeBuffSet(eDebuffName _debuff)
+    public bool DeBuffSet(eDebuffName _debuff, float _val)
     {
         switch (_debuff)
         {
@@ -42,7 +48,7 @@ public class Enemy : MonoBehaviour {
                 if (mDebuff[(int)eDebuffName.SLOW] == false)
                 {
                     mDebuff[(int)eDebuffName.SLOW] = true;
-                    StartCoroutine("SlowDebuff");
+                    StartCoroutine(SlowDebuff(_val));
                 }
 
                 break;
@@ -52,7 +58,7 @@ public class Enemy : MonoBehaviour {
         return true;
     }
 
-    public bool CheckDead()
+    public virtual bool CheckDead()
     {
         if (mStat.hp <= 0)
         {
@@ -62,11 +68,11 @@ public class Enemy : MonoBehaviour {
             return false;
     }
 
-    IEnumerator SlowDebuff()
+    IEnumerator SlowDebuff(float _val)
     {
-        nvAgent.speed -= 2f;
+        nvAgent.speed -= _val;
         yield return new WaitForSeconds(3f);
         mDebuff[(int)eDebuffName.SLOW] = false;
-        nvAgent.speed += 2f;
+        nvAgent.speed += _val;
     }
 }
