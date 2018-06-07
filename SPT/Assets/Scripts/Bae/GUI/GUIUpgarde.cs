@@ -13,7 +13,9 @@ public class GUIUpgarde : MonoBehaviour,IPointerClickHandler {
     public int gold;
 
     public int num;
+    //구매 완료, 구매 가능, 구매 불가능
     bool isEnable;
+    
 
     private void Start()
     {
