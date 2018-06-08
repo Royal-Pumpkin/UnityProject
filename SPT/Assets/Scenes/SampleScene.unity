@@ -3066,6 +3066,8 @@ MonoBehaviour:
   mEventManager: {fileID: 2019692282}
   mGUIManager: {fileID: 2019692286}
   mBuildManager: {fileID: 2019692285}
+  mStageManager: {fileID: 2019692288}
+  listEnemyObjectNum: 
   nListFieldidx: 0
   nListTowerIdx: 0
   mControlTower: {fileID: 0}
@@ -3138,6 +3140,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mStagestate: 1
+  nListWaveNum: 
 --- !u!1 &2083096595
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BuildManager : MonoBehaviour {
 
-    public enum eTowerType { NULL = -1, A, B, C }
+    public enum eTowerType { NULL = -1, A, B, C ,AA,AB,BA,BB,CA,CB}
 
 
 

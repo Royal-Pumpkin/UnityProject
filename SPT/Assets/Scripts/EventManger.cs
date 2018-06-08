@@ -71,11 +71,7 @@ public class EventManger : MonoBehaviour {
         
         if (hitobj.transform.tag == "Tower")
         {
-
-            PickedTower.TowerGetin(Camera.main);
-            GameManager.stGameManager.mControlTower = PickedTower;
-            GameManager.stGameManager.SetPlayerState(GameManager.ePlayerState.TOWER);
-            GameManager.stGameManager.mGUIManager.SetGUIScene(GUIManager.eGUISceneName.CONTROLSCENE);
+            GameManager.stGameManager.mGUIManager.mGUINomalMode.ModeSelectOn(PickedTower, Input.mousePosition);
             return true;
         }
 

@@ -22,6 +22,7 @@ public class Tower : MonoBehaviour
 
     //나중에 각각 타워의 스텟이 나오면 바꿔줄것
     public int nAtk = 10;
+    public int nTier =0;
     public float fSerchDistance = 20f;
     public float fFireCoolDown = 0f;
     public float fFireRate = 0.5f;
@@ -61,6 +62,10 @@ public class Tower : MonoBehaviour
     //타워 카메라 이동
     public void TowerGetin(Camera _MainCamera)
     {
+        GameManager.stGameManager.mControlTower = this;
+        GameManager.stGameManager.SetPlayerState(GameManager.ePlayerState.TOWER);
+        GameManager.stGameManager.mGUIManager.SetGUIScene(GUIManager.eGUISceneName.CONTROLSCENE);
+
         //이벤트 메니저 TowerPick 함수에서 예외처리해서 해결했는데 예외처리 안했을 때 컨트롤하고있는 타워를 한번 더 클릭할 시 카메라 각도가 이상하게 입력됨
         //원인 예상: 정해진 transform과 함수에서 설정하는 값변화 에서 생기는 문제같음
         mCollider.enabled = false;
@@ -320,6 +325,8 @@ public class Tower : MonoBehaviour
                     {
                         case BuildManager.eTowerType.NULL:
                             return;
+                        case BuildManager.eTowerType.AA:
+                        case BuildManager.eTowerType.AB:
                         case BuildManager.eTowerType.A:
 
                             
@@ -400,6 +407,8 @@ public class Tower : MonoBehaviour
             {
                 case BuildManager.eTowerType.NULL:
                     break;
+                case BuildManager.eTowerType.AA:
+                case BuildManager.eTowerType.AB:
                 case BuildManager.eTowerType.A:
                     if (hitobj.transform.gameObject.CompareTag("Enemy"))
                     {
@@ -474,6 +483,49 @@ public class Tower : MonoBehaviour
 
         return false;
     }
+
+    public bool TowerUpgrade(BuildManager.eTowerType _upgradetype)
+    {
+        mTowerType = _upgradetype;
+        int _upatk = 0; //리스트에 저장된 상승률
+        switch (_upgradetype)
+        {
+
+            case BuildManager.eTowerType.NULL:
+                break;
+            
+            case BuildManager.eTowerType.AA:
+                _upatk += 100;
+                break;
+            case BuildManager.eTowerType.AB:
+                _upatk += 20;
+                break;
+            case BuildManager.eTowerType.BA:
+
+                break;
+            case BuildManager.eTowerType.BB:
+
+                break;
+            case BuildManager.eTowerType.CA:
+
+                break;
+            case BuildManager.eTowerType.CB:
+
+                break;
+            default:
+                break;
+        }
+
+        StatUp(_upatk);
+        return true;
+    }
+
+    void StatUp(int _upatk)
+    {
+        //각종 능력치 업그레이드 수치는 매개변수로 받아서 사용
+        nAtk += _upatk;
+    }
+
 
     void Bombboom(Transform _boomTr)
     {

@@ -12,18 +12,15 @@ public class StageManager : MonoBehaviour
 
     public eStageState mStagestate;
     List<GameObject> mListFieldEnemys = new List<GameObject>();
-    List<GameObject> mListTowers = new List<GameObject>();
+    public List<GameObject> mListTowers = new List<GameObject>(); //임시 퍼블릭
     public List<int> nListWaveNum = new List<int>();
 
     int nPlayerLife;
     int nInGameGold;
     
 
-    private void Start()
-    {
-        
-    }
 
+    
     //정리된 웨이브 테이블을 받아와서 mListFieldEnemy에 추가한다. add remove를 사용할지는 고민
     //노드(비콘)들도 마찬가지로 리스트로 관리할지 생각중
     //

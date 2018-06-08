@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
     public List<int> listEnemyObjectNum = new List<int>(); //임시로 퍼블릭
 
 
-    List<GameObject> listFieldEnemy = new List<GameObject>();
+    List<GameObject> Objectpool = new List<GameObject>();
     public int nListFieldidx = 0;
     //필드에있는 타워리스트
     List<Tower> listTower = new List<Tower>();
@@ -71,7 +71,7 @@ public class GameManager : MonoBehaviour
         mlistPlayerUseableTower.Add(BuildManager.eTowerType.C);
         mGUIManager.mGUINomalMode.mGUIBuildMode.GUIPlayerTower = mlistPlayerUseableTower;
 
-        mGUIManager.mGUINomalMode.mGUIBuildMode.InstansiateList();
+        mGUIManager.mGUINomalMode.GUINomalInit();
 
         //타워 생성 임시
         for(int i=0;i<8;i++)
@@ -84,7 +84,7 @@ public class GameManager : MonoBehaviour
         for (int i=0;i<100;i++)
         {
             GameObject tempobj = Instantiate(preone, trSpawner);
-            listFieldEnemy.Add(tempobj);
+            Objectpool.Add(tempobj);
             
             tempobj.SetActive(false);
         }
@@ -163,12 +163,12 @@ public class GameManager : MonoBehaviour
 
     public List<GameObject> GetEnemyList()
     {
-        return listFieldEnemy;
+        return Objectpool;
     }
 
     public void AddEnemy(EventManger.eEnemyName _EnemyName)
     {
-        mEventManager.EnemyCreate(_EnemyName, listFieldEnemy);
+        mEventManager.EnemyCreate(_EnemyName, Objectpool);
     }
 
 
