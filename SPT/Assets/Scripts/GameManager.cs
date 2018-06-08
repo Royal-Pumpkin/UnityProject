@@ -9,8 +9,16 @@ public class GameManager : MonoBehaviour
     public EventManger mEventManager;
     public GUIManager mGUIManager;
     public BuildManager mBuildManager;
+    public StageManager mStageManager;
 
     //관리 오브젝트 리스트
+    //stage메니저 만들어서 따로관리
+    //프리팹 게임오브젝트로 만든것도 몬스터매니저같은거 만들어서 따로관리
+    //관리 방법에 대해선 계속해서 생각해보겠음
+    public enum eEnemyObject {NULL=-1,ONE,TWO }
+    public List<int> listEnemyObjectNum = new List<int>(); //임시로 퍼블릭
+
+
     List<GameObject> listFieldEnemy = new List<GameObject>();
     public int nListFieldidx = 0;
     //필드에있는 타워리스트
@@ -81,8 +89,36 @@ public class GameManager : MonoBehaviour
             tempobj.SetActive(false);
         }
 
+        //몬스터 스텟 초기화
+        //이런식으로 관리하는 오브젝트가 몇개인지 알 수 있다 listEnemyOb~[(int)eEnemyObject.One] 이나 listEnemyOb~[(int)EventManager.eEnemyName.One] 이런식
+        listEnemyObjectNum.Add(nListFieldidx);
 
-        StartCoroutine("SpawnCorutine");
+        for (int x = 0; x < 50; x++)
+        {
+            AddEnemy(EventManger.eEnemyName.ONE);
+        }
+
+        listEnemyObjectNum.Add(nListFieldidx);
+
+        for (int x = 0; x < 50; x++)
+        {
+            AddEnemy(EventManger.eEnemyName.TWO);
+        }
+
+        
+        //stage세팅 테스트를 위해서 임시로 이곳에서 실행
+        mStageManager.SetList(EventManger.eEnemyName.ONE, 10);
+        mStageManager.SetList(EventManger.eEnemyName.TWO, 15);
+
+        mStageManager.nListWaveNum.Add(5);
+        mStageManager.nListWaveNum.Add(5);
+        mStageManager.nListWaveNum.Add(5);
+        mStageManager.nListWaveNum.Add(5);
+        StartCoroutine(mStageManager.StageProgress(100, 0.5f));
+
+
+
+        //StartCoroutine("SpawnCorutine");
         StartCoroutine("InGameCorutine");
 
         vecDefaultPos = Camera.main.transform.position;
@@ -174,7 +210,7 @@ public class GameManager : MonoBehaviour
             else if (i == 2)
                 AddEnemy(EventManger.eEnemyName.TWO);
 
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.1f);
         }
     }
 

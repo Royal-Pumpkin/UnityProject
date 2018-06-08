@@ -132,17 +132,17 @@ public class EventManger : MonoBehaviour {
                 return false;
             case eEnemyName.ONE:
                 EnemyStatSet(_EnemyName, MakeEnemyScript);
-                MakeEnemy.SetActive(true);
+                //MakeEnemy.SetActive(true);
                 MakeEnemy.transform.position = GameManager.stGameManager.trSpawner.position;
                 
                 //EnemyStatSet(_EnemyName, tempGameobj.GetComponent<Enemy>());
                 //_listEnemy.Add(tempGameobj);
                 break;
             case eEnemyName.TWO:
-                //tempmaterial[0] = Resources.Load<Material>("Materials/One"/*나중에 stat에 Matarial path 넣어서 교체*/);
-                //EnemyMeshRenderer.materials = tempmaterial;
+                tempmaterial[0] = Resources.Load<Material>("Materials/One"/*나중에 stat에 Matarial path 넣어서 교체*/);
+                EnemyMeshRenderer.materials = tempmaterial;
                 EnemyStatSet(_EnemyName, MakeEnemyScript);
-                MakeEnemy.SetActive(true);
+                //MakeEnemy.SetActive(true);
                 MakeEnemy.transform.position = GameManager.stGameManager.trSpawner.position;
                 
                 //tempGameobj = Instantiate(prefabEnemy2, trSpawner);
