@@ -8,19 +8,21 @@ public class StageManager : MonoBehaviour
     int nFieldIdx = 0;
     float fTime;
 
-    public enum eStageState {NULL=-1,START,WAVE,REST,CLEAR,GAMEOVER}
+    public enum eStageState {NULL=-1,START,WAVE,REST,FINISH,CLEAR,GAMEOVER}
 
     public eStageState mStagestate;
     List<GameObject> mListFieldEnemys = new List<GameObject>();
     public List<GameObject> mListTowers = new List<GameObject>(); //임시 퍼블릭
     public List<int> nListWaveNum = new List<int>();
 
-    int nPlayerLife;
+    int nPlayerLife = 5;
     int nInGameGold;
-    
+
+    //관리 오브젝트들 맵이 로딩될 때 할당해준다.
+    public Transform mGoal;
+    public Transform trSpawner;
 
 
-    
     //정리된 웨이브 테이블을 받아와서 mListFieldEnemy에 추가한다. add remove를 사용할지는 고민
     //노드(비콘)들도 마찬가지로 리스트로 관리할지 생각중
     //
@@ -47,17 +49,17 @@ public class StageManager : MonoBehaviour
         }
     }
 
-    void LifeDown()
+    public bool lifeDown(int _val)
     {
-        //if(/*목표 안에 적이 도착했을 때*/)
-        //{
-        //    //life감소
-        //      if(life<=0)
-        //          GameOver();
-        //}
+        nPlayerLife -= _val;
+
+        if (nPlayerLife <= 0)
+            return true;
+        else
+            return false;
     }
 
-    void GameOver()
+    public void GameOver()
     {
         mStagestate = eStageState.GAMEOVER;
     }
@@ -82,7 +84,7 @@ public class StageManager : MonoBehaviour
     {
         int defaultnum = nFieldIdx;
         
-        while (true)
+        while (mStagestate != eStageState.CLEAR/*클리어를 하고 스위치문안에서 함수를 부르고 while문을 나가는 법을 생각해본다*/)
         {
             if (GameManager.stGameManager.GetGameState() != GameManager.eGameState.PLAY)
                 yield return new WaitForSeconds(1f);
@@ -102,18 +104,62 @@ public class StageManager : MonoBehaviour
                     if (mListFieldEnemys.Count == 0)
                         break;
                     mListFieldEnemys[nFieldIdx].SetActive(true);
+                    Enemy tempEnemy = mListFieldEnemys[nFieldIdx].GetComponent<Enemy>();
+                    tempEnemy.goal = mGoal;
                     ++nFieldIdx;
+
                     if(nFieldIdx == (defaultnum + nListWaveNum[nWave]))
                     {
                         ++nWave;
+                        if(nListWaveNum[nWave] == -1)
+                        {
+                            mStagestate = eStageState.FINISH;
+                            break;
+                        }
                         mStagestate = eStageState.REST;
                     }
+
+                    for(int i=0;i<mListFieldEnemys.Count;i++)
+                    {
+                        if (mListFieldEnemys[i].activeSelf)
+                        {
+                            tempEnemy = mListFieldEnemys[i].GetComponent<Enemy>();
+                            tempEnemy.ArriveGoal();
+                        }
+                    }
+
                     yield return new WaitForSeconds(_waittime);
                     break;
                 case eStageState.REST:
                     defaultnum = nFieldIdx;
                     yield return new WaitForSeconds(3f);
                     mStagestate = eStageState.WAVE;
+                    break;
+                case eStageState.FINISH:
+                    int Checknum = 0;
+
+                    for(int i=0;i<mListFieldEnemys.Count;i++)
+                    {
+                        if (mListFieldEnemys[i].activeSelf)
+                            ++Checknum;
+                    }
+
+                    if (Checknum == 0)
+                    {
+                        mStagestate = eStageState.CLEAR;
+                        break;
+                    }
+
+                    for (int i = 0; i < mListFieldEnemys.Count; i++)
+                    {
+                        if (mListFieldEnemys[i].activeSelf)
+                        {
+                            tempEnemy = mListFieldEnemys[i].GetComponent<Enemy>();
+                            tempEnemy.ArriveGoal();
+                        }
+                    }
+
+
                     break;
                 case eStageState.CLEAR:
 
@@ -124,9 +170,7 @@ public class StageManager : MonoBehaviour
                 default:
                     break;
             }
-
             yield return new WaitForSeconds(0.1f);
-
         }
         
     }

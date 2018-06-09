@@ -22,7 +22,7 @@ public class Tower : MonoBehaviour
 
     //나중에 각각 타워의 스텟이 나오면 바꿔줄것
     public int nAtk = 10;
-    public int nTier =0;
+    public int nTier = 1;
     public float fSerchDistance = 20f;
     public float fFireCoolDown = 0f;
     public float fFireRate = 0.5f;
@@ -136,11 +136,14 @@ public class Tower : MonoBehaviour
         int enemysarridx=0;
 
         //캐싱해서 쓸 수 있도록
-        for (int i = 0; i < colls.Length; i++)
+        if (mTowerState == eTowerState.TOWERCONTROL)
         {
-            if (colls[i].CompareTag("Bomb"))
+            for (int i = 0; i < colls.Length; i++)
             {
-                Bombboom(colls[i].transform);
+                if (colls[i].CompareTag("Bomb"))
+                {
+                    Bombboom(colls[i].transform);
+                }
             }
         }
 
@@ -488,34 +491,46 @@ public class Tower : MonoBehaviour
     {
         mTowerType = _upgradetype;
         int _upatk = 0; //리스트에 저장된 상승률
-        switch (_upgradetype)
+        
+        switch(nTier)
         {
+            case 1:
+            {
+                    switch (_upgradetype)
+                    {
+                        case BuildManager.eTowerType.NULL:
+                            return false;
 
-            case BuildManager.eTowerType.NULL:
-                break;
-            
-            case BuildManager.eTowerType.AA:
-                _upatk += 100;
-                break;
-            case BuildManager.eTowerType.AB:
-                _upatk += 20;
-                break;
-            case BuildManager.eTowerType.BA:
+                        case BuildManager.eTowerType.AA:
+                            _upatk += 100;
+                            break;
+                        case BuildManager.eTowerType.AB:
+                            _upatk += 10;
+                            break;
+                        case BuildManager.eTowerType.BA:
 
-                break;
-            case BuildManager.eTowerType.BB:
+                            break;
+                        case BuildManager.eTowerType.BB:
 
-                break;
-            case BuildManager.eTowerType.CA:
+                            break;
+                        case BuildManager.eTowerType.CA:
 
-                break;
-            case BuildManager.eTowerType.CB:
+                            break;
+                        case BuildManager.eTowerType.CB:
 
-                break;
+                            break;
+                        default:
+                            return false;
+                    }
+                    break;
+            }
             default:
-                break;
+                return false;
+                
         }
 
+
+        ++nTier;
         StatUp(_upatk);
         return true;
     }
@@ -524,6 +539,7 @@ public class Tower : MonoBehaviour
     {
         //각종 능력치 업그레이드 수치는 매개변수로 받아서 사용
         nAtk += _upatk;
+        ++nTier;
     }
 
 

@@ -6,7 +6,7 @@ public class BuildManager : MonoBehaviour {
 
     public enum eTowerType { NULL = -1, A, B, C ,AA,AB,BA,BB,CA,CB}
 
-
+    
 
     public GameObject standardTurretPrefab;
 
@@ -25,7 +25,7 @@ public class BuildManager : MonoBehaviour {
     public GameObject MakeTower()
     {
         //지금은 그냥 기본타워만 생성 후에 미리 여러개의 타워를 설치 혹은 빈공간만 만들어놓고 생성해서 쓰도록함
-        GameObject tempobj = Instantiate(standardTurretPrefab,GameManager.stGameManager.mGoal);
+        GameObject tempobj = Instantiate(standardTurretPrefab);
         return tempobj;
     }
 
@@ -36,7 +36,6 @@ public class BuildManager : MonoBehaviour {
 
         switch (_Type)
         {
-            
             case eTowerType.NULL:
                 return false;
             case eTowerType.A:
@@ -74,6 +73,7 @@ public class BuildManager : MonoBehaviour {
                 return false;
         }
 
+        _nodeTr.gameObject.SetActive(false);
         turretToBuild.SetActive(true);
         GameManager.stGameManager.SetPlayerState(GameManager.ePlayerState.NOMAL);
         return true;

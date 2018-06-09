@@ -32,7 +32,6 @@ public class Enemy : MonoBehaviour {
 
     private void Start()
     {
-        goal = GameManager.stGameManager.mGoal;
         nvAgent = GetComponent<NavMeshAgent>();
         nvAgent.destination = goal.position;
         mStat.hp = 30;
@@ -66,6 +65,26 @@ public class Enemy : MonoBehaviour {
         }
         else
             return false;
+    }
+
+    public void ArriveGoal()
+    {
+        if(nvAgent ==null)
+        {
+            return;
+        }
+
+        Vector3 vecposions = transform.position - goal.position;
+        float distancetogoal = vecposions.magnitude;
+        float framemove = nvAgent.speed * Time.deltaTime;
+
+        if (distancetogoal <= 2)
+        {
+            gameObject.SetActive(false);
+            //life감소
+            if (GameManager.stGameManager.mStageManager.lifeDown(1))
+                GameManager.stGameManager.mStageManager.GameOver();
+        }
     }
 
     IEnumerator SlowDebuff(float _val)

@@ -129,7 +129,7 @@ public class EventManger : MonoBehaviour {
             case eEnemyName.ONE:
                 EnemyStatSet(_EnemyName, MakeEnemyScript);
                 //MakeEnemy.SetActive(true);
-                MakeEnemy.transform.position = GameManager.stGameManager.trSpawner.position;
+                MakeEnemy.transform.position = GameManager.stGameManager.mStageManager.trSpawner.position;
                 
                 //EnemyStatSet(_EnemyName, tempGameobj.GetComponent<Enemy>());
                 //_listEnemy.Add(tempGameobj);
@@ -139,7 +139,7 @@ public class EventManger : MonoBehaviour {
                 EnemyMeshRenderer.materials = tempmaterial;
                 EnemyStatSet(_EnemyName, MakeEnemyScript);
                 //MakeEnemy.SetActive(true);
-                MakeEnemy.transform.position = GameManager.stGameManager.trSpawner.position;
+                MakeEnemy.transform.position = GameManager.stGameManager.mStageManager.trSpawner.position;
                 
                 //tempGameobj = Instantiate(prefabEnemy2, trSpawner);
                 //EnemyStatSet(_EnemyName, tempGameobj.GetComponent<Enemy>());

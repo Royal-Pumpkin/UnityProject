@@ -39,11 +39,11 @@ public class GameManager : MonoBehaviour
     Vector3 vecDefaultPos;
     Quaternion quaDefaultPos;
 
-    //사용할 오브젝트
+    //사용할 오브젝트 //일부는 stagemanager로 이동
     public Tower mControlTower;
-    public Transform mGoal;
+    
     public FixedJoystick mStick;
-    public Transform trSpawner;
+    
     
 
     //플레이어 정보 나중에 받아서 변경예정
@@ -83,7 +83,7 @@ public class GameManager : MonoBehaviour
         //몬스터 생성 임시
         for (int i=0;i<100;i++)
         {
-            GameObject tempobj = Instantiate(preone, trSpawner);
+            GameObject tempobj = Instantiate(preone, mStageManager.trSpawner);
             Objectpool.Add(tempobj);
             
             tempobj.SetActive(false);
@@ -106,14 +106,13 @@ public class GameManager : MonoBehaviour
         }
 
         
-        //stage세팅 테스트를 위해서 임시로 이곳에서 실행
+        //stage세팅 테스트를 위해서 임시로 이곳에서 실행 나중에 데이터 시트를 통해서 받아오기
         mStageManager.SetList(EventManger.eEnemyName.ONE, 10);
         mStageManager.SetList(EventManger.eEnemyName.TWO, 15);
 
-        mStageManager.nListWaveNum.Add(5);
-        mStageManager.nListWaveNum.Add(5);
-        mStageManager.nListWaveNum.Add(5);
-        mStageManager.nListWaveNum.Add(5);
+        mStageManager.nListWaveNum.Add(10);
+        mStageManager.nListWaveNum.Add(15);
+        mStageManager.nListWaveNum.Add(-1);
         StartCoroutine(mStageManager.StageProgress(100, 0.5f));
 
 
