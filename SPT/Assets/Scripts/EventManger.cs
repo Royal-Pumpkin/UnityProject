@@ -5,14 +5,15 @@ using UnityEngine;
 public class EventManger : MonoBehaviour {
 
 	public enum eEventName{NULL=-1,TOWERPICK,TOWEROUT,ENEMYSPWAN}
-    public enum eEnemyName {NULL=-1,ONE,TWO}
     
 
 
     //임시로 등록 나중에 resource불러오는걸로 변경?
-    public GameObject prefabEnemy1;
-    public GameObject prefabEnemy2;
-    
+    public GameObject preGoblin;
+    public GameObject preBombgoblin;
+    public GameObject preSlime;
+    public GameObject preOrc;
+    public GameObject preHighOrc;
 
     
 
@@ -33,21 +34,6 @@ public class EventManger : MonoBehaviour {
         }
         return true;
     }
-
-    public bool Event(eEventName _Event,eEnemyName _enemy)
-    {
-        switch (_Event)
-        {
-            case eEventName.NULL:
-                return false;
-            case eEventName.ENEMYSPWAN:
-                //EnemySpawn();
-                return true;
-            default:
-                return false;
-        }
-    }
-
 
     bool TowerPickEvent()
     {
@@ -83,76 +69,98 @@ public class EventManger : MonoBehaviour {
         if (GameManager.stGameManager.mControlTower)
         {
             GameManager.stGameManager.mControlTower.TowerGetout(Camera.main);
-            GameManager.stGameManager.mGUIManager.SetGUIScene(GUIManager.eGUISceneName.PLAYSCENE);
+            GameManager.stGameManager.mGUIManager.SetGUIScene(GUIManager.eGUISceneName.NOMALSCENE);
         }
         else
             return;
     }
 
-    Enemy EnemyStatSet(eEnemyName _EnemyName,Enemy _CreateEnemy)
+    Enemy EnemyStatSet(Enemy.eEnemyType _EnemyName,Enemy _CreateEnemy)
     {
-        
         switch (_EnemyName)
         {
-            case eEnemyName.NULL:
-                _CreateEnemy.mStat.mEnemyName = eEnemyName.NULL;
+            case Enemy.eEnemyType.NULL:
                 break;
-            case eEnemyName.ONE:
-                _CreateEnemy.mStat.mEnemyName = eEnemyName.ONE;
-                _CreateEnemy.transform.name = "one";
-                _CreateEnemy.mStat.hp = 10;
+            case Enemy.eEnemyType.GOBLIN:
+                _CreateEnemy.mStat.mEnemyName = Enemy.eEnemyType.GOBLIN;
+                _CreateEnemy.transform.name = "Goblin";
+                _CreateEnemy.mStat.hp = 50;
+                _CreateEnemy.nvAgent.speed = 10;
+                _CreateEnemy.gear = 10;
                 break;
-            case eEnemyName.TWO:
-                _CreateEnemy.mStat.mEnemyName = eEnemyName.TWO;
-                _CreateEnemy.transform.name = "two";
-                _CreateEnemy.mStat.hp = 20;
+            case Enemy.eEnemyType.BOMBGOBLIN:
+                _CreateEnemy.mStat.mEnemyName = Enemy.eEnemyType.BOMBGOBLIN;
+                _CreateEnemy.transform.name = "BombGoblin";
+                _CreateEnemy.mStat.hp = 50;
+                _CreateEnemy.nvAgent.speed = 10;
+                _CreateEnemy.gear = 10;
+                break;
+            case Enemy.eEnemyType.SLIME:
+                _CreateEnemy.mStat.mEnemyName = Enemy.eEnemyType.SLIME;
+                _CreateEnemy.transform.name = "Slime";
+                _CreateEnemy.mStat.hp = 100;
+                _CreateEnemy.nvAgent.speed = 5;
+                _CreateEnemy.gear = 5;
+                break;
+            case Enemy.eEnemyType.ORC:
+                _CreateEnemy.mStat.mEnemyName = Enemy.eEnemyType.ORC;
+                _CreateEnemy.transform.name = "Orc";
+                _CreateEnemy.mStat.hp = 200;
+                _CreateEnemy.nvAgent.speed = 2.5f;
+                _CreateEnemy.gear = 20;
+                break;
+            case Enemy.eEnemyType.HIGHORC:
+                _CreateEnemy.mStat.mEnemyName = Enemy.eEnemyType.HIGHORC;
+                _CreateEnemy.transform.name = "Highorc";
+                _CreateEnemy.mStat.hp = 1000;
+                _CreateEnemy.nvAgent.speed = 2.5f;
+                _CreateEnemy.gear = 777;
                 break;
             default:
-                _CreateEnemy.mStat.mEnemyName = eEnemyName.NULL;
                 break;
         }
+        
         return _CreateEnemy;
     }
 
-    public bool EnemyCreate(eEnemyName _EnemyName,List<GameObject> _listEnemy)
+    public bool EnemyCreate(Enemy.eEnemyType _EnemyName,List<GameObject> _listEnemy)
     {
-        GameObject MakeEnemy = _listEnemy[GameManager.stGameManager.nListFieldidx];
-        Enemy MakeEnemyScript = MakeEnemy.GetComponent<Enemy>();
-        MeshRenderer EnemyMeshRenderer = MakeEnemy.GetComponent<MeshRenderer>();
-        Material[] tempmaterial = EnemyMeshRenderer.materials;
-        int Idx = GameManager.stGameManager.nListFieldidx;
-
+        GameObject MakeEnemy;
+        
         switch (_EnemyName)
         {
-            case eEnemyName.NULL:
+            case Enemy.eEnemyType.NULL:
                 return false;
-            case eEnemyName.ONE:
-                EnemyStatSet(_EnemyName, MakeEnemyScript);
-                //MakeEnemy.SetActive(true);
-                MakeEnemy.transform.position = GameManager.stGameManager.mStageManager.trSpawner.position;
-                
-                //EnemyStatSet(_EnemyName, tempGameobj.GetComponent<Enemy>());
-                //_listEnemy.Add(tempGameobj);
+            case Enemy.eEnemyType.GOBLIN:
+                MakeEnemy = Instantiate(preGoblin);
                 break;
-            case eEnemyName.TWO:
-                tempmaterial[0] = Resources.Load<Material>("Materials/One"/*나중에 stat에 Matarial path 넣어서 교체*/);
-                EnemyMeshRenderer.materials = tempmaterial;
-                EnemyStatSet(_EnemyName, MakeEnemyScript);
-                //MakeEnemy.SetActive(true);
-                MakeEnemy.transform.position = GameManager.stGameManager.mStageManager.trSpawner.position;
-                
-                //tempGameobj = Instantiate(prefabEnemy2, trSpawner);
-                //EnemyStatSet(_EnemyName, tempGameobj.GetComponent<Enemy>());
-                //_listEnemy.Add(tempGameobj);
+            case Enemy.eEnemyType.BOMBGOBLIN:
+                MakeEnemy = Instantiate(preBombgoblin);
+                break;
+            case Enemy.eEnemyType.SLIME:
+                MakeEnemy = Instantiate(preSlime);
+                break;
+            case Enemy.eEnemyType.ORC:
+                MakeEnemy = Instantiate(preOrc);
+                break;
+            case Enemy.eEnemyType.HIGHORC:
+                MakeEnemy = Instantiate(preHighOrc);
                 break;
             default:
                 return false;
         }
 
-       
+        MakeEnemy.SetActive(false);
+        Enemy MakeEnemyScript = MakeEnemy.GetComponent<Enemy>();
 
-        MakeEnemyScript.MonsterIdx = Idx;
-        GameManager.stGameManager.nListFieldidx++;
+
+        
+
+        EnemyStatSet(_EnemyName, MakeEnemyScript);
+        MakeEnemy.transform.position = GameManager.stGameManager.mStageManager.trSpawner.position;
+        _listEnemy.Add(MakeEnemy);
+        MakeEnemyScript.MonsterIdx = GameManager.stGameManager.mStageManager.nListFieldidx;
+        GameManager.stGameManager.mStageManager.nListFieldidx++;
 
         return true;
     }

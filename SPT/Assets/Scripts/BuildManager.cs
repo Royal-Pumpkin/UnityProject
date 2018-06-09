@@ -32,6 +32,7 @@ public class BuildManager : MonoBehaviour {
     public bool BuildTower(eTowerType _Type,Transform _nodeTr,Vector3 _offset)
     {
         GameObject turretToBuild = GameManager.stGameManager.GetFieldTowerList()[GameManager.stGameManager.nListTowerIdx].gameObject;
+        
         Tower turretScript = turretToBuild.GetComponent<Tower>();
 
         switch (_Type)
@@ -39,7 +40,11 @@ public class BuildManager : MonoBehaviour {
             case eTowerType.NULL:
                 return false;
             case eTowerType.A:
-                
+                if (!purchase(100))
+                {
+                    GameManager.stGameManager.SetPlayerState(GameManager.ePlayerState.NOMAL);
+                    return false;
+                }
 
                 turretToBuild.transform.position = _nodeTr.position + _offset;
                 turretToBuild.transform.rotation = _nodeTr.rotation;
@@ -53,6 +58,13 @@ public class BuildManager : MonoBehaviour {
                 //GameObject turretToBuild = GameManager.stGameManager.GetFieldTowerList()[GameManager.stGameManager.nListTowerIdx].gameObject;
                 //Tower turretScript = turretToBuild.GetComponent<Tower>();
 
+                if (!purchase(150))
+                {
+                    GameManager.stGameManager.SetPlayerState(GameManager.ePlayerState.NOMAL);
+                    return false;
+                }
+
+
                 turretToBuild.transform.position = _nodeTr.position + _offset;
                 turretToBuild.transform.rotation = _nodeTr.rotation;
                 GameManager.stGameManager.AddFieldTowerList(turretToBuild.GetComponent<Tower>());
@@ -62,6 +74,12 @@ public class BuildManager : MonoBehaviour {
             case eTowerType.C:
                 //GameObject turretToBuild = GameManager.stGameManager.GetFieldTowerList()[GameManager.stGameManager.nListTowerIdx].gameObject;
                 //Tower turretScript = turretToBuild.GetComponent<Tower>();
+
+                if (!purchase(125))
+                {
+                    GameManager.stGameManager.SetPlayerState(GameManager.ePlayerState.NOMAL);
+                    return false;
+                }
 
                 turretToBuild.transform.position = _nodeTr.position + _offset;
                 turretToBuild.transform.rotation = _nodeTr.rotation;
@@ -77,5 +95,16 @@ public class BuildManager : MonoBehaviour {
         turretToBuild.SetActive(true);
         GameManager.stGameManager.SetPlayerState(GameManager.ePlayerState.NOMAL);
         return true;
+    }
+
+    bool purchase(int _price)
+    {
+        if (GameManager.stGameManager.mStageManager.nInGameGold < _price)
+            return false;
+        else
+        {
+            GameManager.stGameManager.mStageManager.nInGameGold -= _price;
+            return true;
+        }
     }
 }

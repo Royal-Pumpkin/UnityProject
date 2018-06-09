@@ -6,26 +6,28 @@ using UnityEngine.AI;
 public class Enemy : MonoBehaviour {
 
     public enum eDebuffName {NULL=-1,SLOW }
-    public enum eEnemyType {NULL=-1,GOBLIN}
+    public enum eEnemyType {NULL=-1,GOBLIN,BOMBGOBLIN,SLIME,ORC,HIGHORC}
 
     public eEnemyType mEnemyType;
     public Transform goal;
     public NavMeshAgent nvAgent;
     public int MonsterIdx;
+    public int gear;
+    int score;
     bool[] mDebuff = new bool[1];
 
 
 
     public struct strStat
     {
-        public EventManger.eEnemyName mEnemyName;
+        public eEnemyType mEnemyName;
         public int hp;
         public int def;
         strStat(int _hp)
         {
             hp = 30;
             def = 5;
-            mEnemyName = EventManger.eEnemyName.NULL;
+            mEnemyName = eEnemyType.NULL;
         }
     }
     public strStat mStat;
@@ -61,6 +63,7 @@ public class Enemy : MonoBehaviour {
     {
         if (mStat.hp <= 0)
         {
+            GameManager.stGameManager.mStageManager.nInGameGold += gear;
             return true;
         }
         else

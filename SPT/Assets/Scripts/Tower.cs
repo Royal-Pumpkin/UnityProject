@@ -50,13 +50,13 @@ public class Tower : MonoBehaviour
 
         if (mTowerState != eTowerState.TOWERCONTROL)
         {
-            FindShootEnemy(GameManager.stGameManager.GetEnemyList());
+            FindShootEnemy(GameManager.stGameManager.mStageManager.nListFieldidx);
 
             return;
         }
 
 
-        ControlMode(GameManager.stGameManager.GetEnemyList());
+        ControlMode();
     }
 
     //타워 카메라 이동
@@ -229,7 +229,7 @@ public class Tower : MonoBehaviour
 
 
 
-    void FindShootEnemy(List<GameObject> _ListEnemy)
+    void FindShootEnemy(int _ListEnemy)
     {
         if(this.gameObject.activeSelf == false)
         {
@@ -238,13 +238,13 @@ public class Tower : MonoBehaviour
         
 
 
-        if (_ListEnemy.Count > 0)
+        if (_ListEnemy > 0)
         {
             //기획자가 원하는 대로 하기 위해서 overlapsphere를 사용했는데
             //getcomponent도 많이 사용했고 필요없는 collider도 함께 검색되어 메모리 사용이
             //많을 것으로 예상된다 어느것이 더 메모리를 덜 사용하는지는 추후에 테스트
             Collider[] colls = Physics.OverlapSphere(transform.position, fSerchDistance);
-            int nComparenum = GameManager.stGameManager.nListFieldidx;
+            int nComparenum = GameManager.stGameManager.mStageManager.nListFieldidx;
 
             if (colls.Length == 0)
             {
@@ -369,7 +369,7 @@ public class Tower : MonoBehaviour
         }
     }
 
-    bool ControlMode(List<GameObject> _ListEnemy)
+    bool ControlMode()
     {
         IntowerCameraMove();
         //Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
@@ -432,7 +432,6 @@ public class Tower : MonoBehaviour
                         if (HitEnemy.CheckDead())
                         {
                             HitEnemy.gameObject.SetActive(false);
-
                         }
                         return true;
                     }

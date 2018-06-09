@@ -15,12 +15,12 @@ public class GameManager : MonoBehaviour
     //stage메니저 만들어서 따로관리
     //프리팹 게임오브젝트로 만든것도 몬스터매니저같은거 만들어서 따로관리
     //관리 방법에 대해선 계속해서 생각해보겠음
-    public enum eEnemyObject {NULL=-1,ONE,TWO }
-    public List<int> listEnemyObjectNum = new List<int>(); //임시로 퍼블릭
+    //public enum eEnemyObject {NULL=-1,ONE,TWO }
+    //public List<int> listEnemyObjectNum = new List<int>(); //임시로 퍼블릭
 
 
-    List<GameObject> Objectpool = new List<GameObject>();
-    public int nListFieldidx = 0;
+    //List<GameObject> Objectpool = new List<GameObject>();
+    //public int nListFieldidx = 0;
     //필드에있는 타워리스트
     List<Tower> listTower = new List<Tower>();
     public int nListTowerIdx = 0;
@@ -50,7 +50,7 @@ public class GameManager : MonoBehaviour
     List<BuildManager.eTowerType> mlistPlayerUseableTower = new List<BuildManager.eTowerType>();
 
     //테스트용
-    public GameObject preone;
+    //public GameObject preone;
 
     private void Awake()
     {
@@ -73,6 +73,8 @@ public class GameManager : MonoBehaviour
 
         mGUIManager.mGUINomalMode.GUINomalInit();
 
+        mStageManager.nInGameGold = 200;
+
         //타워 생성 임시
         for(int i=0;i<8;i++)
         {
@@ -81,38 +83,50 @@ public class GameManager : MonoBehaviour
         }
 
         //몬스터 생성 임시
-        for (int i=0;i<100;i++)
-        {
-            GameObject tempobj = Instantiate(preone, mStageManager.trSpawner);
-            Objectpool.Add(tempobj);
+        //for (int i=0;i<100;i++)
+        //{
+        //    GameObject tempobj = Instantiate(preone, mStageManager.trSpawner);
+        //    Objectpool.Add(tempobj);
             
-            tempobj.SetActive(false);
-        }
+        //    tempobj.SetActive(false);
+        //}
 
         //몬스터 스텟 초기화
         //이런식으로 관리하는 오브젝트가 몇개인지 알 수 있다 listEnemyOb~[(int)eEnemyObject.One] 이나 listEnemyOb~[(int)EventManager.eEnemyName.One] 이런식
-        listEnemyObjectNum.Add(nListFieldidx);
+        //listEnemyObjectNum.Add(nListFieldidx);
 
-        for (int x = 0; x < 50; x++)
-        {
-            AddEnemy(EventManger.eEnemyName.ONE);
-        }
+        //for (int x = 0; x < 50; x++)
+        //{
+        //    AddEnemy(EventManger.eEnemyName.ONE);
+        //}
 
-        listEnemyObjectNum.Add(nListFieldidx);
+        //listEnemyObjectNum.Add(nListFieldidx);
 
-        for (int x = 0; x < 50; x++)
-        {
-            AddEnemy(EventManger.eEnemyName.TWO);
-        }
+        //for (int x = 0; x < 50; x++)
+        //{
+        //    AddEnemy(EventManger.eEnemyName.TWO);
+        //}
 
         
         //stage세팅 테스트를 위해서 임시로 이곳에서 실행 나중에 데이터 시트를 통해서 받아오기
-        mStageManager.SetList(EventManger.eEnemyName.ONE, 10);
-        mStageManager.SetList(EventManger.eEnemyName.TWO, 15);
+        mStageManager.SetList(Enemy.eEnemyType.GOBLIN, 5);
+        mStageManager.SetList(Enemy.eEnemyType.BOMBGOBLIN, 1);
+        mStageManager.SetList(Enemy.eEnemyType.GOBLIN, 5);
+        mStageManager.SetList(Enemy.eEnemyType.HIGHORC, 1);
+        mStageManager.nListWaveNum.Add(12);
+        //mStageManager.SetList(Enemy.eEnemyType.SLIME, 15);
+        //mStageManager.nListWaveNum.Add(15);
+        //mStageManager.SetList(Enemy.eEnemyType.ORC, 20);
+        //mStageManager.nListWaveNum.Add(20);
+        //mStageManager.SetList(Enemy.eEnemyType.ORC, 10);
+        //mStageManager.SetList(Enemy.eEnemyType.HIGHORC, 1);
+        //mStageManager.SetList(Enemy.eEnemyType.ORC, 10);
+        //mStageManager.nListWaveNum.Add(21);
 
-        mStageManager.nListWaveNum.Add(10);
-        mStageManager.nListWaveNum.Add(15);
         mStageManager.nListWaveNum.Add(-1);
+
+
+
         StartCoroutine(mStageManager.StageProgress(100, 0.5f));
 
 
@@ -160,15 +174,12 @@ public class GameManager : MonoBehaviour
         return mGameState;
     }
 
-    public List<GameObject> GetEnemyList()
-    {
-        return Objectpool;
-    }
+    //public List<GameObject> GetEnemyList()
+    //{
+    //    return Objectpool;
+    //}
 
-    public void AddEnemy(EventManger.eEnemyName _EnemyName)
-    {
-        mEventManager.EnemyCreate(_EnemyName, Objectpool);
-    }
+   
 
 
 
@@ -198,24 +209,11 @@ public class GameManager : MonoBehaviour
     }
 
     
-    //코루틴 함수들
-    IEnumerator SpawnCorutine()
-    {
-        while (mGameState == eGameState.PLAY && nListFieldidx <99)
-        {
-            int i = (int)Random.Range(1f, 3f);
-            if (i == 1)
-                AddEnemy(EventManger.eEnemyName.ONE);
-            else if (i == 2)
-                AddEnemy(EventManger.eEnemyName.TWO);
-
-            yield return new WaitForSeconds(0.1f);
-        }
-    }
+   
 
     IEnumerator InGameCorutine()
     {
-        float curnum = 0;
+        //float curnum = 0;
         while (GameManager.stGameManager.GetGameState() == GameManager.eGameState.PLAY)
         {
             if (Input.GetMouseButtonDown(0))
@@ -230,14 +228,14 @@ public class GameManager : MonoBehaviour
 
             
 
-            float persentnum = ((float)GameManager.stGameManager.nListFieldidx / (float)GameManager.stGameManager.GetEnemyList().Count);
+            //float persentnum = ((float)GameManager.stGameManager.nListFieldidx / (float)GameManager.stGameManager.GetEnemyList().Count);
 
 
 
-            if (curnum <= persentnum)
-                curnum += Time.fixedDeltaTime / (float)GameManager.stGameManager.GetEnemyList().Count;
+            //if (curnum <= persentnum)
+            //    curnum += Time.fixedDeltaTime / (float)GameManager.stGameManager.GetEnemyList().Count;
 
-            mGUIManager.mGUINomalMode.WaveBar.fillAmount = curnum;
+            //mGUIManager.mGUINomalMode.WaveBar.fillAmount = curnum;
 
             yield return new WaitForFixedUpdate();
         }

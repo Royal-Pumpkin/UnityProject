@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class StageManager : MonoBehaviour
 {
@@ -16,8 +17,9 @@ public class StageManager : MonoBehaviour
     public List<int> nListWaveNum = new List<int>();
 
     int nPlayerLife = 5;
-    int nInGameGold;
+    public int nInGameGold;
 
+    public int nListFieldidx;
     //관리 오브젝트들 맵이 로딩될 때 할당해준다.
     public Transform mGoal;
     public Transform trSpawner;
@@ -26,22 +28,40 @@ public class StageManager : MonoBehaviour
     //정리된 웨이브 테이블을 받아와서 mListFieldEnemy에 추가한다. add remove를 사용할지는 고민
     //노드(비콘)들도 마찬가지로 리스트로 관리할지 생각중
     //
-    public void SetList(EventManger.eEnemyName _monstername,int _nummonster)
+    public void SetList(Enemy.eEnemyType _monstername,int _nummonster)
     {
         switch (_monstername)
         {
-            case EventManger.eEnemyName.NULL:
+            case Enemy.eEnemyType.NULL:
                 return;
-            case EventManger.eEnemyName.ONE:
+            case Enemy.eEnemyType.GOBLIN:
                 for(int i=0;i<_nummonster;i++)
                 {
-                    mListFieldEnemys.Add(GameManager.stGameManager.GetEnemyList()[i + GameManager.stGameManager.listEnemyObjectNum[(int)GameManager.eEnemyObject.ONE]]);
+                    GameManager.stGameManager.mEventManager.EnemyCreate(Enemy.eEnemyType.GOBLIN, mListFieldEnemys);
                 }
                 break;
-            case EventManger.eEnemyName.TWO:
+            case Enemy.eEnemyType.BOMBGOBLIN:
                 for (int i = 0; i < _nummonster; i++)
                 {
-                    mListFieldEnemys.Add(GameManager.stGameManager.GetEnemyList()[i + GameManager.stGameManager.listEnemyObjectNum[(int)GameManager.eEnemyObject.TWO]]);
+                    GameManager.stGameManager.mEventManager.EnemyCreate(Enemy.eEnemyType.BOMBGOBLIN, mListFieldEnemys);
+                }
+                break;
+            case Enemy.eEnemyType.SLIME:
+                for (int i = 0; i < _nummonster; i++)
+                {
+                    GameManager.stGameManager.mEventManager.EnemyCreate(Enemy.eEnemyType.SLIME, mListFieldEnemys);
+                }
+                break;
+            case Enemy.eEnemyType.ORC:
+                for (int i = 0; i < _nummonster; i++)
+                {
+                    GameManager.stGameManager.mEventManager.EnemyCreate(Enemy.eEnemyType.ORC, mListFieldEnemys);
+                }
+                break;
+            case Enemy.eEnemyType.HIGHORC:
+                for (int i = 0; i < _nummonster; i++)
+                {
+                    GameManager.stGameManager.mEventManager.EnemyCreate(Enemy.eEnemyType.HIGHORC, mListFieldEnemys);
                 }
                 break;
             default:
@@ -62,11 +82,13 @@ public class StageManager : MonoBehaviour
     public void GameOver()
     {
         mStagestate = eStageState.GAMEOVER;
+        GameManager.stGameManager.mGUIManager.SetGUIScene(GUIManager.eGUISceneName.CLEAR);
     }
 
     void ClearStage()
     {
         mStagestate = eStageState.CLEAR;
+        GameManager.stGameManager.mGUIManager.SetGUIScene(GUIManager.eGUISceneName.CLEAR);
     }
 
 
@@ -84,7 +106,7 @@ public class StageManager : MonoBehaviour
     {
         int defaultnum = nFieldIdx;
         
-        while (mStagestate != eStageState.CLEAR/*클리어를 하고 스위치문안에서 함수를 부르고 while문을 나가는 법을 생각해본다*/)
+        while (mStagestate != eStageState.CLEAR/*클리어를 하고 스위치문안에서 함수를 부르고 while문을 나가는 법을 생각해본다*/ && mStagestate != eStageState.GAMEOVER)
         {
             if (GameManager.stGameManager.GetGameState() != GameManager.eGameState.PLAY)
                 yield return new WaitForSeconds(1f);
@@ -146,7 +168,7 @@ public class StageManager : MonoBehaviour
 
                     if (Checknum == 0)
                     {
-                        mStagestate = eStageState.CLEAR;
+                        ClearStage();
                         break;
                     }
 
@@ -158,8 +180,6 @@ public class StageManager : MonoBehaviour
                             tempEnemy.ArriveGoal();
                         }
                     }
-
-
                     break;
                 case eStageState.CLEAR:
 

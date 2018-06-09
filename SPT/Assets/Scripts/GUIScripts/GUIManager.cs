@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class GUIManager : MonoBehaviour {
     public List<GameObject> mListGUIScene = new List<GameObject>();
-    public enum eGUISceneName {NULL=-1,PLAYSCENE,CONTROLSCENE }
+    public enum eGUISceneName {NULL=-1,NOMALSCENE,CONTROLSCENE,GAMEOVER,CLEAR}
     eGUISceneName mGUISceneState;
     public GUIControlMode mGUIControlMode;
     public GUINomalMode mGUINomalMode;
 
 	// Use this for initialization
 	void Start () {
-        mGUISceneState = eGUISceneName.PLAYSCENE;
+        mGUISceneState = eGUISceneName.NOMALSCENE;
 
     }
 	

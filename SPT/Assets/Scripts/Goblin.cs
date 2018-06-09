@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Goblin : Enemy {
-    bool bBomb = false;
+    public bool bBomb = false;
     public Transform vecBombPosition;
-    Transform TrBoom;
+    public Transform TrBoom;
     float fSerchDistance = 5f;
 
     private void Awake()
@@ -17,7 +17,7 @@ public class Goblin : Enemy {
     {
         if (mStat.hp <= 0)
         {
-            
+            GameManager.stGameManager.mStageManager.nInGameGold += gear;
             BombDrop();
             return true;
         }
