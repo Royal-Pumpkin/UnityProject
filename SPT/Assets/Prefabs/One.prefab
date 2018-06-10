@@ -214,6 +214,7 @@ MonoBehaviour:
   goal: {fileID: 0}
   nvAgent: {fileID: 0}
   MonsterIdx: 0
+  gear: 0
 --- !u!136 &136154902140016538
 CapsuleCollider:
   m_ObjectHideFlags: 1

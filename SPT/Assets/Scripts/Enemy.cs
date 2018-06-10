@@ -8,13 +8,18 @@ public class Enemy : MonoBehaviour {
     public enum eDebuffName {NULL=-1,SLOW }
     public enum eEnemyType {NULL=-1,GOBLIN,BOMBGOBLIN,SLIME,ORC,HIGHORC}
 
+    Renderer mEnemyRenderer;
+    Color mDefaultColor;
+
     public eEnemyType mEnemyType;
+    
     public Transform goal;
     public NavMeshAgent nvAgent;
     public int MonsterIdx;
     public int gear;
     int score;
     bool[] mDebuff = new bool[1];
+    public bool bSerchstate;
 
 
 
@@ -36,7 +41,12 @@ public class Enemy : MonoBehaviour {
     {
         nvAgent = GetComponent<NavMeshAgent>();
         nvAgent.destination = goal.position;
-        mStat.hp = 30;
+    }
+
+    public void initEnemy()
+    {
+        mEnemyRenderer = this.GetComponent<Renderer>();
+        mDefaultColor = mEnemyRenderer.material.color;
     }
 
     public bool DeBuffSet(eDebuffName _debuff, float _val)
@@ -76,6 +86,16 @@ public class Enemy : MonoBehaviour {
         {
             return;
         }
+
+        if (mEnemyRenderer != null)
+        {
+
+            if (bSerchstate)
+                mEnemyRenderer.material.color = Color.red;
+            else
+                mEnemyRenderer.material.color = mDefaultColor;
+        }
+
 
         Vector3 vecposions = transform.position - goal.position;
         float distancetogoal = vecposions.magnitude;

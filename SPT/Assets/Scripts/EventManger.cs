@@ -123,7 +123,7 @@ public class EventManger : MonoBehaviour {
         return _CreateEnemy;
     }
 
-    public bool EnemyCreate(Enemy.eEnemyType _EnemyName,List<GameObject> _listEnemy)
+    public bool EnemyCreate(Enemy.eEnemyType _EnemyName,List<GameObject> _listEnemyobj,List<Enemy> _listEnemy)
     {
         GameObject MakeEnemy;
         
@@ -157,9 +157,14 @@ public class EventManger : MonoBehaviour {
         
 
         EnemyStatSet(_EnemyName, MakeEnemyScript);
+
+        //하이오크에 최상위 부모가 렌더러가 없어서 문제가 발생 임시로 빼둠
+        if (_EnemyName != Enemy.eEnemyType.HIGHORC)
+            MakeEnemyScript.initEnemy();
         MakeEnemy.transform.position = GameManager.stGameManager.mStageManager.trSpawner.position;
-        _listEnemy.Add(MakeEnemy);
+        _listEnemyobj.Add(MakeEnemy);
         MakeEnemyScript.MonsterIdx = GameManager.stGameManager.mStageManager.nListFieldidx;
+        _listEnemy.Add(MakeEnemyScript);
         GameManager.stGameManager.mStageManager.nListFieldidx++;
 
         return true;

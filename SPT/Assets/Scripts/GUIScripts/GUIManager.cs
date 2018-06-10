@@ -34,4 +34,9 @@ public class GUIManager : MonoBehaviour {
     {
         mGUISceneState = _GUISceneName;
     }
+
+    public eGUISceneName GetGUIScene()
+    {
+        return mGUISceneState;
+    }
 }

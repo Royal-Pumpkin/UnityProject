@@ -8,7 +8,7 @@ public class Goblin : Enemy {
     public Transform TrBoom;
     float fSerchDistance = 5f;
 
-    private void Awake()
+    private void OnEnable()
     {
         StartCoroutine(BombPick());
     }

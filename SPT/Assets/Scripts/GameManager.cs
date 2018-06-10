@@ -73,7 +73,7 @@ public class GameManager : MonoBehaviour
 
         mGUIManager.mGUINomalMode.GUINomalInit();
 
-        mStageManager.nInGameGold = 200;
+        mStageManager.nInGameGold = 10200;
 
         //타워 생성 임시
         for(int i=0;i<8;i++)

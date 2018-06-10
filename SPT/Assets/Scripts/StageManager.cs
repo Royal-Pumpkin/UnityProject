@@ -12,7 +12,8 @@ public class StageManager : MonoBehaviour
     public enum eStageState {NULL=-1,START,WAVE,REST,FINISH,CLEAR,GAMEOVER}
 
     public eStageState mStagestate;
-    List<GameObject> mListFieldEnemys = new List<GameObject>();
+    List<GameObject> mListFieldEnemysobj = new List<GameObject>();
+    List<Enemy> mListFieldEnemys = new List<Enemy>();
     public List<GameObject> mListTowers = new List<GameObject>(); //임시 퍼블릭
     public List<int> nListWaveNum = new List<int>();
 
@@ -28,6 +29,16 @@ public class StageManager : MonoBehaviour
     //정리된 웨이브 테이블을 받아와서 mListFieldEnemy에 추가한다. add remove를 사용할지는 고민
     //노드(비콘)들도 마찬가지로 리스트로 관리할지 생각중
     //
+    public List<GameObject> GetFieldEnemysobjList()
+    {
+        return mListFieldEnemysobj;
+    }
+
+    public List<Enemy> GetFieldEnemysList()
+    {
+        return mListFieldEnemys;
+    }
+
     public void SetList(Enemy.eEnemyType _monstername,int _nummonster)
     {
         switch (_monstername)
@@ -37,31 +48,31 @@ public class StageManager : MonoBehaviour
             case Enemy.eEnemyType.GOBLIN:
                 for(int i=0;i<_nummonster;i++)
                 {
-                    GameManager.stGameManager.mEventManager.EnemyCreate(Enemy.eEnemyType.GOBLIN, mListFieldEnemys);
+                    GameManager.stGameManager.mEventManager.EnemyCreate(Enemy.eEnemyType.GOBLIN, mListFieldEnemysobj,mListFieldEnemys);
                 }
                 break;
             case Enemy.eEnemyType.BOMBGOBLIN:
                 for (int i = 0; i < _nummonster; i++)
                 {
-                    GameManager.stGameManager.mEventManager.EnemyCreate(Enemy.eEnemyType.BOMBGOBLIN, mListFieldEnemys);
+                    GameManager.stGameManager.mEventManager.EnemyCreate(Enemy.eEnemyType.BOMBGOBLIN, mListFieldEnemysobj, mListFieldEnemys);
                 }
                 break;
             case Enemy.eEnemyType.SLIME:
                 for (int i = 0; i < _nummonster; i++)
                 {
-                    GameManager.stGameManager.mEventManager.EnemyCreate(Enemy.eEnemyType.SLIME, mListFieldEnemys);
+                    GameManager.stGameManager.mEventManager.EnemyCreate(Enemy.eEnemyType.SLIME, mListFieldEnemysobj, mListFieldEnemys);
                 }
                 break;
             case Enemy.eEnemyType.ORC:
                 for (int i = 0; i < _nummonster; i++)
                 {
-                    GameManager.stGameManager.mEventManager.EnemyCreate(Enemy.eEnemyType.ORC, mListFieldEnemys);
+                    GameManager.stGameManager.mEventManager.EnemyCreate(Enemy.eEnemyType.ORC, mListFieldEnemysobj, mListFieldEnemys);
                 }
                 break;
             case Enemy.eEnemyType.HIGHORC:
                 for (int i = 0; i < _nummonster; i++)
                 {
-                    GameManager.stGameManager.mEventManager.EnemyCreate(Enemy.eEnemyType.HIGHORC, mListFieldEnemys);
+                    GameManager.stGameManager.mEventManager.EnemyCreate(Enemy.eEnemyType.HIGHORC, mListFieldEnemysobj, mListFieldEnemys);
                 }
                 break;
             default:
@@ -125,7 +136,7 @@ public class StageManager : MonoBehaviour
 
                     if (mListFieldEnemys.Count == 0)
                         break;
-                    mListFieldEnemys[nFieldIdx].SetActive(true);
+                    mListFieldEnemysobj[nFieldIdx].SetActive(true);
                     Enemy tempEnemy = mListFieldEnemys[nFieldIdx].GetComponent<Enemy>();
                     tempEnemy.goal = mGoal;
                     ++nFieldIdx;
@@ -143,7 +154,7 @@ public class StageManager : MonoBehaviour
 
                     for(int i=0;i<mListFieldEnemys.Count;i++)
                     {
-                        if (mListFieldEnemys[i].activeSelf)
+                        if (mListFieldEnemysobj[i].activeSelf)
                         {
                             tempEnemy = mListFieldEnemys[i].GetComponent<Enemy>();
                             tempEnemy.ArriveGoal();
@@ -162,7 +173,7 @@ public class StageManager : MonoBehaviour
 
                     for(int i=0;i<mListFieldEnemys.Count;i++)
                     {
-                        if (mListFieldEnemys[i].activeSelf)
+                        if (mListFieldEnemysobj[i].activeSelf)
                             ++Checknum;
                     }
 
@@ -174,7 +185,7 @@ public class StageManager : MonoBehaviour
 
                     for (int i = 0; i < mListFieldEnemys.Count; i++)
                     {
-                        if (mListFieldEnemys[i].activeSelf)
+                        if (mListFieldEnemysobj[i].activeSelf)
                         {
                             tempEnemy = mListFieldEnemys[i].GetComponent<Enemy>();
                             tempEnemy.ArriveGoal();

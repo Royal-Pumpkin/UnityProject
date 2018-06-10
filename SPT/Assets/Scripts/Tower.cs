@@ -6,7 +6,7 @@ using UnityEngine;
 public class Tower : MonoBehaviour
 {
     //타워 작동상태
-    enum eTowerState {NULL=-1,IDLE,ATTACK,TOWERCONTROL}
+    enum eTowerState {NULL=-1,IDLE,ATTACK,TOWERCONTROL,MODESLECT}
     
 
     eTowerState mTowerState;
@@ -29,7 +29,15 @@ public class Tower : MonoBehaviour
     public int nPrice;
     public float fAtkArea = 5f;
     public float fSlow = 2f;
+
+    //선그리기 용 변수들
+    public LineRenderer drawline;
     
+
+
+    public int segments;
+    public float xradius;
+    public float yradius;
 
     public float fCameraSpeed = 5f;
 
@@ -41,22 +49,67 @@ public class Tower : MonoBehaviour
     float CurAngleZ;
 
     //테스트용
-    Vector3 testTr;
+
+
+    private void OnEnable()
+    {
+        setrenderer();
+    }
 
     //타워기본행동
     public void DefaultTowerAct()
     {
-        
-
         if (mTowerState != eTowerState.TOWERCONTROL)
         {
             FindShootEnemy(GameManager.stGameManager.mStageManager.nListFieldidx);
-
             return;
         }
-
-
         ControlMode();
+    }
+
+    void setrenderer()
+    {
+        xradius = fAtkArea;
+        drawline.positionCount = (segments + 1);
+        //drawline.useWorldSpace = false;
+    }
+
+    void DrawCircle(Vector3 _vecposition ,float _fdrawval)
+    {
+        float x;
+        float y;
+        float z = 0f;
+
+        float angle = 20f;
+
+        for(int i=0;i<(segments+1);i++)
+        {
+            x = Mathf.Cos(Mathf.Deg2Rad * angle) * _fdrawval;
+            y = Mathf.Sin(Mathf.Deg2Rad * angle) * _fdrawval;
+
+            drawline.SetPosition(i, new Vector3(x,0,y) +_vecposition);
+            angle += (360f / segments);
+        }
+
+        //크기 설정할때 어떤건지 헷갈리면 아예 원으로 만들기
+        //angle = 20f;
+        //for (int i = segments + 1; i < (segments*2 + 1); i++)
+        //{
+        //    x = Mathf.Cos(Mathf.Deg2Rad * angle) * _fdrawval;
+        //    y = Mathf.Sin(Mathf.Deg2Rad * angle) * _fdrawval;
+
+        //    drawline.SetPosition(i, new Vector3(x, y, 0) + _vecposition);
+        //    angle += (360f / segments);
+        //}
+        //angle = 20f;
+        //for (int i = (segments*2 + 1) ; i < (segments*3 + 1); i++)
+        //{
+        //    x = Mathf.Cos(Mathf.Deg2Rad * angle) * _fdrawval;
+        //    y = Mathf.Sin(Mathf.Deg2Rad * angle) * _fdrawval;
+
+        //    drawline.SetPosition(i, new Vector3(0, x, y) + _vecposition);
+        //    angle += (360f / segments);
+        //}
     }
 
     //타워 카메라 이동
@@ -96,11 +149,11 @@ public class Tower : MonoBehaviour
         teststick = GameManager.stGameManager.mStick;
 
 
-        CurAngleY += teststick.Horizontal * fCameraSpeed;
+        CurAngleY += teststick.Horizontal * fCameraSpeed; /** MainManager.Instance.setting.sensitiviry.value;*/
         Quaternion tempQut = Quaternion.Euler(CurAngleX, CurAngleY, CurAngleZ);
         Head.rotation = tempQut;
         Camera.main.transform.rotation = tempQut;
-        CurAngleX += - teststick.Vertical * fCameraSpeed;
+        CurAngleX += -teststick.Vertical * fCameraSpeed; /* * MainManager.Instance.setting.sensitiviry.value; ;*/
 
         CurAngleX = ClampAngle(CurAngleX, -7f, 60f);
 
@@ -126,6 +179,35 @@ public class Tower : MonoBehaviour
         float tempDownDam = 0;
         tempDownDam = 1 - (_enemy.mStat.def / (_enemy.mStat.def + 20));
         _enemy.mStat.hp -= _atk * (int)tempDownDam;
+    }
+
+    void MultiEnemyCheck(Transform _targetEnemy, Vector3 _targetPostion, int _atk, float _atkarea)
+    {
+        Collider[] colls = Physics.OverlapSphere(_targetPostion, _atkarea);
+        Enemy[] enemys = new Enemy[colls.Length];
+        Renderer[] EnemyMaterial = new Renderer[colls.Length];
+        int enemysarridx = 0;
+
+        List<Enemy> tempEnemyList = GameManager.stGameManager.mStageManager.GetFieldEnemysList();
+        List<GameObject> tempEnemyListobj = GameManager.stGameManager.mStageManager.GetFieldEnemysobjList();
+        for (int i=0;i < tempEnemyList.Count;i++)
+        {
+            if (tempEnemyListobj[i].activeSelf)
+                tempEnemyList[i].bSerchstate = false;
+        }
+
+        for (int i = 0; i < colls.Length; i++)
+        {
+            if (colls[i].GetComponent<Enemy>())
+            {
+                enemys[enemysarridx] = colls[i].GetComponent<Enemy>();
+                enemys[enemysarridx].bSerchstate = true;
+                enemysarridx++;
+            }
+        }
+
+        
+
     }
 
     void MultiShot(Transform _targetEnemy,Vector3 _targetPostion,int _atk,float _atkarea)
@@ -156,7 +238,9 @@ public class Tower : MonoBehaviour
             }
         }
 
-        for(int i=0;i<enemysarridx;i++)
+        
+
+        for (int i=0;i<enemysarridx;i++)
         {
             enemys[i].mStat.hp -= _atk;
         }
@@ -194,6 +278,8 @@ public class Tower : MonoBehaviour
         Collider[] colls = Physics.OverlapSphere(transform.position, _sercharea);
         Enemy[] enemys = new Enemy[colls.Length];
         int enemysarridx = 0;
+
+        
 
         for (int i = 0; i < colls.Length; i++)
         {
@@ -246,6 +332,9 @@ public class Tower : MonoBehaviour
             Collider[] colls = Physics.OverlapSphere(transform.position, fSerchDistance);
             int nComparenum = GameManager.stGameManager.mStageManager.nListFieldidx;
 
+            if (GameManager.stGameManager.mGUIManager.mGUINomalMode.mGUiModeSelect.bModeSelectonoff)
+                DrawCircle(transform.position, fSerchDistance);
+
             if (colls.Length == 0)
             {
                 mTowerState = eTowerState.IDLE;
@@ -269,13 +358,10 @@ public class Tower : MonoBehaviour
                 }
             }
 
+            
 
             if (mTowerState == eTowerState.IDLE)
             {
-
-                
-
-
                 //float fShortestDistance = Mathf.Infinity;
 
                 //for (int i = 0; i < _ListEnemy.Count; i++)
@@ -307,6 +393,12 @@ public class Tower : MonoBehaviour
                     mTowerState = eTowerState.IDLE;
                     return;
                 }
+
+                if (mTowerType == BuildManager.eTowerType.B)
+                    DrawCircle(FindEnemyobj.transform.position,fAtkArea);
+                
+
+
 
                 Head.transform.LookAt(FindEnemyobj.transform);
 
@@ -345,8 +437,8 @@ public class Tower : MonoBehaviour
                             break;
                         case BuildManager.eTowerType.B:
                             //위에 검색하는기능이 아래 함수에 검색이랑 겹침
+                            
                             MultiShot(FindEnemyobj.transform,FindEnemyobj.transform.position, nAtk, fAtkArea);
-
 
                             break;
                         case BuildManager.eTowerType.C:
@@ -376,32 +468,24 @@ public class Tower : MonoBehaviour
 
 
         RaycastHit hitobj;
+        Camera curCamera = Camera.main;
+
+
+
+        Physics.BoxCast(curCamera.ViewportToWorldPoint(new Vector2(0.5f, 0.5f)), new Vector3(1, 1, 1), curCamera.transform.forward, out hitobj, curCamera.transform.rotation, fSerchDistance);
         
+
+        if (hitobj.transform == null)
+        {
+            return false;
+        }
+
+        DrawCircle(hitobj.point,fAtkArea);
+        MultiEnemyCheck(hitobj.transform, hitobj.point, nAtk, fAtkArea);
+
+
         if (Input.GetMouseButtonDown(0))
         {
-            //Physics.BoxCast(Camera.main.ViewportToScreenPoint(new Vector3(0.5f, 0.5f, 0)),
-            //    transform.lossyScale/2,
-            //    Camera.main.transform.forward,
-            //    out hitobj,
-            //    Camera.main.transform.rotation,
-            //    Mathf.Infinity);
-            Camera curCamera = Camera.main;
-
-
-
-            //Physics.Raycast(ray, out hitobj, fSerchDistance);
-            Physics.BoxCast(curCamera.ViewportToWorldPoint(new Vector2(0.5f, 0.5f)), new Vector3(1, 1, 1), curCamera.transform.forward, out hitobj, curCamera.transform.rotation, fSerchDistance);
-            //Debug.DrawRay(ray.origin, ray.direction * fSerchDistance, Color.red, 5f);
-            Debug.DrawRay(curCamera.ViewportToWorldPoint(new Vector2(0.5f, 0.5f)), curCamera.transform.forward*fSerchDistance, Color.red, 5f);
-            //Debug.DrawRay(Camera.main.ViewportToWorldPoint(new Vector2(0.5f, 0.5f)), transform.forward*fSerchDistance, Color.red, 5f);
-            //Debug.Log("Towerhit" + hitobj.transform.name);
-
-
-            if (hitobj.transform == null)
-            {
-                return false;
-            }
-
 
             //여기도 타워마다 능력을 달리해줘야함
 
@@ -469,9 +553,9 @@ public class Tower : MonoBehaviour
 
                     break;
                 case BuildManager.eTowerType.B:
-                    testTr = hitobj.point;
+                   
                     MultiShot(hitobj.transform,hitobj.point, nAtk, fAtkArea);
-
+                    
 
                     break;
                 case BuildManager.eTowerType.C:
@@ -546,6 +630,8 @@ public class Tower : MonoBehaviour
     {
         Collider[] colls = Physics.OverlapSphere(_boomTr.position, 20f);
 
+
+
         if(colls.Length == 0)
         {
             return;
@@ -584,7 +670,7 @@ public class Tower : MonoBehaviour
         if (FindEnemyobj)
             Gizmos.DrawWireSphere(FindEnemyobj.transform.position, fAtkArea);
         
-            Gizmos.DrawWireSphere(testTr, fAtkArea);
+
     }
 
 
