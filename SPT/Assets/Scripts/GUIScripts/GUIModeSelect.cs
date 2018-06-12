@@ -12,11 +12,11 @@ public class GUIModeSelect : MonoBehaviour {
     public Button UpgradeBtn; //타워픽이벤트이후 활성화 된 판낼안에 있음
     public Button GetinBtn; //타워픽이벤트이후 활성화 된 판낼안에 있음
 
-    public bool bModeSelectonoff;
+    
     public void SetPanelOn(Tower _pickedTower)
     {
         gameObject.SetActive(true);
-        bModeSelectonoff = true;
+        _pickedTower.bSeselect = true;
 
         UpgradeBtn.onClick.RemoveAllListeners();
         GetinBtn.onClick.RemoveAllListeners();
@@ -24,15 +24,17 @@ public class GUIModeSelect : MonoBehaviour {
 
         UpgradeBtn.onClick.AddListener(() => mGUIIngameUpgrade.SetBtnFunction(_pickedTower));
         GetinBtn.onClick.AddListener(() => _pickedTower.TowerGetin(Camera.main));
-        UpgradeBtn.onClick.AddListener(() => bModeSelectonoff = false);
-        GetinBtn.onClick.AddListener(() => bModeSelectonoff = false);
+
         UpgradeBtn.onClick.AddListener(() => gameObject.SetActive(false));
         GetinBtn.onClick.AddListener(() => gameObject.SetActive(false));
 
+        UpgradeBtn.onClick.AddListener(() => _pickedTower.bSeselect = false);
+        GetinBtn.onClick.AddListener(() => _pickedTower.bSeselect = false);
 
-        ElseView.onClick.AddListener(() => bModeSelectonoff = false);
+
         ElseView.onClick.AddListener(() => gameObject.SetActive(false));
         ElseView.onClick.AddListener(() => GameManager.stGameManager.SetPlayerState(GameManager.ePlayerState.NOMAL));
+        ElseView.onClick.AddListener(() => _pickedTower.bSeselect = false);
     }
 
 }

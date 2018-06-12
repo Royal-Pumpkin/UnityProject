@@ -16,6 +16,7 @@ public class Tower : MonoBehaviour
     public Transform Tr_InTowerCamera;
     public Transform Head;
     public Collider mCollider;
+    
 
     //스틱컴포넌트
     FixedJoystick teststick;
@@ -29,6 +30,8 @@ public class Tower : MonoBehaviour
     public int nPrice;
     public float fAtkArea = 5f;
     public float fSlow = 2f;
+
+    public bool bSeselect = false; 
 
     //선그리기 용 변수들
     public LineRenderer drawline;
@@ -44,10 +47,12 @@ public class Tower : MonoBehaviour
     public GameObject FindEnemyobj = null;
     Enemy FindEnemy = null;
 
+    //카메라 회전용 각각의 타워마다 필요하지는않음
     float CurAngleX;
     float CurAngleY;
     float CurAngleZ;
 
+    
     //테스트용
 
 
@@ -74,8 +79,21 @@ public class Tower : MonoBehaviour
         //drawline.useWorldSpace = false;
     }
 
-    void DrawCircle(Vector3 _vecposition ,float _fdrawval)
+    //범위 그림은 그려놓고 불러오는 식이 나을같음 
+    void DrawCircle(Vector3 _vecposition ,float _fdrawval ,bool _trriger)
     {
+
+        if(!_trriger)
+        {
+            for (int i = 0; i < (segments + 1); i++)
+            {
+                drawline.SetPosition(i, new Vector3(0, 0, 0));
+            }
+            return;
+        }
+
+
+
         float x;
         float y;
         float z = 0f;
@@ -112,12 +130,19 @@ public class Tower : MonoBehaviour
         //}
     }
 
+    void DeleteCircle()
+    {
+
+    }
+
     //타워 카메라 이동
     public void TowerGetin(Camera _MainCamera)
     {
-        GameManager.stGameManager.mControlTower = this;
+        GameManager.stGameManager.mStageManager.mControlTower = this;
         GameManager.stGameManager.SetPlayerState(GameManager.ePlayerState.TOWER);
         GameManager.stGameManager.mGUIManager.SetGUIScene(GUIManager.eGUISceneName.CONTROLSCENE);
+        GameManager.stGameManager.mStageManager.TowerDeskOn(true);
+        StartCoroutine(GameManager.stGameManager.mStageManager.HandAnimation());
 
         //이벤트 메니저 TowerPick 함수에서 예외처리해서 해결했는데 예외처리 안했을 때 컨트롤하고있는 타워를 한번 더 클릭할 시 카메라 각도가 이상하게 입력됨
         //원인 예상: 정해진 transform과 함수에서 설정하는 값변화 에서 생기는 문제같음
@@ -139,9 +164,12 @@ public class Tower : MonoBehaviour
         // _MainCamera.transform.position = 원래 카메라 포지션;
         // _MainCamera.transform.rotation = 원래 카메라 포지션;
         GameManager.stGameManager.SetPlayerState(GameManager.ePlayerState.NOMAL);
+        GameManager.stGameManager.mStageManager.TowerDeskOn(false);
         mTowerState = eTowerState.IDLE;
-        GameManager.stGameManager.mControlTower = null;
+        GameManager.stGameManager.mStageManager.mControlTower = null;
     }
+
+    
 
     void IntowerCameraMove()
     {
@@ -150,19 +178,21 @@ public class Tower : MonoBehaviour
 
 
         CurAngleY += teststick.Horizontal * fCameraSpeed; /** MainManager.Instance.setting.sensitiviry.value;*/
+
+
         Quaternion tempQut = Quaternion.Euler(CurAngleX, CurAngleY, CurAngleZ);
         Head.rotation = tempQut;
         Camera.main.transform.rotation = tempQut;
         CurAngleX += -teststick.Vertical * fCameraSpeed; /* * MainManager.Instance.setting.sensitiviry.value; ;*/
 
-        CurAngleX = ClampAngle(CurAngleX, -7f, 60f);
+        CurAngleX = ClampAngle(CurAngleX, 0f, 45f);
 
 
         tempQut = Quaternion.Euler(CurAngleX, CurAngleY, CurAngleZ);
         Head.rotation = tempQut;
         Camera.main.transform.rotation = tempQut;
 
-        Camera.main.transform.position = Head.position - (tempQut * Vector3.forward * 5f) + (Vector3.up * 5f);
+        Camera.main.transform.position = Tr_InTowerCamera.position - (tempQut * Vector3.forward * 0.5f) + (Vector3.up * 0.5f);//Head.position - (tempQut * Vector3.forward * 5f) + (Vector3.up * 5f);
     }
 
     float ClampAngle(float angle, float min, float max)
@@ -181,33 +211,38 @@ public class Tower : MonoBehaviour
         _enemy.mStat.hp -= _atk * (int)tempDownDam;
     }
 
-    void MultiEnemyCheck(Transform _targetEnemy, Vector3 _targetPostion, int _atk, float _atkarea)
+    void MultiEnemyCheck(Vector3 _targetPostion, int _atk, float _atkarea)
     {
         Collider[] colls = Physics.OverlapSphere(_targetPostion, _atkarea);
         Enemy[] enemys = new Enemy[colls.Length];
         Renderer[] EnemyMaterial = new Renderer[colls.Length];
         int enemysarridx = 0;
 
-        List<Enemy> tempEnemyList = GameManager.stGameManager.mStageManager.GetFieldEnemysList();
-        List<GameObject> tempEnemyListobj = GameManager.stGameManager.mStageManager.GetFieldEnemysobjList();
-        for (int i=0;i < tempEnemyList.Count;i++)
-        {
-            if (tempEnemyListobj[i].activeSelf)
-                tempEnemyList[i].bSerchstate = false;
-        }
+        DeleteSerchstate();
 
         for (int i = 0; i < colls.Length; i++)
         {
             if (colls[i].GetComponent<Enemy>())
             {
                 enemys[enemysarridx] = colls[i].GetComponent<Enemy>();
-                enemys[enemysarridx].bSerchstate = true;
+                enemys[enemysarridx].SetColor(true);
                 enemysarridx++;
             }
         }
+    }
 
-        
-
+    void DeleteSerchstate()
+    {
+        List<Enemy> tempEnemyList = GameManager.stGameManager.mStageManager.GetFieldEnemysList();
+        List<GameObject> tempEnemyListobj = GameManager.stGameManager.mStageManager.GetFieldEnemysobjList();
+        for (int i = 0; i < tempEnemyList.Count; i++)
+        {
+            if (tempEnemyListobj[i].activeSelf)
+            {
+                tempEnemyList[i].bSerchstate = false;
+                tempEnemyList[i].SetColor(false);
+            }
+        }
     }
 
     void MultiShot(Transform _targetEnemy,Vector3 _targetPostion,int _atk,float _atkarea)
@@ -332,8 +367,10 @@ public class Tower : MonoBehaviour
             Collider[] colls = Physics.OverlapSphere(transform.position, fSerchDistance);
             int nComparenum = GameManager.stGameManager.mStageManager.nListFieldidx;
 
-            if (GameManager.stGameManager.mGUIManager.mGUINomalMode.mGUiModeSelect.bModeSelectonoff)
-                DrawCircle(transform.position, fSerchDistance);
+            if (bSeselect)
+                DrawCircle(transform.position, fSerchDistance, true);
+            else
+                DrawCircle(transform.position, fSerchDistance, false);
 
             if (colls.Length == 0)
             {
@@ -374,6 +411,8 @@ public class Tower : MonoBehaviour
                 //        FindEnemy = FindEnemyobj.GetComponent<Enemy>();
                 //    }
                 //}
+                DrawCircle(transform.position, fSerchDistance, false);
+
 
                 if (FindEnemyobj != null)
                 {
@@ -395,7 +434,7 @@ public class Tower : MonoBehaviour
                 }
 
                 if (mTowerType == BuildManager.eTowerType.B)
-                    DrawCircle(FindEnemyobj.transform.position,fAtkArea);
+                    DrawCircle(FindEnemyobj.transform.position,fAtkArea,true);
                 
 
 
@@ -474,14 +513,19 @@ public class Tower : MonoBehaviour
 
         Physics.BoxCast(curCamera.ViewportToWorldPoint(new Vector2(0.5f, 0.5f)), new Vector3(1, 1, 1), curCamera.transform.forward, out hitobj, curCamera.transform.rotation, fSerchDistance);
         
-
+        //지금 레이가 충돌안하면 공격이 불가능한 버그가있는데 포물선으로 쏘는 방식으로 (B타입일 때) 고쳐야할것같음
         if (hitobj.transform == null)
         {
+            DeleteSerchstate();
+            DrawCircle(new Vector3(0, 0, 0), 0, false);
             return false;
         }
 
-        DrawCircle(hitobj.point,fAtkArea);
-        MultiEnemyCheck(hitobj.transform, hitobj.point, nAtk, fAtkArea);
+        if (mTowerType == BuildManager.eTowerType.B)
+        {
+            DrawCircle(hitobj.point, fAtkArea,true);
+            MultiEnemyCheck(hitobj.point, nAtk, fAtkArea);
+        }
 
 
         if (Input.GetMouseButtonDown(0))

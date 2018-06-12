@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
     Quaternion quaDefaultPos;
 
     //사용할 오브젝트 //일부는 stagemanager로 이동
-    public Tower mControlTower;
+    
     
     public FixedJoystick mStick;
     
@@ -74,9 +74,9 @@ public class GameManager : MonoBehaviour
         mGUIManager.mGUINomalMode.GUINomalInit();
 
         mStageManager.nInGameGold = 10200;
-
+        mStageManager.InstansiateStateManager();
         //타워 생성 임시
-        for(int i=0;i<8;i++)
+        for (int i=0;i<8;i++)
         {
             listTower.Add(mBuildManager.MakeTower().GetComponent<Tower>());
             listTower[i].gameObject.SetActive(false);
@@ -114,6 +114,19 @@ public class GameManager : MonoBehaviour
         mStageManager.SetList(Enemy.eEnemyType.GOBLIN, 5);
         mStageManager.SetList(Enemy.eEnemyType.HIGHORC, 1);
         mStageManager.nListWaveNum.Add(12);
+
+        mStageManager.SetList(Enemy.eEnemyType.GOBLIN, 5);
+        mStageManager.SetList(Enemy.eEnemyType.BOMBGOBLIN, 1);
+        mStageManager.SetList(Enemy.eEnemyType.GOBLIN, 5);
+        mStageManager.SetList(Enemy.eEnemyType.HIGHORC, 1);
+        mStageManager.nListWaveNum.Add(12);
+
+        mStageManager.SetList(Enemy.eEnemyType.GOBLIN, 5);
+        mStageManager.SetList(Enemy.eEnemyType.BOMBGOBLIN, 1);
+        mStageManager.SetList(Enemy.eEnemyType.GOBLIN, 5);
+        mStageManager.SetList(Enemy.eEnemyType.HIGHORC, 1);
+        mStageManager.nListWaveNum.Add(12);
+
         //mStageManager.SetList(Enemy.eEnemyType.SLIME, 15);
         //mStageManager.nListWaveNum.Add(15);
         //mStageManager.SetList(Enemy.eEnemyType.ORC, 20);
@@ -166,6 +179,21 @@ public class GameManager : MonoBehaviour
 
     public void SetGameState(eGameState _GameState)
     {
+        switch (_GameState)
+        {
+            case eGameState.NULL:
+                break;
+            case eGameState.PLAY:
+                Time.timeScale = 1f;
+                break;
+            case eGameState.PAUSE:
+                Time.timeScale = 0f;
+                break;
+            case eGameState.GAMEOVER:
+                break;
+            default:
+                break;
+        }
         mGameState = _GameState;
     }
 
@@ -226,7 +254,13 @@ public class GameManager : MonoBehaviour
                 listTower[i].DefaultTowerAct();
             }
 
-            
+            for (int i = 0; i < mStageManager.GetFieldEnemysList().Count; i++)
+            {
+                if (mStageManager.GetFieldEnemysobjList()[i].activeSelf)
+                {
+                    mStageManager.GetFieldEnemysList()[i].ArriveGoal();
+                }
+            }
 
             //float persentnum = ((float)GameManager.stGameManager.nListFieldidx / (float)GameManager.stGameManager.GetEnemyList().Count);
 

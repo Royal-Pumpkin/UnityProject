@@ -66,9 +66,9 @@ public class EventManger : MonoBehaviour {
 
     void TowerOutUIPick()
     {
-        if (GameManager.stGameManager.mControlTower)
+        if (GameManager.stGameManager.mStageManager.mControlTower)
         {
-            GameManager.stGameManager.mControlTower.TowerGetout(Camera.main);
+            GameManager.stGameManager.mStageManager.mControlTower.TowerGetout(Camera.main);
             GameManager.stGameManager.mGUIManager.SetGUIScene(GUIManager.eGUISceneName.NOMALSCENE);
         }
         else

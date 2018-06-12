@@ -80,22 +80,24 @@ public class Enemy : MonoBehaviour {
             return false;
     }
 
+    public void SetColor(bool _triiger)
+    {
+        if (mEnemyRenderer != null)
+        {
+
+            if (_triiger)
+                mEnemyRenderer.material.color = Color.red;
+            else
+                mEnemyRenderer.material.color = mDefaultColor;
+        }
+    }
+
     public void ArriveGoal()
     {
         if(nvAgent ==null)
         {
             return;
         }
-
-        if (mEnemyRenderer != null)
-        {
-
-            if (bSerchstate)
-                mEnemyRenderer.material.color = Color.red;
-            else
-                mEnemyRenderer.material.color = mDefaultColor;
-        }
-
 
         Vector3 vecposions = transform.position - goal.position;
         float distancetogoal = vecposions.magnitude;

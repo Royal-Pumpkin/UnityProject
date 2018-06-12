@@ -7,7 +7,9 @@ public class StageManager : MonoBehaviour
 {
     int nWave;
     int nFieldIdx = 0;
-    float fTime;
+
+    public Camera IntowerCamera;
+    public GameObject IntowerDesk;
 
     public enum eStageState {NULL=-1,START,WAVE,REST,FINISH,CLEAR,GAMEOVER}
 
@@ -17,7 +19,7 @@ public class StageManager : MonoBehaviour
     public List<GameObject> mListTowers = new List<GameObject>(); //임시 퍼블릭
     public List<int> nListWaveNum = new List<int>();
 
-    int nPlayerLife = 5;
+    public int nPlayerLife = 105;
     public int nInGameGold;
 
     public int nListFieldidx;
@@ -25,6 +27,28 @@ public class StageManager : MonoBehaviour
     public Transform mGoal;
     public Transform trSpawner;
 
+    //애니메이션용 각각의 타워마다 필요하지는않음
+    float HandleAngleX;
+    float DefaultAngleX;
+    float HandleAngleY;
+    float HandleAngleZ;
+
+    //조종간
+    public Transform RotateLeft;
+    public Transform RotateRight;
+
+    //현재 조정중의 타워
+    public Tower mControlTower;
+
+    //트리거
+    bool bStartTrriger = true;
+    public bool bDelay = false;
+
+    //시간
+    public float fStartTime =0;
+    public float fGameTime =0;
+    public float fWaitTime = 0;
+    public float fRestTime = 10f;
 
     //정리된 웨이브 테이블을 받아와서 mListFieldEnemy에 추가한다. add remove를 사용할지는 고민
     //노드(비콘)들도 마찬가지로 리스트로 관리할지 생각중
@@ -37,6 +61,24 @@ public class StageManager : MonoBehaviour
     public List<Enemy> GetFieldEnemysList()
     {
         return mListFieldEnemys;
+    }
+
+    void SetStartTrriger(bool _trriger)
+    {
+        bStartTrriger = _trriger;
+    }
+
+    public void TowerDeskOn(bool _trriger)
+    {
+        IntowerDesk.SetActive(_trriger);
+        HandleAngleX = RotateLeft.localRotation.x;
+        HandleAngleY = RotateLeft.localRotation.y;
+        HandleAngleZ = RotateLeft.localRotation.z;
+    }
+
+    public void InstansiateStateManager()
+    {
+        DefaultAngleX = RotateLeft.localRotation.x;
     }
 
     public void SetList(Enemy.eEnemyType _monstername,int _nummonster)
@@ -80,6 +122,49 @@ public class StageManager : MonoBehaviour
         }
     }
 
+    public IEnumerator HandAnimation()
+    {
+        float fLerp = 0.0f ;
+        
+        while (mControlTower != null)
+        {
+
+            FixedJoystick tempstick = GameManager.stGameManager.mStick;
+
+            HandleAngleX += tempstick.Horizontal * 5f;
+            if(HandleAngleX >= 20)
+            {
+                HandleAngleX = 20;
+            }
+            else if(HandleAngleX <=-20)
+            {
+                HandleAngleX = -20;
+            }
+
+            if (tempstick.Horizontal == 0 && tempstick.Vertical == 0)
+            {
+                fLerp += Time.deltaTime / 5f;
+                HandleAngleX = Mathf.Lerp(HandleAngleX, DefaultAngleX, fLerp);
+            }
+            else
+            {
+                fLerp = 0;
+            }
+            
+
+            Quaternion tempqut = Quaternion.Euler(HandleAngleX, HandleAngleY, HandleAngleZ);
+            Quaternion reversequt = Quaternion.Euler(-HandleAngleX, HandleAngleY, HandleAngleZ);
+
+            RotateLeft.localRotation = tempqut;
+            RotateRight.localRotation = reversequt;
+
+            yield return new WaitForFixedUpdate();
+        }
+
+    }
+
+
+
     public bool lifeDown(int _val)
     {
         nPlayerLife -= _val;
@@ -93,7 +178,7 @@ public class StageManager : MonoBehaviour
     public void GameOver()
     {
         mStagestate = eStageState.GAMEOVER;
-        GameManager.stGameManager.mGUIManager.SetGUIScene(GUIManager.eGUISceneName.CLEAR);
+        GameManager.stGameManager.mGUIManager.SetGUIScene(GUIManager.eGUISceneName.GAMEOVER);
     }
 
     void ClearStage()
@@ -102,13 +187,39 @@ public class StageManager : MonoBehaviour
         GameManager.stGameManager.mGUIManager.SetGUIScene(GUIManager.eGUISceneName.CLEAR);
     }
 
-
-    IEnumerator StateProgress()
+    bool WaitStart()
     {
-        while(GameManager.stGameManager.GetGameState() == GameManager.eGameState.PLAY)
+        if (bStartTrriger)
         {
-            //WaveProgress();
-            yield return new WaitForSeconds(0.5f);
+            fStartTime = Time.deltaTime;
+            fGameTime = fStartTime;
+            return true;
+        }
+        else
+            return false;
+    }
+
+
+    IEnumerator Timer()
+    {
+        while (true)
+        {
+            if (GameManager.stGameManager.GetGameState() == GameManager.eGameState.PLAY && mStagestate == eStageState.WAVE)
+            {
+                fGameTime += Time.fixedDeltaTime;
+            }
+            yield return new WaitForFixedUpdate();
+        }
+    }
+
+    IEnumerator RestTimer(float _temptime)
+    {
+        while(GameManager.stGameManager.GetGameState() == GameManager.eGameState.PLAY && mStagestate == eStageState.REST)
+        {
+            _temptime -= Time.fixedDeltaTime;
+            GameManager.stGameManager.mGUIManager.SetInfoText(_temptime);
+            yield return new WaitForFixedUpdate();
+
         }
     }
 
@@ -116,32 +227,40 @@ public class StageManager : MonoBehaviour
     public IEnumerator StageProgress(int _numwave,float _waittime)
     {
         int defaultnum = nFieldIdx;
-        
+        fWaitTime = _waittime * nListWaveNum[nWave];
+
         while (mStagestate != eStageState.CLEAR/*클리어를 하고 스위치문안에서 함수를 부르고 while문을 나가는 법을 생각해본다*/ && mStagestate != eStageState.GAMEOVER)
         {
             if (GameManager.stGameManager.GetGameState() != GameManager.eGameState.PLAY)
                 yield return new WaitForSeconds(1f);
 
-
+            if (bDelay)
+                yield return null;
+           
             switch (mStagestate)
             {
                 case eStageState.NULL:
                     break;
                 case eStageState.START:
-
+                    if(WaitStart())
+                    {
+                        StartCoroutine(Timer());
+                        mStagestate = eStageState.WAVE;
+                    }
                     break;
                 case eStageState.WAVE:
-                    Debug.Log("WAVEING");
-
+                    //Debug.Log("WAVEING");
+                    
 
                     if (mListFieldEnemys.Count == 0)
                         break;
                     mListFieldEnemysobj[nFieldIdx].SetActive(true);
-                    Enemy tempEnemy = mListFieldEnemys[nFieldIdx].GetComponent<Enemy>();
-                    tempEnemy.goal = mGoal;
+                    mListFieldEnemys[nFieldIdx].goal = mGoal;
                     ++nFieldIdx;
 
-                    if(nFieldIdx == (defaultnum + nListWaveNum[nWave]))
+                  
+
+                    if (nFieldIdx == (defaultnum + nListWaveNum[nWave]))
                     {
                         ++nWave;
                         if(nListWaveNum[nWave] == -1)
@@ -149,26 +268,22 @@ public class StageManager : MonoBehaviour
                             mStagestate = eStageState.FINISH;
                             break;
                         }
-                        mStagestate = eStageState.REST;
-                    }
-
-                    for(int i=0;i<mListFieldEnemys.Count;i++)
-                    {
-                        if (mListFieldEnemysobj[i].activeSelf)
-                        {
-                            tempEnemy = mListFieldEnemys[i].GetComponent<Enemy>();
-                            tempEnemy.ArriveGoal();
-                        }
+                        IEnumerator tempcorutine = DelayTime(fRestTime);
+                        StartCoroutine(tempcorutine);
+                        GameManager.stGameManager.mGUIManager.SetBtninfo(tempcorutine, mStagestate);
+                        defaultnum = nFieldIdx;
+                        yield return null;
                     }
 
                     yield return new WaitForSeconds(_waittime);
                     break;
                 case eStageState.REST:
-                    defaultnum = nFieldIdx;
-                    yield return new WaitForSeconds(3f);
-                    mStagestate = eStageState.WAVE;
+                    
+
+                    
                     break;
                 case eStageState.FINISH:
+
                     int Checknum = 0;
 
                     for(int i=0;i<mListFieldEnemys.Count;i++)
@@ -183,14 +298,7 @@ public class StageManager : MonoBehaviour
                         break;
                     }
 
-                    for (int i = 0; i < mListFieldEnemys.Count; i++)
-                    {
-                        if (mListFieldEnemysobj[i].activeSelf)
-                        {
-                            tempEnemy = mListFieldEnemys[i].GetComponent<Enemy>();
-                            tempEnemy.ArriveGoal();
-                        }
-                    }
+                   
                     break;
                 case eStageState.CLEAR:
 
@@ -206,6 +314,21 @@ public class StageManager : MonoBehaviour
         
     }
 
+    public IEnumerator DelayTime(float _delay)
+    {
+        bDelay = true;
+        mStagestate = eStageState.REST;
+        StartCoroutine(RestTimer(_delay));
+        yield return new WaitForSeconds(_delay);
+        //stopcorutine을해도 이 뒤에 것이 위에 시간뒤에 불린다
+        if (bDelay == true)
+        {
+            mStagestate = eStageState.WAVE;
+            bDelay = false;
+        }
+    }
+
     
+
 }
 

@@ -8,12 +8,10 @@ public class GUINomalMode : MonoBehaviour {
     public GUIBuildMode mGUIBuildMode;
     public GUIModeSelect mGUiModeSelect;
     public Button ElseView;
-    public Text Gear;
+    
+    public Text Gear2;
 
-    private void Update()
-    {
-        Gear.text = GameManager.stGameManager.mStageManager.nInGameGold.ToString();
-    }
+    
 
     public void GUINomalInit()
     {
