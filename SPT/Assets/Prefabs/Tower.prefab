@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4540254797468900}
   - component: {fileID: 114123146997125564}
   - component: {fileID: 65645579496376122}
+  - component: {fileID: 120685709855427976}
   m_Layer: 0
   m_Name: Tower
   m_TagString: Tower
@@ -101,8 +102,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1282302833805042}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.39155388, y: -1.2959832, z: -0.9969592}
-  m_LocalScale: {x: 2.420613, y: 2, z: 2.4019284}
+  m_LocalPosition: {x: 0.39155388, y: 0.459, z: -0.9969592}
+  m_LocalScale: {x: 2.420613, y: 5.510392, z: 2.4019284}
   m_Children: []
   m_Father: {fileID: 4540254797468900}
   m_RootOrder: 0
@@ -113,8 +114,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1461757760019040}
-  m_LocalRotation: {x: -0.22456191, y: 0.0073083714, z: -0.0016842476, w: -0.974431}
-  m_LocalPosition: {x: 0.0041144015, y: 1.0721195, z: -2.159449}
+  m_LocalRotation: {x: 0.24002779, y: 0.0020291451, z: -0.0005018631, w: 0.9707638}
+  m_LocalPosition: {x: -0.008084697, y: 0.239, z: -0.0139640095}
   m_LocalScale: {x: 1, y: 0.619004, z: 0.9274536}
   m_Children: []
   m_Father: {fileID: 4609950982239942}
@@ -127,7 +128,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1225034855940626}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 73.819496, y: -0.0000019073486, z: 14.202539}
+  m_LocalPosition: {x: 73.819496, y: 12.77, z: 14.202539}
   m_LocalScale: {x: 0.592938, y: 0.59293807, z: 0.59293807}
   m_Children:
   - {fileID: 4003287555076928}
@@ -142,7 +143,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1566933311845254}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.39155388, y: 0.5640168, z: -0.9969592}
+  m_LocalPosition: {x: 0.39155388, y: 4.44, z: -0.9969592}
   m_LocalScale: {x: 5, y: 4, z: 5}
   m_Children:
   - {fileID: 4260232217765054}
@@ -157,8 +158,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1907892052514918}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.446}
-  m_LocalScale: {x: 0.3986209, y: 0.19931045, z: 0.3986209}
+  m_LocalPosition: {x: 0, y: -0.112, z: 0.528}
+  m_LocalScale: {x: 0.39862108, y: 0.19931044, z: 0.5627154}
   m_Children: []
   m_Father: {fileID: 4609950982239942}
   m_RootOrder: 1
@@ -316,12 +317,110 @@ MonoBehaviour:
   Tr_InTowerCamera: {fileID: 4260232217765054}
   Head: {fileID: 4609950982239942}
   mCollider: {fileID: 65645579496376122}
-  nAtk: 30
+  nAtk: 1
+  nTier: 1
   fSerchDistance: 20
   fFireCoolDown: 0
   fFireRate: 0.83
   nPrice: 0
-  fAtkArea: 30
+  fAtkArea: 15
   fSlow: 2
+  bSeselect: 0
+  drawline: {fileID: 120685709855427976}
+  segments: 30
+  xradius: 10
+  yradius: 0.66
   fCameraSpeed: 5
   FindEnemyobj: {fileID: 0}
+--- !u!120 &120685709855427976
+LineRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1225034855940626}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 0
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
+  m_RenderingLayerMask: 4294967295
+  m_Materials:
+  - {fileID: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Positions:
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 1}
+  m_Parameters:
+    serializedVersion: 2
+    widthMultiplier: 1
+    widthCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    colorGradient:
+      serializedVersion: 2
+      key0: {r: 1, g: 1, b: 1, a: 1}
+      key1: {r: 1, g: 1, b: 1, a: 1}
+      key2: {r: 0, g: 0, b: 0, a: 0}
+      key3: {r: 0, g: 0, b: 0, a: 0}
+      key4: {r: 0, g: 0, b: 0, a: 0}
+      key5: {r: 0, g: 0, b: 0, a: 0}
+      key6: {r: 0, g: 0, b: 0, a: 0}
+      key7: {r: 0, g: 0, b: 0, a: 0}
+      ctime0: 0
+      ctime1: 65535
+      ctime2: 0
+      ctime3: 0
+      ctime4: 0
+      ctime5: 0
+      ctime6: 0
+      ctime7: 0
+      atime0: 0
+      atime1: 65535
+      atime2: 0
+      atime3: 0
+      atime4: 0
+      atime5: 0
+      atime6: 0
+      atime7: 0
+      m_Mode: 0
+      m_NumColorKeys: 2
+      m_NumAlphaKeys: 2
+    numCornerVertices: 0
+    numCapVertices: 0
+    alignment: 0
+    textureMode: 0
+    generateLightingData: 0
+  m_UseWorldSpace: 1
+  m_Loop: 0

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GUIBuildMode : MonoBehaviour {
     public GameObject Panel;
-    public UnityEngine.UI.Button ElseView;
+    public UnityEngine.UI.Button ElseView; //이걸 하나하나마다 만들것인지 노말뷰에서 기능만 달리할건지 고민
     public GameObject TowerImagePrefab;
     List<GameObject> BuilderableTowerImage = new List<GameObject>();
 

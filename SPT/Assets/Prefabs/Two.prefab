@@ -97,7 +97,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd5e5c20073ed61449fc6f3a89faae3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mEnemyType: -1
   goal: {fileID: 0}
+  nvAgent: {fileID: 0}
+  MonsterIdx: 0
 --- !u!136 &136970137842619994
 CapsuleCollider:
   m_ObjectHideFlags: 1

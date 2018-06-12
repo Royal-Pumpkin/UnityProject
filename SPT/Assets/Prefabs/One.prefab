@@ -210,9 +210,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd5e5c20073ed61449fc6f3a89faae3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mEnemyType: -1
   goal: {fileID: 0}
   nvAgent: {fileID: 0}
   MonsterIdx: 0
+  gear: 0
 --- !u!136 &136154902140016538
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -235,7 +237,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 6.5
+  m_Speed: 8
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
