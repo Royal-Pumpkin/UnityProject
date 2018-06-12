@@ -23,10 +23,6 @@ public class MainManager : MonoBehaviour {
         }
     }
 
-    
-    
-
-    
     private void Awake()
     {
         if (instance == null)
@@ -45,9 +41,8 @@ public class MainManager : MonoBehaviour {
     private void Start()
     {
         //초기화는 데이터 읽어와서 하는걸로
-        player.Init(100,100,5,100,0);
+        player.Init(100,100,5,12,0);
         mainGUI.Init(player);
-
     }
 
     public void ChangeGold(int value)
@@ -94,6 +89,8 @@ public class MainManager : MonoBehaviour {
             player.ClearLastStage();
         }
         ChangeGold(gold);
+
+        
     }
     public void FailStage()
     {
