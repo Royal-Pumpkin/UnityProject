@@ -27,10 +27,7 @@ public class MainManager : MonoBehaviour {
     {
         if (instance == null)
             instance = this;
-        else
-        {
-            Destroy(this.gameObject);
-        }
+        DontDestroyOnLoad(this);
     }
 
     public void ChangeValueSet(Setting.SETKIND kind, int value)
