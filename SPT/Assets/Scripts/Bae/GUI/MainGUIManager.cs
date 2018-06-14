@@ -9,10 +9,16 @@ public class MainGUIManager : MonoBehaviour {
     public MainGUISceneName sceneState;
     public Notice notice;
     public GameObject guiSetting;
+
+    [Header("text")]
     public Text goldText;
     public Text diaText;
     public Text keyText;
+
     public GameObject backBtn;
+
+    public GUIStageButton[] stageBtns;
+    public Sprite[] stageButtonTexture;
 
     private void Start()
     {
@@ -24,6 +30,16 @@ public class MainGUIManager : MonoBehaviour {
         SetDiaText(player.Diamond);
         SetKeyText(player.Key, player.MaxKey);
         guiSetting.GetComponent<GUISetting>().Init(MainManager.Instance.setting);
+
+        StageBtnImageSet(player, 1);
+    }
+    public void StageBtnImageSet(Player player, int difficulty)
+    {
+        for (int i = 0; i < stageBtns.Length; i++)
+        {
+            Player.StageClearInfo info = player.GetStageClearInfo(i + 1, difficulty);
+            stageBtns[i].Init(info.star, info.clear);
+        }
     }
 
     public void SetGoldText(int gold)
@@ -65,9 +81,20 @@ public class MainGUIManager : MonoBehaviour {
         guiSetting.SetActive(value);
     }
 
+    public void OnOffMainGUI(bool value)
+    {
+        MainGUI.SetActive(value);
+    }
+
     //현재는 메인화면으로 가면 되지만 화면깊이가 생기면 변경필요
     public void OnClickBackBtn()
     {
         SetGUIScene(0);
+    }
+
+    public void OnClickDifficulty(int num)
+    {
+        MainManager.Instance.Difficulty = num;
+        StageBtnImageSet(MainManager.Instance.player, num);
     }
 }

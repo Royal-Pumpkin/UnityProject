@@ -2,62 +2,30 @@
 using System.Collections;
 using System.Data.SQLite;
 using System.IO;
+using System;
+using System.Collections.Generic;
 public class SQLiteUtil
 {
-    void CopyDB()
+    public static void VaildCheckDB()
     {
-        string filepath = string.Empty;
-        if (Application.platform == RuntimePlatform.Android)
-        {
-            filepath = Application.persistentDataPath + "/dbname.db";
-            if (!File.Exists(filepath))
-            {
-
-                WWW loadDB = new WWW(Path.Combine(Application.streamingAssetsPath, ""));
-                loadDB.bytesDownloaded.ToString();
-                while (!loadDB.isDone) { }
-                File.WriteAllBytes(filepath, loadDB.bytes);
-            }
-        }
-        else
-        {
-            filepath = Application.dataPath + "/dbname.db";
-            if (!File.Exists(filepath))
-            {
-                File.Copy(Application.streamingAssetsPath + "/dbname.db", filepath);
-            }
-        }
+        DBManager.CopyDB();
     }
 
-    public void Test()
+    public static Dictionary<string, object> PlayerInfo()
     {
-        string strConn = @"Data Source=D:\testdb.db";
+        string[] keys = { "gold", "key", "gem", "key_recovery_time" };
+        return DBManager.Instance.SelectOne(0, keys);
+    }    
 
-        using (SQLiteConnection conn = new SQLiteConnection(strConn))
-        {
-            conn.Open();
-
-            string strSQL = "CREATE TABLE member (name string)";
-            SQLiteCommand sqlcmd = new SQLiteCommand(strSQL, conn);
-            sqlcmd.ExecuteNonQuery();
-            sqlcmd.Dispose();
-
-            strSQL = "INSERT INTO member VALUES ('WestwoodForever SQLite C# Sample.')";
-            sqlcmd = new SQLiteCommand(strSQL, conn);
-            sqlcmd.ExecuteNonQuery();
-            sqlcmd.Dispose();
-
-            strSQL = "SELECT * FROM member";
-            sqlcmd = new SQLiteCommand(strSQL, conn);
-            SQLiteDataReader rd = sqlcmd.ExecuteReader();
-            sqlcmd.Dispose();
-            while (rd.Read())
-            {
-                Debug.Log(rd.GetString(0));
-            }
-            rd.Close();
-
-        }
+    public static List<Dictionary<string, object>> StageClearInfo()
+    {
+        string[] keys = { "num", "difficulty", "clear", "star" };
+        return DBManager.Instance.SelectList(1, keys);
     }
-    
+
+    public static List<Dictionary<string, object>> TowerUpgradeTreeInfo()
+    {
+        string[] keys = { "num", "need_num", "next_num", "get_tower", "usable" };
+        return DBManager.Instance.SelectList(2, keys);
+    }
 }
