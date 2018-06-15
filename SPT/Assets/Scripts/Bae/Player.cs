@@ -110,7 +110,13 @@ public class Player : MonoBehaviour {
     {
         return stageClearInfoList[num - 1][difficulty - 1];
     }
-    
+    class TowerTree
+    {
+        public TowerTree()
+        {
+
+        }
+    }
     
     //서버 없을 때 재생 방법 고민해봐야 함
     //IEnumerator GenKey()

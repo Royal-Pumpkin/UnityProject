@@ -4,13 +4,10 @@ using UnityEngine;
 
 public class StageInfoManager : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    [SerializeField] List<GameObject> mapPrefabs;
+
+    public GameObject GetMap(int stageNumber)
+    {
+        return mapPrefabs[stageNumber];
+    }
 }

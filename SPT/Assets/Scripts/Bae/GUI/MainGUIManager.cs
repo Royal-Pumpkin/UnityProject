@@ -17,8 +17,12 @@ public class MainGUIManager : MonoBehaviour {
 
     public GameObject backBtn;
 
+    [Header("stage")]
     public GUIStageButton[] stageBtns;
     public Sprite[] stageButtonTexture;
+
+    [Header("tower tree")]
+    public GUIUpgarde[] upgrades;
 
     private void Start()
     {
