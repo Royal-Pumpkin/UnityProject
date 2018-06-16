@@ -147,7 +147,7 @@ public class MainManager : MonoBehaviour {
     /// 스테이지 클리어하고 씬이 넘어가야 할 시점에서 호출
     /// </summary>
     /// <param name="gold"></param>
-    public void ClearStage(int gold)
+    public void ClearStage(int gold,int star)
     {
         if (currentStage == (player.LastStage+1))
         {

@@ -6,19 +6,20 @@ public class TowerManager : MonoBehaviour {
 
     public enum TowerName { A, B, C, D, AA, AB, AC, AD, BA, BB, BC, BD, CA, CB, CC, CD, DA, DB, DC, DD }
 
-    [SerializeField] List<GameObject> towerPrefabs;
+    [SerializeField] List<GameObject> towerModelingPrefabs;
     List<List<GameObject>> towerPool = new List<List<GameObject>>();
 
+    [SerializeField] List<TowerInfo> towerInfoList;
     public void Init()
     {
         Transform tr = GetComponent<Transform>();
-        for(int i = 0; i < towerPrefabs.Count; i++)
+        for(int i = 0; i < towerModelingPrefabs.Count; i++)
         {
             List<GameObject> temp = new List<GameObject>();
             //
             for(int j = 0; j < 10; j++)
             {
-                GameObject tempObj = Instantiate<GameObject>(towerPrefabs[i],tr);
+                GameObject tempObj = Instantiate<GameObject>(towerModelingPrefabs[i],tr);
                 temp.Add(tempObj);
             }
             towerPool.Add(temp);
@@ -35,11 +36,10 @@ public class TowerManager : MonoBehaviour {
         }
         if(obj == null)
         {
-            obj = Instantiate<GameObject>(towerPrefabs[(int)name]);
+            obj = Instantiate<GameObject>(towerModelingPrefabs[(int)name]);
             temp.Add(obj);
         }
         return obj;
-    }
-    
+    }   
 
 }

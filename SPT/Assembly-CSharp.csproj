@@ -60,6 +60,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Bae\Common\DontDestroyObject.cs" />
+    <Compile Include="Assets\Scripts\Bae\EnemyInfo.cs" />
+    <Compile Include="Assets\Scripts\Bae\EnemyManager.cs" />
     <Compile Include="Assets\Scripts\Bae\GUI\GUILoading.cs" />
     <Compile Include="Assets\Scripts\Bae\GUI\GUISet.cs" />
     <Compile Include="Assets\Scripts\Bae\GUI\GUISetting.cs" />
@@ -70,7 +72,9 @@
     <Compile Include="Assets\Scripts\Bae\MainManager.cs" />
     <Compile Include="Assets\Scripts\Bae\Player.cs" />
     <Compile Include="Assets\Scripts\Bae\Setting.cs" />
+    <Compile Include="Assets\Scripts\Bae\StageInfo.cs" />
     <Compile Include="Assets\Scripts\Bae\StageInfoManager.cs" />
+    <Compile Include="Assets\Scripts\Bae\TowerInfo.cs" />
     <Compile Include="Assets\Scripts\Bae\TowerManager.cs" />
     <Compile Include="Assets\Scripts\Bae\Util\JsonFileUtil.cs" />
     <Compile Include="Assets\Scripts\Bae\Util\SQLite\DBManager.cs" />
