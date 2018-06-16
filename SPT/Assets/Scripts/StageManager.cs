@@ -23,9 +23,12 @@ public class StageManager : MonoBehaviour
     public int nInGameGold;
 
     public int nListFieldidx;
+
     //관리 오브젝트들 맵이 로딩될 때 할당해준다.
     public Transform mGoal;
     public Transform trSpawner;
+    public Transform Enemysparent;
+    public Transform Towersparent;
 
     //애니메이션용 각각의 타워마다 필요하지는않음
     float HandleAngleX;
@@ -90,31 +93,31 @@ public class StageManager : MonoBehaviour
             case Enemy.eEnemyType.GOBLIN:
                 for(int i=0;i<_nummonster;i++)
                 {
-                    GameManager.stGameManager.mEventManager.EnemyCreate(Enemy.eEnemyType.GOBLIN, mListFieldEnemysobj,mListFieldEnemys);
+                    GameManager.stGameManager.mEventManager.EnemyCreate(Enemy.eEnemyType.GOBLIN, mListFieldEnemysobj,mListFieldEnemys, Enemysparent);
                 }
                 break;
             case Enemy.eEnemyType.BOMBGOBLIN:
                 for (int i = 0; i < _nummonster; i++)
                 {
-                    GameManager.stGameManager.mEventManager.EnemyCreate(Enemy.eEnemyType.BOMBGOBLIN, mListFieldEnemysobj, mListFieldEnemys);
+                    GameManager.stGameManager.mEventManager.EnemyCreate(Enemy.eEnemyType.BOMBGOBLIN, mListFieldEnemysobj, mListFieldEnemys, Enemysparent);
                 }
                 break;
             case Enemy.eEnemyType.SLIME:
                 for (int i = 0; i < _nummonster; i++)
                 {
-                    GameManager.stGameManager.mEventManager.EnemyCreate(Enemy.eEnemyType.SLIME, mListFieldEnemysobj, mListFieldEnemys);
+                    GameManager.stGameManager.mEventManager.EnemyCreate(Enemy.eEnemyType.SLIME, mListFieldEnemysobj, mListFieldEnemys, Enemysparent);
                 }
                 break;
             case Enemy.eEnemyType.ORC:
                 for (int i = 0; i < _nummonster; i++)
                 {
-                    GameManager.stGameManager.mEventManager.EnemyCreate(Enemy.eEnemyType.ORC, mListFieldEnemysobj, mListFieldEnemys);
+                    GameManager.stGameManager.mEventManager.EnemyCreate(Enemy.eEnemyType.ORC, mListFieldEnemysobj, mListFieldEnemys, Enemysparent);
                 }
                 break;
             case Enemy.eEnemyType.HIGHORC:
                 for (int i = 0; i < _nummonster; i++)
                 {
-                    GameManager.stGameManager.mEventManager.EnemyCreate(Enemy.eEnemyType.HIGHORC, mListFieldEnemysobj, mListFieldEnemys);
+                    GameManager.stGameManager.mEventManager.EnemyCreate(Enemy.eEnemyType.HIGHORC, mListFieldEnemysobj, mListFieldEnemys, Enemysparent);
                 }
                 break;
             default:
@@ -217,7 +220,7 @@ public class StageManager : MonoBehaviour
         while(GameManager.stGameManager.GetGameState() == GameManager.eGameState.PLAY && mStagestate == eStageState.REST)
         {
             _temptime -= Time.fixedDeltaTime;
-            GameManager.stGameManager.mGUIManager.SetInfoText(_temptime);
+            GameManager.stGameManager.mGUIManager.mGUIAlways.SetInfoText(_temptime);
             yield return new WaitForFixedUpdate();
 
         }
@@ -254,9 +257,10 @@ public class StageManager : MonoBehaviour
 
                     if (mListFieldEnemys.Count == 0)
                         break;
-                    mListFieldEnemysobj[nFieldIdx].SetActive(true);
                     mListFieldEnemys[nFieldIdx].goal = mGoal;
+                    mListFieldEnemysobj[nFieldIdx].SetActive(true);
                     ++nFieldIdx;
+                    GameManager.stGameManager.mGUIManager.mGUIAlways.WaveBarControl();
 
                   
 
@@ -270,7 +274,7 @@ public class StageManager : MonoBehaviour
                         }
                         IEnumerator tempcorutine = DelayTime(fRestTime);
                         StartCoroutine(tempcorutine);
-                        GameManager.stGameManager.mGUIManager.SetBtninfo(tempcorutine, mStagestate);
+                        GameManager.stGameManager.mGUIManager.mGUIAlways.SetBtninfo(tempcorutine, mStagestate);
                         defaultnum = nFieldIdx;
                         yield return null;
                     }
