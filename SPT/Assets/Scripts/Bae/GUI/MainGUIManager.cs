@@ -22,7 +22,8 @@ public class MainGUIManager : MonoBehaviour {
     public Sprite[] stageButtonTexture;
 
     [Header("tower tree")]
-    public GUIUpgarde[] upgrades;
+    public GUITowerTreeTab[] tabs;
+    public int onTabNumber;
 
     private void Start()
     {
@@ -36,6 +37,18 @@ public class MainGUIManager : MonoBehaviour {
         guiSetting.GetComponent<GUISetting>().Init(MainManager.Instance.setting);
 
         StageBtnImageSet(player, 1);
+
+        Debug.Log(player.TowerTreeCount);
+        for(int i=0;i< player.TowerTreeCount; i++)
+        {
+            Debug.Log(player.NodesNumberPerTree(i));
+            for(int j = 0; j < player.NodesNumberPerTree(i); j++)
+            {
+                Debug.Log(i + "" + j);
+                
+                tabs[i].upgardes[j].Init(player.GetTowerTreeNode(i+1,j+1).num, player.GetTowerTreeNode(i + 1, j + 1).usable);
+            }
+        }
     }
     public void StageBtnImageSet(Player player, int difficulty)
     {
@@ -79,6 +92,18 @@ public class MainGUIManager : MonoBehaviour {
             else
                 scenes[i].SetActive(false);
         }
+        switch (_GUISceneName)
+        {
+            case MainGUISceneName.NULL:
+                break;
+            case MainGUISceneName.MAIN:
+                break;
+            case MainGUISceneName.ARMORY:
+                tabs[onTabNumber].CheckGold();
+                break;
+            case MainGUISceneName.STAGE:
+                break;
+        }
     }
     public void OnOffSettingGUI(bool value)
     {
@@ -100,5 +125,18 @@ public class MainGUIManager : MonoBehaviour {
     {
         MainManager.Instance.Difficulty = num;
         StageBtnImageSet(MainManager.Instance.player, num);
+    }
+
+    public void OnClickTowerTreeTab(int num)
+    { 
+        tabs[onTabNumber].treeUIObject.SetActive(false);
+        tabs[num].treeUIObject.SetActive(true);
+        onTabNumber = num;
+    }
+    public void GUIUpgradeStateChange(int treeNumber, int nodeNumber, int usable)
+    {
+        //아직은 usable 파라미터 사용안됨
+        tabs[treeNumber - 1].upgardes[nodeNumber - 1].ChangeState();
+        tabs[treeNumber - 1].CheckGold();
     }
 }

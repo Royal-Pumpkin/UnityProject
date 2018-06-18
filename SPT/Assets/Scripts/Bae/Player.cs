@@ -6,7 +6,7 @@ using System;
 
 [Serializable]
 public class Player : MonoBehaviour {
-
+    [Serializable]
     public struct StageClearInfo
     {
         public int star;
@@ -22,8 +22,8 @@ public class Player : MonoBehaviour {
 
     public int difficultyCount = 3;
 
-    List<StageClearInfo[]> stageClearInfo = new List<StageClearInfo[]>();
-    List<TowerTreeNode[]> towerTree = new List<TowerTreeNode[]>();
+    [SerializeField] List<StageClearInfo[]> stageClearInfo = new List<StageClearInfo[]>();
+    [SerializeField] List<TowerTreeNode[]> towerTree = new List<TowerTreeNode[]>();
     public int Gold
     {
         get { return gold; }
@@ -100,6 +100,8 @@ public class Player : MonoBehaviour {
     public void Init(List<StageClearInfo[]> stageClearInfo, List<TowerTreeNode[]> towerTree)
     {
         key = MaxKey;
+        Debug.Log(stageClearInfo.Count);
+        Debug.Log(towerTree.Count);
         this.stageClearInfo = stageClearInfo;
         this.towerTree = towerTree;
     }
@@ -134,21 +136,29 @@ public class Player : MonoBehaviour {
         return towerTree[tree - 1][node - 1];
     }
 
+    [Serializable]
     public struct TowerTreeNode
     {
+        public int num;
         public string treeName;
         public int[] needNum;
         public int[] nextNum;
         public int usable;
         public int getTowerId;
 
-        public TowerTreeNode(string treeName, int[] needNum, int[] nextNum, int usable, int getTowerId)
+        public TowerTreeNode(int num,string treeName, int[] needNum, int[] nextNum, int usable, int getTowerId)
         {
+            this.num = num;
             this.treeName = treeName;
             this.needNum = needNum;
             this.nextNum = nextNum;
             this.usable = usable;
             this.getTowerId = getTowerId;
+        }
+
+        public override string ToString()
+        {
+            return "treeName "+treeName;
         }
     }
 
@@ -159,6 +169,41 @@ public class Player : MonoBehaviour {
         PlayerPrefsUtil.SaveStageClearInfoData(stage, difficulty, star);
     }
 
+    public int TowerTreeCount { get { return towerTree.Count; } }
+    public int NodesNumberPerTree(int treeNumber){return towerTree[treeNumber].Length; }
+
+    public void BuyTowerNode(int treeNum,int nodeNum)
+    {
+        PlayerPrefsUtil.SaveTowerTreeNodeUsable(treeNum, nodeNum, 0);
+        int trn = treeNum - 1;
+        int ndn = nodeNum - 1;
+        towerTree[trn][ndn].usable = 0;
+        int[] nextNums = towerTree[trn][ndn].nextNum;
+
+        for(int i = 0; i < nextNums.Length; i++)
+        {
+            int nextNum = nextNums[i] - 1;
+            if (nextNum == -1)
+            {
+                break;
+            }
+            int[] needNums = towerTree[trn][nextNum].needNum;
+            bool checkUsable = true;
+            for(int j = 0; j < needNums.Length; j++)
+            {
+                if (towerTree[trn][needNums[j] - 1].usable != 0)
+                {
+                    checkUsable=false;
+                }
+            }
+            if (checkUsable)
+            {
+                towerTree[trn][nextNum].usable = 1;
+                PlayerPrefsUtil.SaveTowerTreeNodeUsable(treeNum, nextNums[i], 1);
+                MainManager.Instance.GUIUpgradeStateChange(treeNum, nextNums[i], 1);
+            }
+        }
+    }
     //서버 없을 때 재생 방법 고민해봐야 함
     //IEnumerator GenKey()
     //{

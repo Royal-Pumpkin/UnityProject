@@ -2,6 +2,7 @@
   "trees": {
     "ATower": [
       {
+        "num": 1,
         "name": "a1",
         "need_num": [
           0
@@ -13,6 +14,7 @@
         "get_tower": 0
       },
       {
+        "num": 2,
         "name": "a2",
         "need_num": [
           0
@@ -26,6 +28,7 @@
     ],
     "BTower": [
       {
+        "num": 1,
         "name": "b1",
         "need_num": [
           0

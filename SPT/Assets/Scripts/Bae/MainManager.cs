@@ -179,4 +179,22 @@ public class MainManager : MonoBehaviour {
         mainGUI.OnOffMainGUI(true);
         SceneManager.LoadScene("Main");
     }
+
+    public void BuyTowerNode(int num)
+    {
+        player.BuyTowerNode(mainGUI.onTabNumber + 1, num);
+    }
+
+    public void GUIUpgradeStateChange(int treeNumber,int nodeNumber, int usable)
+    {
+        mainGUI.GUIUpgradeStateChange(treeNumber, nodeNumber, usable);
+    }
+
+    private void OnGUI()
+    {
+        if(GUI.Button(new Rect(0, 0, 100, 100), "삭제"))
+        {
+            PlayerPrefs.DeleteAll();
+        }
+    }
 }

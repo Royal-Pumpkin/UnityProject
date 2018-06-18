@@ -25,14 +25,17 @@ public class JsonDataConversion
             Player.TowerTreeNode[] towerTreeNodes = new Player.TowerTreeNode[tree.Count];
             for(int j = 0; j < tree.Count; j++)
             {
-                
+                towerTreeNodes[j].num = (int)tree[j]["num"];
                 towerTreeNodes[j].treeName = (string)tree[j]["name"];
                 towerTreeNodes[j].needNum = ArrayIntToJsonData(tree[j]["need_num"]);
                 towerTreeNodes[j].nextNum = ArrayIntToJsonData(tree[j]["next_num"]);
                 towerTreeNodes[j].usable = (int)tree[j]["usable"];
                 towerTreeNodes[j].getTowerId = (int)tree[j]["get_tower"];
+                Debug.Log(towerTreeNodes[j]);
             }
+            towerTree.Add(towerTreeNodes);
         }
+        
         return towerTree;
     }
 }

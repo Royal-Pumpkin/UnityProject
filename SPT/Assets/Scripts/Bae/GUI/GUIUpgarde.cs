@@ -16,22 +16,21 @@ public class GUIUpgarde : MonoBehaviour,IPointerClickHandler {
     //구매 완료, 구매 가능, 구매 불가능
     bool isEnable;
 
-    public enum STATE { NULL,COM,AVAIL,UNAVAIL}
+    public enum STATE { COM,AVAIL,UNAVAIL}
     /// <summary>
     /// 0 : 구매완료, 1 : 구매 가능, 2 : 구매 불가능
     /// </summary>
     STATE state;
 
 
-    void Init(int num, int usable)
+    public void Init(int num, int usable)
     {
+        Debug.Log("나 호출 됨");
         STATE state = (STATE)usable;
         SetInfo(nameStr, texture, gold);
         this.num = num;
         switch (state)
         {
-            case STATE.NULL:
-                break;
             case STATE.COM:
                 Activate();
                 break;
@@ -64,7 +63,7 @@ public class GUIUpgarde : MonoBehaviour,IPointerClickHandler {
     }
 
     //구매가능이 되었을 때 사용 
-    void ChangeState()
+    public void ChangeState()
     {
         image.color = Color.white;
         state = STATE.AVAIL;
@@ -74,8 +73,6 @@ public class GUIUpgarde : MonoBehaviour,IPointerClickHandler {
     {
         switch (state)
         {
-            case STATE.NULL:
-                break;
             case STATE.COM:
                 break;
             case STATE.AVAIL:
@@ -83,6 +80,7 @@ public class GUIUpgarde : MonoBehaviour,IPointerClickHandler {
                 {
                     MainManager.Instance.mainGUI.notice.OnNotice(0);
                     MainManager.Instance.ChangeGold(-gold);
+                    MainManager.Instance.BuyTowerNode(num);
                     Activate();
                 }
                 else
@@ -99,6 +97,6 @@ public class GUIUpgarde : MonoBehaviour,IPointerClickHandler {
     public void Activate()
     {
         state = STATE.COM;
-        goldText.gameObject.SetActive(false);
+        goldText.gameObject.SetActive(false);        
     }
 }
