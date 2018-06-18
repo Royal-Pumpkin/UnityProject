@@ -8,17 +8,14 @@ public class GUIManager : MonoBehaviour {
     eGUISceneName mGUISceneState;
     public GUIControlMode mGUIControlMode;
     public GUINomalMode mGUINomalMode;
-
-    public UnityEngine.UI.Text Gear;
-    public UnityEngine.UI.Text Life;
-    public UnityEngine.UI.Text LeftTime;
-    public UnityEngine.UI.Button PauseBtn;
-    public UnityEngine.UI.Button tempBtn;
+    public GUIAlwaysOn mGUIAlways;
+    
 
     // Use this for initialization
     void Start () {
         mGUISceneState = eGUISceneName.NOMALSCENE;
-        PauseBtn.onClick.AddListener(() => GameManager.stGameManager.SetGameState(GameManager.eGameState.PAUSE));
+        
+
     }
 	
 	// Update is called once per frame
@@ -36,31 +33,10 @@ public class GUIManager : MonoBehaviour {
         }
 
 
-        Gear.text = GameManager.stGameManager.mStageManager.nInGameGold.ToString();
-        Life.text = GameManager.stGameManager.mStageManager.nPlayerLife.ToString();
+        
     }
 
-    public void SetInfoText(float _RestTime)
-    {
-        LeftTime.text =_RestTime.ToString("N1");
-    }
-
-    public void SetBtninfo(IEnumerator _corutine, StageManager.eStageState _statgeState)
-    {
-        tempBtn.onClick.RemoveAllListeners();
-        tempBtn.onClick.AddListener(() => StopTimer(_corutine, _statgeState));
-        tempBtn.onClick.AddListener(() => tempBtn.onClick.RemoveAllListeners());
-    }
-
-    void StopTimer(IEnumerator _corutine , StageManager.eStageState _statgeState)
-    {
-        if (_statgeState == StageManager.eStageState.REST)
-        {
-            StopCoroutine(_corutine);
-            GameManager.stGameManager.mStageManager.mStagestate = StageManager.eStageState.WAVE;
-            GameManager.stGameManager.mStageManager.bDelay = false;
-        }
-    }
+    
 
     public void SetGUIScene(eGUISceneName _GUISceneName)
     {

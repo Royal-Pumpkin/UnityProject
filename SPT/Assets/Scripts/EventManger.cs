@@ -123,7 +123,7 @@ public class EventManger : MonoBehaviour {
         return _CreateEnemy;
     }
 
-    public bool EnemyCreate(Enemy.eEnemyType _EnemyName,List<GameObject> _listEnemyobj,List<Enemy> _listEnemy)
+    public bool EnemyCreate(Enemy.eEnemyType _EnemyName,List<GameObject> _listEnemyobj,List<Enemy> _listEnemy,Transform _parentenemy)
     {
         GameObject MakeEnemy;
         
@@ -132,19 +132,19 @@ public class EventManger : MonoBehaviour {
             case Enemy.eEnemyType.NULL:
                 return false;
             case Enemy.eEnemyType.GOBLIN:
-                MakeEnemy = Instantiate(preGoblin);
+                MakeEnemy = Instantiate(preGoblin, _parentenemy);
                 break;
             case Enemy.eEnemyType.BOMBGOBLIN:
-                MakeEnemy = Instantiate(preBombgoblin);
+                MakeEnemy = Instantiate(preBombgoblin, _parentenemy);
                 break;
             case Enemy.eEnemyType.SLIME:
-                MakeEnemy = Instantiate(preSlime);
+                MakeEnemy = Instantiate(preSlime, _parentenemy);
                 break;
             case Enemy.eEnemyType.ORC:
-                MakeEnemy = Instantiate(preOrc);
+                MakeEnemy = Instantiate(preOrc, _parentenemy);
                 break;
             case Enemy.eEnemyType.HIGHORC:
-                MakeEnemy = Instantiate(preHighOrc);
+                MakeEnemy = Instantiate(preHighOrc, _parentenemy);
                 break;
             default:
                 return false;

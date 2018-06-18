@@ -5,9 +5,7 @@ using LitJson;
 using System.Text;
 using System.IO;
 public class FileUtil
-{
-    
-    
+{   
     static string GetPath(string fileName)
     {
         return Path.Combine(Application.streamingAssetsPath, fileName + ".json");

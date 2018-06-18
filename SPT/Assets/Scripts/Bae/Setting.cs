@@ -14,7 +14,7 @@ public class Setting : MonoBehaviour {
     }
 
     public enum SETKIND { BACKGROUNDSOUND, EFFECTSOUND, VIBRATION, SENSITIVIRY }
-
+    
     [Header("효과")]
     public Set backgroundSound;
     public Set effectSound;

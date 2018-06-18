@@ -31,7 +31,7 @@ public class MainGUIManager : MonoBehaviour {
     public void Init(Player player)
     {
         SetGoldText(player.Gold);
-        SetDiaText(player.Diamond);
+        SetDiaText(player.Gem);
         SetKeyText(player.Key, player.MaxKey);
         guiSetting.GetComponent<GUISetting>().Init(MainManager.Instance.setting);
 

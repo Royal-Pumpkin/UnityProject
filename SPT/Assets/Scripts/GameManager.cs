@@ -71,7 +71,7 @@ public class GameManager : MonoBehaviour
         mlistPlayerUseableTower.Add(BuildManager.eTowerType.C);
         mGUIManager.mGUINomalMode.mGUIBuildMode.GUIPlayerTower = mlistPlayerUseableTower;
 
-        mGUIManager.mGUINomalMode.GUINomalInit();
+        
 
         mStageManager.nInGameGold = 10200;
         mStageManager.InstansiateStateManager();
@@ -138,7 +138,8 @@ public class GameManager : MonoBehaviour
 
         mStageManager.nListWaveNum.Add(-1);
 
-
+        mGUIManager.mGUINomalMode.GUINomalInit();
+        mGUIManager.mGUIAlways.GUIAlwaysOnInit(mStageManager.GetFieldEnemysList().Count);
 
         StartCoroutine(mStageManager.StageProgress(100, 0.5f));
 

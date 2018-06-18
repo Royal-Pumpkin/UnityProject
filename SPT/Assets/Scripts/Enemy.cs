@@ -74,6 +74,7 @@ public class Enemy : MonoBehaviour {
         if (mStat.hp <= 0)
         {
             GameManager.stGameManager.mStageManager.nInGameGold += gear;
+            GameManager.stGameManager.mGUIManager.mGUIAlways.WaveBarControl();
             return true;
         }
         else

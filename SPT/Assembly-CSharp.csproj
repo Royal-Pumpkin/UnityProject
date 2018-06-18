@@ -76,7 +76,10 @@
     <Compile Include="Assets\Scripts\Bae\StageInfoManager.cs" />
     <Compile Include="Assets\Scripts\Bae\TowerInfo.cs" />
     <Compile Include="Assets\Scripts\Bae\TowerManager.cs" />
-    <Compile Include="Assets\Scripts\Bae\Util\JsonFileUtil.cs" />
+    <Compile Include="Assets\Scripts\Bae\Util\FileUtil.cs" />
+    <Compile Include="Assets\Scripts\Bae\Util\InitUtil.cs" />
+    <Compile Include="Assets\Scripts\Bae\Util\JsonUtil\JsonDataConversion.cs" />
+    <Compile Include="Assets\Scripts\Bae\Util\Playerprefs\PlayerPrefsUtil.cs" />
     <Compile Include="Assets\Scripts\Bae\Util\SQLite\DBManager.cs" />
     <Compile Include="Assets\Scripts\Bae\Util\SQLite\SQLiteUtil.cs" />
     <Compile Include="Assets\Scripts\Boss.cs" />
@@ -86,6 +89,7 @@
     <Compile Include="Assets\Scripts\FPSDisplay.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\Goblin.cs" />
+    <Compile Include="Assets\Scripts\GUIScripts\GUIAlwaysOn.cs" />
     <Compile Include="Assets\Scripts\GUIScripts\GUIBuildMode.cs" />
     <Compile Include="Assets\Scripts\GUIScripts\GUIControlMode.cs" />
     <Compile Include="Assets\Scripts\GUIScripts\GUIEnemyInfo.cs" />
@@ -102,12 +106,6 @@
     <Compile Include="Assets\Virtual Joystick Pack\Scripts\Joysticks\FixedJoystick.cs" />
     <Compile Include="Assets\Virtual Joystick Pack\Scripts\Joysticks\FloatingJoystick.cs" />
     <Compile Include="Assets\Virtual Joystick Pack\Scripts\Joysticks\VariableJoystick.cs" />
-    <Reference Include="UnityEditor.StandardEvents">
-      <HintPath>C:/Users/AA/Documents/GitHub/UnityProject/SPT/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.PackageManagerUI.Editor">
-      <HintPath>C:/Users/AA/Documents/GitHub/UnityProject/SPT/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
     </Reference>
@@ -302,9 +300,6 @@
     </Reference>
     <Reference Include="LitJson">
       <HintPath>C:/Users/AA/Documents/GitHub/UnityProject/SPT/Assets/Plugins/LitJson.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Data">
-      <HintPath>C:/Users/AA/Documents/GitHub/UnityProject/SPT/Assets/Plugins/System.Data.dll</HintPath>
     </Reference>
     <Reference Include="System.Data.SQLite">
       <HintPath>C:/Users/AA/Documents/GitHub/UnityProject/SPT/Assets/Plugins/System.Data.SQLite.dll</HintPath>

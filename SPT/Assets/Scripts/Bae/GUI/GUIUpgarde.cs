@@ -23,8 +23,9 @@ public class GUIUpgarde : MonoBehaviour,IPointerClickHandler {
     STATE state;
 
 
-    void Init(int num, STATE state)
+    void Init(int num, int usable)
     {
+        STATE state = (STATE)usable;
         SetInfo(nameStr, texture, gold);
         this.num = num;
         switch (state)

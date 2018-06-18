@@ -53,13 +53,17 @@ public class MainManager : MonoBehaviour {
 
     private void Start()
     {
+        /* 디비 사용시 사용
         SQLiteUtil.VaildCheckDB();
         Dictionary<string, object> playerInfo = SQLiteUtil.PlayerInfo();        
         List<Dictionary<string, object>> stageClearInfo = SQLiteUtil.StageClearInfo();
         List<Dictionary<string, object>> towerUpgradeInfo = SQLiteUtil.TowerUpgradeTreeInfo();
-
+        
 
         player.Init((int)playerInfo["gold"], (int)playerInfo["gem"], (int)playerInfo["key"], (string)playerInfo["key_recovery_time"], 12, stageClearInfo, towerUpgradeInfo);
+        */
+
+        InitUtil.Init(instance);
         towerManager.Init();
         mainGUI.Init(player);
     }
@@ -93,18 +97,22 @@ public class MainManager : MonoBehaviour {
     public void ChangeGold(int value)
     {
         mainGUI.SetGoldText(player.ChangeGold(value));
+        PlayerPrefsUtil.PlayerGold = player.Gold;
     }
-    public void ChangeDia(int value)
+    public void ChangeGem(int value)
     {
-        mainGUI.SetDiaText(player.ChangeKey(value));
+        mainGUI.SetDiaText(player.ChangeGem(value));
+        PlayerPrefsUtil.PlayerGem = player.Gem;
     }
     public void ChangeKey(int value)
     {
         mainGUI.SetKeyText(player.ChangeKey(value),player.MaxKey);
+        PlayerPrefsUtil.PlayerKey = player.Key;
     }
     public void ChangeMaxKey(int value)
     {
         mainGUI.SetKeyText(player.Key,player.PlusMaxKey(value));
+        PlayerPrefsUtil.PlayerMaxKey = player.MaxKey;
     }
 
     public int GetGold()
@@ -113,7 +121,7 @@ public class MainManager : MonoBehaviour {
     }
     public int GetDia()
     {
-        return player.Diamond;
+        return player.Gem;
     }
 
     public void StageStart(int stageNumber)

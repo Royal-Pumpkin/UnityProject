@@ -6,7 +6,8 @@ public class StageInfo : MonoBehaviour {
 
     //[SerializeField] EnemyInfo[] enemyInfos;
     [SerializeField] EnemyCountSet[] enemyInfos;
-    [SerializeField] Spawner[] spawners;
+
+    [SerializeField] Diffilculty[] diffilculties;
 
     [Serializable]
     public struct EnemyCountSet
@@ -14,6 +15,13 @@ public class StageInfo : MonoBehaviour {
         public int enemyId;
         public int count;
     }
+
+    [Serializable]
+    public struct Diffilculty
+    {
+        public Spawner[] spawners;
+    }
+
     [Serializable]
     public struct Spawner
     {
@@ -32,6 +40,9 @@ public class StageInfo : MonoBehaviour {
         public int count;
         public float spawnTime;
     }
-    
 
+    public Spawner[] GetWave(int difficulty)
+    {
+        return diffilculties[difficulty - 1].spawners;
+    }
 }

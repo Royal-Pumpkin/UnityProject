@@ -1,0 +1,41 @@
+﻿{
+  "trees": {
+    "ATower": [
+      {
+        "name": "a1",
+        "need_num": [
+          0
+        ],
+        "next_num": [
+          5
+        ],
+        "usable": 1,
+        "get_tower": 0
+      },
+      {
+        "name": "a2",
+        "need_num": [
+          0
+        ],
+        "next_num": [
+          5
+        ],
+        "usable": 1,
+        "get_tower": 0
+      }
+    ],
+    "BTower": [
+      {
+        "name": "b1",
+        "need_num": [
+          0
+        ],
+        "next_num": [
+          5
+        ],
+        "usable": 1,
+        "get_tower": 0
+      }
+    ]
+  }
+}
