@@ -4,9 +4,18 @@ using System;
 [Serializable]
 public class TowerInfo
 {
+    
+    public TowerManager.TOWERID id;
     public string name;
     public int tier;
     public int range;
+    public int damage;
+    public int autoAttackSpeed;
+    public int manualAttackSpeed;
+    public int turretTurnover;
+    public int price;
+
+    public int modelingNumber;
 
     public SkillInfo[] skillInfos;
 

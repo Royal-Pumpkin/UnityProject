@@ -5,7 +5,7 @@ using UnityEngine;
 public class TowerManager : MonoBehaviour {
 
     public enum TowerName { A, B, C, D, AA, AB, AC, AD, BA, BB, BC, BD, CA, CB, CC, CD, DA, DB, DC, DD }
-
+    public enum TOWERID { T1001, T1002, T1003, T1011, T1012, T1013 }
     [SerializeField] List<GameObject> towerModelingPrefabs;
     List<List<GameObject>> towerModelingPool = new List<List<GameObject>>();
 
@@ -29,6 +29,10 @@ public class TowerManager : MonoBehaviour {
     {
         return towerInfoList[(int)name];
     }
+    public TowerInfo GetTowerInfo(TOWERID id)
+    {
+        return towerInfoList[(int)id];
+    }
     public GameObject GetTowerModeling(int modelingNumber)
     {
         List<GameObject> temp = towerModelingPool[modelingNumber];
@@ -43,6 +47,8 @@ public class TowerManager : MonoBehaviour {
             temp.Add(obj);
         }
         return obj;
-    }   
+    }
+
+
 
 }

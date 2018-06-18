@@ -5,9 +5,12 @@ using System;
 public class StageInfo : MonoBehaviour {
 
     //[SerializeField] EnemyInfo[] enemyInfos;
-    [SerializeField] EnemyCountSet[] enemyInfos;
+    public EnemyCountSet[] enemyInfos;
 
     [SerializeField] Diffilculty[] diffilculties;
+
+    public int gear;
+    public int life;
 
     [Serializable]
     public struct EnemyCountSet
