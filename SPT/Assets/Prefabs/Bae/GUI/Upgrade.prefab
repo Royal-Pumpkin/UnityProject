@@ -44,7 +44,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1450401998539216
 GameObject:
   m_ObjectHideFlags: 0
@@ -155,6 +155,7 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 4d706857801acaa409f49437310a7f44, type: 3}
   - {fileID: 2800000, guid: ef6548c3ef51ae446b2d4f587bb831bc, type: 3}
   - {fileID: 2800000, guid: 422643d87e45b84449e50e8bd289e6d6, type: 3}
+  sprite: {fileID: 0}
   gold: 100
   num: 1
 --- !u!114 &114815201267846506

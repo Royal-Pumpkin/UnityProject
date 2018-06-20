@@ -239,6 +239,17 @@ Prefab:
       propertyPath: texture.Array.data[2]
       value: 
       objectReference: {fileID: 2800000, guid: d7b703ec0628d9e42aa1b030e667cbf9, type: 3}
+    - target: {fileID: 114359811171716510, guid: dd2c3b2c961cfbc47bd2e5f588cd9077,
+        type: 2}
+      propertyPath: texture.Array.data[3]
+      value: 
+      objectReference: {fileID: 2800000, guid: 9e5327feaf8a87e498eba9e112273702, type: 3}
+    - target: {fileID: 114359811171716510, guid: dd2c3b2c961cfbc47bd2e5f588cd9077,
+        type: 2}
+      propertyPath: sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 9e5327feaf8a87e498eba9e112273702,
+        type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: dd2c3b2c961cfbc47bd2e5f588cd9077, type: 2}
   m_IsPrefabParent: 0
@@ -1173,6 +1184,17 @@ Prefab:
       propertyPath: texture.Array.data[2]
       value: 
       objectReference: {fileID: 2800000, guid: 422643d87e45b84449e50e8bd289e6d6, type: 3}
+    - target: {fileID: 114359811171716510, guid: dd2c3b2c961cfbc47bd2e5f588cd9077,
+        type: 2}
+      propertyPath: texture.Array.data[3]
+      value: 
+      objectReference: {fileID: 2800000, guid: f81788a55217fb14f9957df8b52198ea, type: 3}
+    - target: {fileID: 114359811171716510, guid: dd2c3b2c961cfbc47bd2e5f588cd9077,
+        type: 2}
+      propertyPath: sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: f81788a55217fb14f9957df8b52198ea,
+        type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: dd2c3b2c961cfbc47bd2e5f588cd9077, type: 2}
   m_IsPrefabParent: 0
@@ -2866,7 +2888,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -0.000030517578, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 400, y: 765}
   m_Pivot: {x: 0, y: 1}
 --- !u!1001 &226016779
@@ -5056,6 +5078,17 @@ Prefab:
       propertyPath: m_LocalScale.z
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114359811171716510, guid: dd2c3b2c961cfbc47bd2e5f588cd9077,
+        type: 2}
+      propertyPath: texture.Array.data[3]
+      value: 
+      objectReference: {fileID: 2800000, guid: f81788a55217fb14f9957df8b52198ea, type: 3}
+    - target: {fileID: 114359811171716510, guid: dd2c3b2c961cfbc47bd2e5f588cd9077,
+        type: 2}
+      propertyPath: sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: f81788a55217fb14f9957df8b52198ea,
+        type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: dd2c3b2c961cfbc47bd2e5f588cd9077, type: 2}
   m_IsPrefabParent: 0
@@ -5260,7 +5293,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &577566947
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5464,6 +5497,17 @@ Prefab:
       propertyPath: texture.Array.data[2]
       value: 
       objectReference: {fileID: 2800000, guid: 422643d87e45b84449e50e8bd289e6d6, type: 3}
+    - target: {fileID: 114359811171716510, guid: dd2c3b2c961cfbc47bd2e5f588cd9077,
+        type: 2}
+      propertyPath: texture.Array.data[3]
+      value: 
+      objectReference: {fileID: 2800000, guid: f81788a55217fb14f9957df8b52198ea, type: 3}
+    - target: {fileID: 114359811171716510, guid: dd2c3b2c961cfbc47bd2e5f588cd9077,
+        type: 2}
+      propertyPath: sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: f81788a55217fb14f9957df8b52198ea,
+        type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: dd2c3b2c961cfbc47bd2e5f588cd9077, type: 2}
   m_IsPrefabParent: 0
@@ -8039,6 +8083,17 @@ Prefab:
       propertyPath: texture.Array.data[2]
       value: 
       objectReference: {fileID: 2800000, guid: d7b703ec0628d9e42aa1b030e667cbf9, type: 3}
+    - target: {fileID: 114359811171716510, guid: dd2c3b2c961cfbc47bd2e5f588cd9077,
+        type: 2}
+      propertyPath: texture.Array.data[3]
+      value: 
+      objectReference: {fileID: 2800000, guid: 9e5327feaf8a87e498eba9e112273702, type: 3}
+    - target: {fileID: 114359811171716510, guid: dd2c3b2c961cfbc47bd2e5f588cd9077,
+        type: 2}
+      propertyPath: sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 9e5327feaf8a87e498eba9e112273702,
+        type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: dd2c3b2c961cfbc47bd2e5f588cd9077, type: 2}
   m_IsPrefabParent: 0
@@ -8177,7 +8232,7 @@ GameObject:
   - component: {fileID: 1015779079}
   - component: {fileID: 1015779078}
   m_Layer: 5
-  m_Name: RawImage
+  m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8209,7 +8264,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1015779076}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -98529514, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
@@ -8220,13 +8275,14 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Texture: {fileID: 0}
-  m_UVRect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
 --- !u!222 &1015779079
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -8238,6 +8294,80 @@ RectTransform:
   m_PrefabParentObject: {fileID: 224212736196004116, guid: 89bb7d4a35d276c4fa67068cc350f1c6,
     type: 2}
   m_PrefabInternal: {fileID: 75500841}
+--- !u!1 &1030466203
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1030466206}
+  - component: {fileID: 1030466205}
+  - component: {fileID: 1030466204}
+  m_Layer: 5
+  m_Name: Text
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1030466204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1030466203}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 14
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 10
+    m_MaxSize: 40
+    m_Alignment: 0
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: New Text
+--- !u!222 &1030466205
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1030466203}
+--- !u!224 &1030466206
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1030466203}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1775248343}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &1033110694
 Prefab:
   m_ObjectHideFlags: 0
@@ -11382,6 +11512,12 @@ MonoBehaviour:
   upgradeNotice: {fileID: 1435906918}
   buyBtnText: {fileID: 32207821}
   noticeInNotice: {fileID: 74953854}
+  upgradeNoticeImage: {fileID: 1015779078}
+  upgradeNoticeName: {fileID: 496186236}
+  colors:
+  - {r: 1, g: 1, b: 1, a: 1}
+  - {r: 0.39215687, g: 0.39215687, b: 0.39215687, a: 1}
+  upgradeNoticeComment: {fileID: 1030466204}
 --- !u!114 &1435237617
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11428,7 +11564,7 @@ GameObject:
   - component: {fileID: 1435906921}
   - component: {fileID: 1435906920}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: Upgrade
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12825,7 +12961,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -0.000030517578, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1200, y: 800}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1628683527
@@ -13285,6 +13421,17 @@ Prefab:
       propertyPath: texture.Array.data[2]
       value: 
       objectReference: {fileID: 2800000, guid: 003e90335a835a74db66d19a58b82c2f, type: 3}
+    - target: {fileID: 114359811171716510, guid: dd2c3b2c961cfbc47bd2e5f588cd9077,
+        type: 2}
+      propertyPath: texture.Array.data[3]
+      value: 
+      objectReference: {fileID: 2800000, guid: df53a137a1cf5994b97bec407d4b8989, type: 3}
+    - target: {fileID: 114359811171716510, guid: dd2c3b2c961cfbc47bd2e5f588cd9077,
+        type: 2}
+      propertyPath: sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: df53a137a1cf5994b97bec407d4b8989,
+        type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: dd2c3b2c961cfbc47bd2e5f588cd9077, type: 2}
   m_IsPrefabParent: 0
@@ -13693,6 +13840,17 @@ Prefab:
       propertyPath: texture.Array.data[2]
       value: 
       objectReference: {fileID: 2800000, guid: d7b703ec0628d9e42aa1b030e667cbf9, type: 3}
+    - target: {fileID: 114359811171716510, guid: dd2c3b2c961cfbc47bd2e5f588cd9077,
+        type: 2}
+      propertyPath: texture.Array.data[3]
+      value: 
+      objectReference: {fileID: 2800000, guid: 9e5327feaf8a87e498eba9e112273702, type: 3}
+    - target: {fileID: 114359811171716510, guid: dd2c3b2c961cfbc47bd2e5f588cd9077,
+        type: 2}
+      propertyPath: sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 9e5327feaf8a87e498eba9e112273702,
+        type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: dd2c3b2c961cfbc47bd2e5f588cd9077, type: 2}
   m_IsPrefabParent: 0
@@ -13836,7 +13994,8 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 1030466206}
   m_Father: {fileID: 1435906919}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -14471,6 +14630,17 @@ Prefab:
       propertyPath: texture.Array.data[2]
       value: 
       objectReference: {fileID: 2800000, guid: b177a08110d36fa4f9e0de494311f3dc, type: 3}
+    - target: {fileID: 114359811171716510, guid: dd2c3b2c961cfbc47bd2e5f588cd9077,
+        type: 2}
+      propertyPath: texture.Array.data[3]
+      value: 
+      objectReference: {fileID: 2800000, guid: df53a137a1cf5994b97bec407d4b8989, type: 3}
+    - target: {fileID: 114359811171716510, guid: dd2c3b2c961cfbc47bd2e5f588cd9077,
+        type: 2}
+      propertyPath: sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: df53a137a1cf5994b97bec407d4b8989,
+        type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: dd2c3b2c961cfbc47bd2e5f588cd9077, type: 2}
   m_IsPrefabParent: 0

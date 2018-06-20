@@ -18,6 +18,7 @@ public class Notice : MonoBehaviour {
     public Image upgradeNoticeImage;
     public Text upgradeNoticeName;
     public Color[] colors;
+    public Text upgradeNoticeComment;
 
     string[] buyBtnStr =
     {
@@ -51,6 +52,7 @@ public class Notice : MonoBehaviour {
 
         upgradeNoticeImage.sprite = sprite;
         upgradeNoticeName.text = name;
+        upgradeNoticeComment.text = MainManager.Instance.TreeNodeConmment(upgradeNum);
         SettingUpgradeNotice(state);
         upgradeNotice.SetActive(true);
         gameObject.SetActive(true);

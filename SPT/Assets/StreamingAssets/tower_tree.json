@@ -11,7 +11,8 @@
           5
         ],
         "usable": 1,
-        "get_tower": 0
+        "get_tower": 0,
+        "comment": "a1\n데미지 증가 (+30)\n대상: A,AA"
       },
       {
         "num": 2,
@@ -23,7 +24,8 @@
           5
         ],
         "usable": 1,
-        "get_tower": 0
+        "get_tower": 0,
+        "comment": "a2\n사거리 증가(+15)\n대상: A,AA"
       },
       {
         "num": 3,
@@ -35,8 +37,9 @@
           6,
           7
         ],
-        "usable": 1,
-        "get_tower": 1012
+        "usable": 2,
+        "get_tower": 1012,
+        "comment": "(ab) 개발\na 타워에서 공격 속도가 향상된 타워로 업그래이드 할 수 있습니다.\n효과: A→AB 타워로 업그레이드 가능"
       },
       {
         "num": 4,
@@ -45,10 +48,11 @@
           0
         ],
         "next_num": [
-          8
+          9
         ],
         "usable": 1,
-        "get_tower": 1013
+        "get_tower": 1013,
+        "comment": "(ac) 개발\na 타워에서 화염 방사 기능이 탑재된 타워로 업그래이드 할 수 있습니다.\n효과: A→AC 타워로 업그레이드 가능"
       },
       {
         "num": 5,
@@ -61,7 +65,8 @@
           0
         ],
         "usable": 2,
-        "get_tower": 1011
+        "get_tower": 1011,
+        "comment": "(aa) 개발\na 타워에서 공격 속도가 느려진 대신 데미지가 향상된 타워로 업그레이드 할 수 있습니다.\n효과: A→AA 타워로 업그레이드 가능"
       },
       {
         "num": 6,
@@ -73,7 +78,8 @@
           0
         ],
         "usable": 2,
-        "get_tower": 0
+        "get_tower": 0,
+        "comment": "(ab1) 데미지 증가\n데미지 증가 (+10)\n대상: AB"
       },
       {
         "num": 7,
@@ -85,11 +91,12 @@
           0
         ],
         "usable": 2,
-        "get_tower": 0
+        "get_tower": 0,
+        "comment": "(ab2) 공격 속도 증가\n초당 공격 속도 0.25 상승\n대상: AB"
       },
       {
         "num": 8,
-        "name": "ac1",
+        "name": "ab2",
         "need_num": [
           4
         ],
@@ -97,7 +104,8 @@
           0
         ],
         "usable": 2,
-        "get_tower": 0
+        "get_tower": 0,
+        "comment": "(ac1) 데미지 증가\n데미지 증가 (+100)\n대상: AC"
       }
     ]
   }

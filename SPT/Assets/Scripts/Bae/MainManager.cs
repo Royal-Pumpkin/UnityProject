@@ -190,7 +190,10 @@ public class MainManager : MonoBehaviour {
     {
         mainGUI.GUIUpgradeStateChange(treeNumber, nodeNumber, usable);
     }
-
+    public string TreeNodeConmment(int nodeNumber)
+    {
+        return player.GetTowerTreeNode(mainGUI.onTabNumber + 1, nodeNumber).comment;
+    }
     private void OnGUI()
     {
         if (GUI.Button(new Rect(0, 0, 100, 100), "삭제"))
