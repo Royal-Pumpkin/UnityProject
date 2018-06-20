@@ -44,7 +44,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1450401998539216
 GameObject:
   m_ObjectHideFlags: 0
@@ -97,7 +97,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Texture: {fileID: 0}
+  m_Texture: {fileID: 2800000, guid: 4d706857801acaa409f49437310a7f44, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -125,10 +125,10 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 14
+    m_FontSize: 1
     m_FontStyle: 0
-    m_BestFit: 0
-    m_MinSize: 10
+    m_BestFit: 1
+    m_MinSize: 0
     m_MaxSize: 40
     m_Alignment: 4
     m_AlignByGeometry: 0
@@ -136,7 +136,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: New Text
+  m_Text: a1
 --- !u!114 &114359811171716510
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -151,10 +151,12 @@ MonoBehaviour:
   nameText: {fileID: 114192163428968190}
   image: {fileID: 114149842872547088}
   goldText: {fileID: 114815201267846506}
-  nameStr: "\uACF5\uACA9\uB825 \uC99D\uAC00"
-  texture: {fileID: 0}
-  gold: 0
-  num: 0
+  texture:
+  - {fileID: 2800000, guid: 4d706857801acaa409f49437310a7f44, type: 3}
+  - {fileID: 2800000, guid: ef6548c3ef51ae446b2d4f587bb831bc, type: 3}
+  - {fileID: 2800000, guid: 422643d87e45b84449e50e8bd289e6d6, type: 3}
+  gold: 100
+  num: 1
 --- !u!114 &114815201267846506
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -167,7 +169,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -187,7 +189,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: New Text
+  m_Text: 100
 --- !u!222 &222050538256450198
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -258,7 +260,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: -25}
-  m_SizeDelta: {x: 80, y: 80}
+  m_SizeDelta: {x: 90, y: 90}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!224 &224593696462375122
 RectTransform:
@@ -276,8 +278,8 @@ RectTransform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 300, y: 350.00003}
-  m_SizeDelta: {x: 300, y: 125}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 125}
   m_Pivot: {x: 0, y: 1}

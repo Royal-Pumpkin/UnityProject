@@ -24,19 +24,79 @@
         ],
         "usable": 1,
         "get_tower": 0
-      }
-    ],
-    "BTower": [
+      },
       {
-        "num": 1,
-        "name": "b1",
+        "num": 3,
+        "name": "ab",
         "need_num": [
           0
         ],
         "next_num": [
-          5
+          6,
+          7
         ],
         "usable": 1,
+        "get_tower": 1012
+      },
+      {
+        "num": 4,
+        "name": "ac",
+        "need_num": [
+          0
+        ],
+        "next_num": [
+          8
+        ],
+        "usable": 1,
+        "get_tower": 1013
+      },
+      {
+        "num": 5,
+        "name": "aa",
+        "need_num": [
+          1,
+          2
+        ],
+        "next_num": [
+          0
+        ],
+        "usable": 2,
+        "get_tower": 1011
+      },
+      {
+        "num": 6,
+        "name": "ab1",
+        "need_num": [
+          3
+        ],
+        "next_num": [
+          0
+        ],
+        "usable": 2,
+        "get_tower": 0
+      },
+      {
+        "num": 7,
+        "name": "ab2",
+        "need_num": [
+          3
+        ],
+        "next_num": [
+          0
+        ],
+        "usable": 2,
+        "get_tower": 0
+      },
+      {
+        "num": 8,
+        "name": "ac1",
+        "need_num": [
+          4
+        ],
+        "next_num": [
+          0
+        ],
+        "usable": 2,
         "get_tower": 0
       }
     ]

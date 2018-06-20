@@ -18,12 +18,15 @@ public class Player : MonoBehaviour {
     [SerializeField] private int gem;
     [SerializeField] private int lastStage;//플레이어가 최대로 진행한 스테이지
     [SerializeField] private int maxKey=12;
+    [SerializeField] private string keyRecoveryTime = "full";
     private int key;
 
     public int difficultyCount = 3;
 
     [SerializeField] List<StageClearInfo[]> stageClearInfo = new List<StageClearInfo[]>();
     [SerializeField] List<TowerTreeNode[]> towerTree = new List<TowerTreeNode[]>();
+
+    bool checkGenKeyCoroutine = false;
     public int Gold
     {
         get { return gold; }
@@ -93,9 +96,46 @@ public class Player : MonoBehaviour {
         this.gem = gem;
         this.key = key;
         this.maxKey = maxKey;
-
+        this.keyRecoveryTime = keyRecoveryTime;
         this.stageClearInfo = stageClearInfo;
         this.towerTree = towerTree;
+
+        if (keyRecoveryTime.CompareTo("full") != 0)
+        {
+            if (!TimeUtil.ValidTime(keyRecoveryTime))
+            {
+                if (key == maxKey)
+                {
+                    this.keyRecoveryTime = "full";
+                    PlayerPrefsUtil.PlayerKeyRecovryTime = this.keyRecoveryTime;
+                }
+                else
+                {
+                    this.keyRecoveryTime = TimeUtil.GetTime();
+                    PlayerPrefsUtil.PlayerKeyRecovryTime = this.keyRecoveryTime;
+                    GenKey();
+                }                
+            }
+            else
+            {
+                TimeSpan timeDiff = DateTime.Now - DateTime.ParseExact(keyRecoveryTime, TimeUtil.pattern, null);
+                key+=((int)timeDiff.TotalHours);
+                if (key >= maxKey)
+                {
+                    key = maxKey;
+                    this.keyRecoveryTime = "full";
+                    PlayerPrefsUtil.PlayerKey = key;
+                    PlayerPrefsUtil.PlayerKeyRecovryTime = this.keyRecoveryTime;
+                }
+                else
+                {
+                    DateTime time = DateTime.ParseExact(this.keyRecoveryTime, TimeUtil.pattern, null).AddHours((int)timeDiff.TotalHours);
+                    this.keyRecoveryTime = time.ToString(TimeUtil.pattern);
+                    PlayerPrefsUtil.PlayerKeyRecovryTime = this.keyRecoveryTime;
+                    GenKey();
+                }
+            }
+        }
     }
     public void Init(List<StageClearInfo[]> stageClearInfo, List<TowerTreeNode[]> towerTree)
     {
@@ -115,9 +155,32 @@ public class Player : MonoBehaviour {
         gem += value;
         return gem;
     }
+    
     public int ChangeKey(int value)
     {
         key += value;
+        if (key < MaxKey)
+        {
+            if (keyRecoveryTime.CompareTo("full")==0)
+            {
+                keyRecoveryTime = TimeUtil.GetTime();
+                PlayerPrefsUtil.PlayerKeyRecovryTime = keyRecoveryTime;
+                GenKey();
+            }
+            else
+            {
+                if (!checkGenKeyCoroutine)
+                {
+                    keyRecoveryTime = TimeUtil.GetTime();
+                    GenKey();
+                }
+            }
+        }
+        else
+        {
+            keyRecoveryTime = "full";
+        }
+        PlayerPrefsUtil.PlayerKeyRecovryTime = keyRecoveryTime;
         return key;
     }
     public int PlusMaxKey(int value)
@@ -136,6 +199,11 @@ public class Player : MonoBehaviour {
         return towerTree[tree - 1][node - 1];
     }
 
+    void GetTowerList()
+    {
+        
+    }
+
     [Serializable]
     public struct TowerTreeNode
     {
@@ -145,8 +213,9 @@ public class Player : MonoBehaviour {
         public int[] nextNum;
         public int usable;
         public int getTowerId;
+        public string comment;
 
-        public TowerTreeNode(int num,string treeName, int[] needNum, int[] nextNum, int usable, int getTowerId)
+        public TowerTreeNode(int num,string treeName, int[] needNum, int[] nextNum, int usable, int getTowerId, string comment)
         {
             this.num = num;
             this.treeName = treeName;
@@ -154,6 +223,7 @@ public class Player : MonoBehaviour {
             this.nextNum = nextNum;
             this.usable = usable;
             this.getTowerId = getTowerId;
+            this.comment = comment;
         }
 
         public override string ToString()
@@ -174,7 +244,10 @@ public class Player : MonoBehaviour {
 
     public void BuyTowerNode(int treeNum,int nodeNum)
     {
+        Debug.Log("구매 번호 "+ nodeNum);
         PlayerPrefsUtil.SaveTowerTreeNodeUsable(treeNum, nodeNum, 0);
+        MainManager.Instance.GUIUpgradeStateChange(treeNum, nodeNum, 0);
+        MainManager.Instance.mainGUI.notice.UpdateNoticeUpgrade(0);
         int trn = treeNum - 1;
         int ndn = nodeNum - 1;
         towerTree[trn][ndn].usable = 0;
@@ -204,9 +277,37 @@ public class Player : MonoBehaviour {
             }
         }
     }
-    //서버 없을 때 재생 방법 고민해봐야 함
-    //IEnumerator GenKey()
-    //{
 
+    void GenKey()
+    {
+        Debug.Log("재생 시작");
+        StartCoroutine(CheckTime());
+    }
+    
+    IEnumerator CheckTime()
+    {
+        checkGenKeyCoroutine = true;
+        DateTime date = DateTime.ParseExact(keyRecoveryTime, TimeUtil.pattern, null);
+        date=date.AddHours(1);
+        //date = date.AddSeconds(30);
+        while (DateTime.Now.CompareTo(date)<0)
+        {
+            //TimeSpan span = date-DateTime.Now ;
+            //checkTime = (int)span.TotalSeconds;
+            yield return new WaitForSecondsRealtime(1f);
+        }
+        checkGenKeyCoroutine = false;
+        MainManager.Instance.ChangeKey(1);        
+    }
+    //int checkTime;
+    //private void OnGUI()
+    //{
+    //    if (keyRecoveryTime.CompareTo("full") != 0)
+    //    {
+    //        DateTime date = DateTime.ParseExact(keyRecoveryTime, TimeUtil.pattern, null);
+    //        date = date.AddHours(1);
+    //        GUI.Box(new Rect(0, 0, 200, 50), keyRecoveryTime + "\n" + date.ToString(TimeUtil.pattern) + "\n" + checkTime.ToString());
+    //    }
+        
     //}
 }

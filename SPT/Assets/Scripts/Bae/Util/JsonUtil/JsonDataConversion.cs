@@ -31,7 +31,7 @@ public class JsonDataConversion
                 towerTreeNodes[j].nextNum = ArrayIntToJsonData(tree[j]["next_num"]);
                 towerTreeNodes[j].usable = (int)tree[j]["usable"];
                 towerTreeNodes[j].getTowerId = (int)tree[j]["get_tower"];
-                Debug.Log(towerTreeNodes[j]);
+                towerTreeNodes[j].comment = (string)tree[j]["comment"];
             }
             towerTree.Add(towerTreeNodes);
         }

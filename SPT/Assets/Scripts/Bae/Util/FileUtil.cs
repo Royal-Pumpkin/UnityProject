@@ -31,7 +31,7 @@ public class FileUtil
         if (File.Exists(path))
         {
             string jsonStr = Encoding.UTF8.GetString(File.ReadAllBytes(path));
-            JsonData json = JsonMapper.ToObject(jsonStr);
+            JsonData json = JsonMapper.ToObject(jsonStr.Trim());
             return json;
         }
         //if (File.Exists(path)){

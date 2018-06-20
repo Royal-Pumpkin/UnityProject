@@ -38,15 +38,11 @@ public class MainGUIManager : MonoBehaviour {
 
         StageBtnImageSet(player, 1);
 
-        Debug.Log(player.TowerTreeCount);
         for(int i=0;i< player.TowerTreeCount; i++)
         {
-            Debug.Log(player.NodesNumberPerTree(i));
             for(int j = 0; j < player.NodesNumberPerTree(i); j++)
-            {
-                Debug.Log(i + "" + j);
-                
-                tabs[i].upgardes[j].Init(player.GetTowerTreeNode(i+1,j+1).num, player.GetTowerTreeNode(i + 1, j + 1).usable);
+            {                
+                tabs[i].upgardes[j].Init(player.GetTowerTreeNode(i+1,j+1).num, player.GetTowerTreeNode(i + 1, j + 1).treeName, player.GetTowerTreeNode(i + 1, j + 1).usable);
             }
         }
     }
@@ -136,7 +132,7 @@ public class MainGUIManager : MonoBehaviour {
     public void GUIUpgradeStateChange(int treeNumber, int nodeNumber, int usable)
     {
         //아직은 usable 파라미터 사용안됨
-        tabs[treeNumber - 1].upgardes[nodeNumber - 1].ChangeState();
+        tabs[treeNumber - 1].upgardes[nodeNumber - 1].ChangeState(usable);
         tabs[treeNumber - 1].CheckGold();
     }
 }

@@ -8,8 +8,9 @@ public class GUIUpgarde : MonoBehaviour,IPointerClickHandler {
     public RawImage image;
     public Text goldText;
 
-    public string nameStr;
-    public Texture texture;
+    //public string nameStr;
+    public Texture[] texture;
+    public Sprite sprite;
     public int gold;
 
     public int num;
@@ -23,11 +24,10 @@ public class GUIUpgarde : MonoBehaviour,IPointerClickHandler {
     STATE state;
 
 
-    public void Init(int num, int usable)
+    public void Init(int num, string name,int usable)
     {
-        Debug.Log("나 호출 됨");
         STATE state = (STATE)usable;
-        SetInfo(nameStr, texture, gold);
+        SetInfo(name, texture[usable], gold);
         this.num = num;
         switch (state)
         {
@@ -37,7 +37,6 @@ public class GUIUpgarde : MonoBehaviour,IPointerClickHandler {
             case STATE.AVAIL:
                 break;
             case STATE.UNAVAIL:
-                image.color = Color.gray;
                 break;
         }
         this.state = state;
@@ -46,7 +45,7 @@ public class GUIUpgarde : MonoBehaviour,IPointerClickHandler {
     public void SetInfo(string name, Texture texture, int gold)
     {
         nameText.text = name;
-        //image.texture = texture;
+        image.texture = texture;
         goldText.text = gold.ToString();
     }
 
@@ -63,35 +62,26 @@ public class GUIUpgarde : MonoBehaviour,IPointerClickHandler {
     }
 
     //구매가능이 되었을 때 사용 
-    public void ChangeState()
+    public void ChangeState(int usable)
     {
-        image.color = Color.white;
-        state = STATE.AVAIL;
+        //image.color = Color.white;
+        image.texture = texture[usable];
+        state = (STATE)usable;
+        switch (state)
+        {
+            case STATE.COM:
+                Activate();
+                break;
+            case STATE.AVAIL:
+                break;
+            case STATE.UNAVAIL:
+                break;
+        }
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        switch (state)
-        {
-            case STATE.COM:
-                break;
-            case STATE.AVAIL:
-                if (MainManager.Instance.GetGold() >= gold)
-                {
-                    MainManager.Instance.mainGUI.notice.OnNotice(0);
-                    MainManager.Instance.ChangeGold(-gold);
-                    MainManager.Instance.BuyTowerNode(num);
-                    Activate();
-                }
-                else
-                {
-                    MainManager.Instance.mainGUI.notice.OnNotice(1);
-                }
-                break;
-            case STATE.UNAVAIL:
-                MainManager.Instance.mainGUI.notice.OnNotice(3);
-                break;
-        }
+        MainManager.Instance.mainGUI.notice.OnNoticeUpgrade(num,(int)state,gold, sprite, nameText.text);
     }
 
     public void Activate()

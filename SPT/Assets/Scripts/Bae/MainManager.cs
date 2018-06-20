@@ -108,6 +108,7 @@ public class MainManager : MonoBehaviour {
     {
         mainGUI.SetKeyText(player.ChangeKey(value),player.MaxKey);
         PlayerPrefsUtil.PlayerKey = player.Key;
+        
     }
     public void ChangeMaxKey(int value)
     {
@@ -155,7 +156,7 @@ public class MainManager : MonoBehaviour {
     /// 스테이지 클리어하고 씬이 넘어가야 할 시점에서 호출
     /// </summary>
     /// <param name="gold"></param>
-    public void ClearStage(int gold,int star)
+    public void ClearStage(int gold,int star,int score)
     {
         if (currentStage == (player.LastStage+1))
         {
@@ -192,7 +193,7 @@ public class MainManager : MonoBehaviour {
 
     private void OnGUI()
     {
-        if(GUI.Button(new Rect(0, 0, 100, 100), "삭제"))
+        if (GUI.Button(new Rect(0, 0, 100, 100), "삭제"))
         {
             PlayerPrefs.DeleteAll();
         }
