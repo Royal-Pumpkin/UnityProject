@@ -17,7 +17,7 @@ public class Enemy : MonoBehaviour {
     public NavMeshAgent nvAgent;
     public int MonsterIdx;
     public int gear;
-    int score;
+    public int score;
     bool[] mDebuff = new bool[1];
     public bool bSerchstate;
 

@@ -66,6 +66,12 @@ public class Tower : MonoBehaviour
     {
         if (mTowerState != eTowerState.TOWERCONTROL)
         {
+
+            if (bSeselect)
+                DrawCircle(transform.position, fSerchDistance, true);
+            else
+                DrawCircle(transform.position, fSerchDistance, false);
+
             FindShootEnemy(GameManager.stGameManager.mStageManager.nListFieldidx);
             return;
         }
@@ -161,6 +167,7 @@ public class Tower : MonoBehaviour
     {
         mCollider.enabled = true;
         _MainCamera.orthographic = true;
+        DeleteSerchstate();
         // _MainCamera.transform.position = 원래 카메라 포지션;
         // _MainCamera.transform.rotation = 원래 카메라 포지션;
         GameManager.stGameManager.SetPlayerState(GameManager.ePlayerState.NOMAL);
@@ -367,10 +374,7 @@ public class Tower : MonoBehaviour
             Collider[] colls = Physics.OverlapSphere(transform.position, fSerchDistance);
             int nComparenum = GameManager.stGameManager.mStageManager.nListFieldidx;
 
-            if (bSeselect)
-                DrawCircle(transform.position, fSerchDistance, true);
-            else
-                DrawCircle(transform.position, fSerchDistance, false);
+          
 
             if (colls.Length == 0)
             {
@@ -411,7 +415,7 @@ public class Tower : MonoBehaviour
                 //        FindEnemy = FindEnemyobj.GetComponent<Enemy>();
                 //    }
                 //}
-                DrawCircle(transform.position, fSerchDistance, false);
+                
 
 
                 if (FindEnemyobj != null)
@@ -430,6 +434,7 @@ public class Tower : MonoBehaviour
                 if (FindEnemyobj == null || FindEnemyobj.activeSelf == false)
                 {
                     mTowerState = eTowerState.IDLE;
+                    DrawCircle(transform.position, fSerchDistance, false);
                     return;
                 }
 
