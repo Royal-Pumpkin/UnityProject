@@ -87,6 +87,6 @@ public class GUIUpgarde : MonoBehaviour,IPointerClickHandler {
     public void Activate()
     {
         state = STATE.COM;
-        goldText.gameObject.SetActive(false);        
+        goldText.transform.parent.gameObject.SetActive(false);        
     }
 }

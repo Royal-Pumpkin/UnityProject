@@ -342,6 +342,7 @@ MonoBehaviour:
   - {fileID: 1813701487350506}
   - {fileID: 1698988273102694}
   btnImage: {fileID: 114553756666666712}
+  nameText: {fileID: 114803242124937460}
 --- !u!114 &114597682959559344
 MonoBehaviour:
   m_ObjectHideFlags: 1

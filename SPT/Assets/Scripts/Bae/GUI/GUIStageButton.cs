@@ -6,15 +6,16 @@ public class GUIStageButton : MonoBehaviour {
     public int stageNumber;
     public GameObject[] starObj;
     public Image btnImage;
+    public Text nameText;
     public void ClickStage()
     {
         MainManager.Instance.StageStart(stageNumber);
     }
-    public void Init(int star,bool clear)
+    public void Init(int star,bool clear,int stageNum)
     {
         GetStar(star);
         ChangeButtonImage(clear);
-        
+        nameText.text = "stage " + stageNum;
     }
     public void GetStar(int starCount)
     {

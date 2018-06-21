@@ -11,7 +11,7 @@
           5
         ],
         "usable": 1,
-        "get_tower": 0,
+        "get_tower": 1,
         "comment": "a1\n데미지 증가 (+30)\n대상: A,AA"
       },
       {
@@ -24,7 +24,7 @@
           5
         ],
         "usable": 1,
-        "get_tower": 0,
+        "get_tower": 2,
         "comment": "a2\n사거리 증가(+15)\n대상: A,AA"
       },
       {
@@ -37,7 +37,7 @@
           6,
           7
         ],
-        "usable": 2,
+        "usable": 1,
         "get_tower": 1012,
         "comment": "(ab) 개발\na 타워에서 공격 속도가 향상된 타워로 업그래이드 할 수 있습니다.\n효과: A→AB 타워로 업그레이드 가능"
       },
@@ -78,7 +78,7 @@
           0
         ],
         "usable": 2,
-        "get_tower": 0,
+        "get_tower": 3,
         "comment": "(ab1) 데미지 증가\n데미지 증가 (+10)\n대상: AB"
       },
       {
@@ -91,7 +91,7 @@
           0
         ],
         "usable": 2,
-        "get_tower": 0,
+        "get_tower": 4,
         "comment": "(ab2) 공격 속도 증가\n초당 공격 속도 0.25 상승\n대상: AB"
       },
       {
@@ -104,7 +104,7 @@
           0
         ],
         "usable": 2,
-        "get_tower": 0,
+        "get_tower": 5,
         "comment": "(ac1) 데미지 증가\n데미지 증가 (+100)\n대상: AC"
       }
     ]

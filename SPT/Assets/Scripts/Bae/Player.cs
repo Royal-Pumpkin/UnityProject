@@ -136,6 +136,7 @@ public class Player : MonoBehaviour {
                 }
             }
         }
+        SetTowerList();
     }
     public void Init(List<StageClearInfo[]> stageClearInfo, List<TowerTreeNode[]> towerTree)
     {
@@ -144,6 +145,8 @@ public class Player : MonoBehaviour {
         Debug.Log(towerTree.Count);
         this.stageClearInfo = stageClearInfo;
         this.towerTree = towerTree;
+
+        SetTowerList();
     }
     public int ChangeGold(int value)        
     {
@@ -207,17 +210,24 @@ public class Player : MonoBehaviour {
             {
                 if (towerTree[i][j].usable == 0)
                 {
-                    if (towerTree[i][j].getTowerId == 0)
-                    {
-                        //타워 강화
-                    }
-                    else
-                    {
-                        //availableTowerList.Add((TowerManager.TOWERID)("T"+towerTree[i][j].getTowerId));
-                    }
+                    TowerUpgrade(i+1 ,j+1);
                 }
             }
         }
+    }
+    void TowerUpgrade(int treeNum,int upgradeNum)
+    {
+        int getTowerId = towerTree[treeNum - 1][upgradeNum - 1].getTowerId;
+        if (getTowerId < 1000)
+        {
+            //타워 강화
+            MainManager.Instance.towerUpradeManager.Upgrade(getTowerId);
+        }
+        else
+        {
+            availableTowerList.Add((TowerManager.TOWERID)Enum.Parse(typeof(TowerManager.TOWERID), ("T" + getTowerId)));
+        }
+        
     }
     [Serializable]
     public struct TowerTreeNode
@@ -261,6 +271,7 @@ public class Player : MonoBehaviour {
     {
         Debug.Log("구매 번호 "+ nodeNum);
         PlayerPrefsUtil.SaveTowerTreeNodeUsable(treeNum, nodeNum, 0);
+        TowerUpgrade(treeNum, nodeNum);
         MainManager.Instance.GUIUpgradeStateChange(treeNum, nodeNum, 0);
         MainManager.Instance.mainGUI.notice.UpdateNoticeUpgrade(0);
         int trn = treeNum - 1;

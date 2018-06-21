@@ -51,7 +51,7 @@ public class MainGUIManager : MonoBehaviour {
         for (int i = 0; i < stageBtns.Length; i++)
         {
             Player.StageClearInfo info = player.GetStageClearInfo(i + 1, difficulty);
-            stageBtns[i].Init(info.star, info.clear);
+            stageBtns[i].Init(info.star, info.clear,i+1);
         }
     }
 

@@ -7,7 +7,7 @@ public class GUILoading : MonoBehaviour,IPointerClickHandler {
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        SceneManager.LoadScene("Main");
+        
     }
 
     

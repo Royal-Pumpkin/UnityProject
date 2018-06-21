@@ -29,5 +29,8 @@ public class InitUtil
             PlayerPrefsUtil.SettilngTowerTreeUsable(towerTree);
             player.Init(PlayerPrefsUtil.PlayerGold, PlayerPrefsUtil.PlayerGem, PlayerPrefsUtil.PlayerKey, PlayerPrefsUtil.PlayerKeyRecovryTime, PlayerPrefsUtil.PlayerMaxKey, PlayerPrefsUtil.GetStageInfoList(), towerTree);
         }
+#if UNITY_EDITOR
+        mainManager.towerUpradeManager.SetName();
+#endif
     }
 }

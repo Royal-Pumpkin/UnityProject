@@ -9,11 +9,12 @@ public class MainManager : MonoBehaviour {
     public Player player;
     public Setting setting;
     public TowerManager towerManager;
+    public TowerUpradeManager towerUpradeManager = new TowerUpradeManager();
     public int lastStage;//준비된 마지막 스테이지 넘버
     private int currentStage;
     private int difficulty=1;
     public GameObject escape;
-    
+    public StageInfoManager stageInfoManager;
     public static MainManager Instance
     {
         get { return instance; }
@@ -52,20 +53,12 @@ public class MainManager : MonoBehaviour {
     }
 
     private void Start()
-    {
-        /* 디비 사용시 사용
-        SQLiteUtil.VaildCheckDB();
-        Dictionary<string, object> playerInfo = SQLiteUtil.PlayerInfo();        
-        List<Dictionary<string, object>> stageClearInfo = SQLiteUtil.StageClearInfo();
-        List<Dictionary<string, object>> towerUpgradeInfo = SQLiteUtil.TowerUpgradeTreeInfo();
-        
-
-        player.Init((int)playerInfo["gold"], (int)playerInfo["gem"], (int)playerInfo["key"], (string)playerInfo["key_recovery_time"], 12, stageClearInfo, towerUpgradeInfo);
-        */
-
+    {       
         InitUtil.Init(instance);
         towerManager.Init();
         mainGUI.Init(player);
+
+        SceneManager.LoadScene("Main");
     }
     private void Update()
     {
@@ -200,12 +193,16 @@ public class MainManager : MonoBehaviour {
     {
         return player.GetTowerTreeNode(mainGUI.onTabNumber + 1, nodeNumber).comment;
     }
-    private void OnGUI()
+    public int GetTowerUpgradeStat(TowerManager.TOWERID id, TowerUpradeManager.UPGRADESTAT stat)
     {
-        if (GUI.Button(new Rect(0, 0, 100, 100), "삭제"))
-        {
-            PlayerPrefs.DeleteAll();
-        }
+        return towerUpradeManager.GetUpgradeStat(id, stat);
     }
+    //private void OnGUI()
+    //{
+    //    if (GUI.Button(new Rect(0, 0, 100, 100), "삭제"))
+    //    {
+    //        PlayerPrefs.DeleteAll();
+    //    }
+    //}
     
 }

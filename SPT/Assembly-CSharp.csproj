@@ -78,6 +78,8 @@
     <Compile Include="Assets\Scripts\Bae\StageInfoManager.cs" />
     <Compile Include="Assets\Scripts\Bae\TowerInfo.cs" />
     <Compile Include="Assets\Scripts\Bae\TowerManager.cs" />
+    <Compile Include="Assets\Scripts\Bae\TowerUpgrade.cs" />
+    <Compile Include="Assets\Scripts\Bae\TowerUpradeManager.cs" />
     <Compile Include="Assets\Scripts\Bae\Util\FileUtil.cs" />
     <Compile Include="Assets\Scripts\Bae\Util\InitUtil.cs" />
     <Compile Include="Assets\Scripts\Bae\Util\JsonUtil\JsonDataConversion.cs" />
