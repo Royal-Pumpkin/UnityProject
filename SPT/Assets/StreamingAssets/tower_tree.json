@@ -48,7 +48,7 @@
           0
         ],
         "next_num": [
-          9
+          8
         ],
         "usable": 1,
         "get_tower": 1013,
@@ -96,7 +96,7 @@
       },
       {
         "num": 8,
-        "name": "ab2",
+        "name": "ac1",
         "need_num": [
           4
         ],

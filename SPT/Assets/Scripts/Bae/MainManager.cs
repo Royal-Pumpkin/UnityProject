@@ -12,7 +12,7 @@ public class MainManager : MonoBehaviour {
     public int lastStage;//준비된 마지막 스테이지 넘버
     private int currentStage;
     private int difficulty=1;
-
+    public GameObject escape;
     
     public static MainManager Instance
     {
@@ -67,7 +67,13 @@ public class MainManager : MonoBehaviour {
         towerManager.Init();
         mainGUI.Init(player);
     }
-
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            escape.SetActive(true);
+        }
+    }
     void DebugSelectList(List<Dictionary<string, System.Object>> selectList)
     {
         Debug.Log("Count : " + selectList.Count);
@@ -201,4 +207,5 @@ public class MainManager : MonoBehaviour {
             PlayerPrefs.DeleteAll();
         }
     }
+    
 }

@@ -62,6 +62,7 @@
     <Compile Include="Assets\Scripts\Bae\Common\DontDestroyObject.cs" />
     <Compile Include="Assets\Scripts\Bae\EnemyInfo.cs" />
     <Compile Include="Assets\Scripts\Bae\EnemyManager.cs" />
+    <Compile Include="Assets\Scripts\Bae\GUI\GUIEscape.cs" />
     <Compile Include="Assets\Scripts\Bae\GUI\GUILoading.cs" />
     <Compile Include="Assets\Scripts\Bae\GUI\GUISet.cs" />
     <Compile Include="Assets\Scripts\Bae\GUI\GUISetting.cs" />

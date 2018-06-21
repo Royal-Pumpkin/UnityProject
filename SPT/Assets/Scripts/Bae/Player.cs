@@ -198,12 +198,27 @@ public class Player : MonoBehaviour {
     {
         return towerTree[tree - 1][node - 1];
     }
-
-    void GetTowerList()
+    public List<TowerManager.TOWERID> availableTowerList;
+    void SetTowerList()
     {
-        
+        for(int i = 0; i < towerTree.Count; i++)
+        {
+            for(int j = 0; j < towerTree[i].Length; j++)
+            {
+                if (towerTree[i][j].usable == 0)
+                {
+                    if (towerTree[i][j].getTowerId == 0)
+                    {
+                        //타워 강화
+                    }
+                    else
+                    {
+                        //availableTowerList.Add((TowerManager.TOWERID)("T"+towerTree[i][j].getTowerId));
+                    }
+                }
+            }
+        }
     }
-
     [Serializable]
     public struct TowerTreeNode
     {
