@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
-using System.Data.SQLite;
+//using System.Data.SQLite;
 using System;
 using System.IO;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 public class DBManager
 {
     //private static DBManager instance = null;
