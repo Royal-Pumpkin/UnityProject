@@ -20,6 +20,7 @@ public class MainGUIManager : MonoBehaviour {
     [Header("stage")]
     public GUIStageButton[] stageBtns;
     public Sprite[] stageButtonTexture;
+    public Button[] difficulyBtn;
 
     [Header("tower tree")]
     public GUITowerTreeTab[] tabs;
@@ -37,8 +38,8 @@ public class MainGUIManager : MonoBehaviour {
         guiSetting.GetComponent<GUISetting>().Init(MainManager.Instance.setting);
 
         StageBtnImageSet(player, 1);
-
-        for(int i=0;i< player.TowerTreeCount; i++)
+        difficulyBtn[MainManager.Instance.Difficulty-1].interactable = false;
+        for (int i=0;i< player.TowerTreeCount; i++)
         {
             for(int j = 0; j < player.NodesNumberPerTree(i); j++)
             {                
@@ -53,6 +54,10 @@ public class MainGUIManager : MonoBehaviour {
             Player.StageClearInfo info = player.GetStageClearInfo(i + 1, difficulty);
             stageBtns[i].Init(info.star, info.clear,i+1);
         }
+    }
+    public void StageClearBtnSet(int stage,int star)
+    {
+        stageBtns[stage-1].SetInfo(star, true);
     }
 
     public void SetGoldText(int gold)
@@ -119,7 +124,9 @@ public class MainGUIManager : MonoBehaviour {
 
     public void OnClickDifficulty(int num)
     {
+        difficulyBtn[MainManager.Instance.Difficulty-1].interactable = true;
         MainManager.Instance.Difficulty = num;
+        difficulyBtn[num-1].interactable = false;
         StageBtnImageSet(MainManager.Instance.player, num);
     }
 

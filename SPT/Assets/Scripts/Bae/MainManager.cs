@@ -155,22 +155,27 @@ public class MainManager : MonoBehaviour {
     /// 스테이지 클리어하고 씬이 넘어가야 할 시점에서 호출
     /// </summary>
     /// <param name="gold"></param>
-    public void ClearStage(int gold,int star,int score)
+    public void ClearStage(int gold,int star,int score,MainGUIManager.MainGUISceneName mainGUISceneName)
     {
         if (currentStage == (player.LastStage+1))
         {
             player.ClearLastStage();
         }
         ChangeGold(gold);
-
+        player.ClearStage(currentStage, difficulty, star);
+        mainGUI.SetGUIScene(mainGUISceneName);
         LoadMainScene();
+        
+        mainGUI.StageClearBtnSet(currentStage, star);
+        
     }
 
     /// <summary>
     /// 스테이지 실패하고 씬이 넘어가야 할 시점에서 호출
     /// </summary>
-    public void FailStage()
+    public void FailStage(MainGUIManager.MainGUISceneName mainGUISceneName)
     {
+        mainGUI.SetGUIScene(mainGUISceneName);
         LoadMainScene();
     }
 

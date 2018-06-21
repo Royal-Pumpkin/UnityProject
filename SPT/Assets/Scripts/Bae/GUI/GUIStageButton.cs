@@ -13,9 +13,13 @@ public class GUIStageButton : MonoBehaviour {
     }
     public void Init(int star,bool clear,int stageNum)
     {
+        SetInfo(star, clear);
+        nameText.text = "stage " + stageNum;
+    }
+    public void SetInfo(int star,bool clear)
+    {
         GetStar(star);
         ChangeButtonImage(clear);
-        nameText.text = "stage " + stageNum;
     }
     public void GetStar(int starCount)
     {
